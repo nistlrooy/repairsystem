@@ -1,0 +1,7 @@
+/app/logs/*
+/app/cache/*
+/app/phpunit.xml
+.idea/*
+/vendor/*
+/web/bundles/*
+*.php~
