@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f7fd0d902cb18d792ca646f2aeb0dd29",
+    "hash": "567902f8b077a7331853c367394e0d29",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -2162,16 +2162,16 @@
         },
         {
             "name": "sonata-project/core-bundle",
-            "version": "2.3.4",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "ebb05829aaa9f0fc0afa904bf6b6441ea34cf638"
+                "reference": "d5e0aea3998d6e94de01c475db972dca67786c28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/ebb05829aaa9f0fc0afa904bf6b6441ea34cf638",
-                "reference": "ebb05829aaa9f0fc0afa904bf6b6441ea34cf638",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/d5e0aea3998d6e94de01c475db972dca67786c28",
+                "reference": "d5e0aea3998d6e94de01c475db972dca67786c28",
                 "shasum": ""
             },
             "require": {
@@ -2227,7 +2227,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2015-06-16 14:06:45"
+            "time": "2015-08-05 15:17:10"
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
