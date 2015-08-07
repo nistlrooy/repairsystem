@@ -5,12 +5,12 @@ namespace App\RepairBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * RepairTask
+ * FaultOrder
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\RepairBundle\Entity\RepairTaskRepository")
+ * @ORM\Entity(repositoryClass="App\RepairBundle\Entity\FaultOrderRepository")
  */
-class RepairTask
+class FaultOrder
 {
     /**
      * @var integer
@@ -25,19 +25,16 @@ class RepairTask
      * @var integer
      *
      * @ORM\Column(name="user_id", type="integer")
-     *
-     *
      */
-    private $user_id;
+    private $userId;
 
     /**
-     * @var \Datetime
+     * @var string
      *
-     * @ORM\Column(name="create_time", type="datetime")
-     *
-     *
+     * @ORM\Column(name="leader_order", type="string", length=255)
      */
-    private $create_time;
+    private $leaderOrder;
+
 
     /**
      * Get id
@@ -50,48 +47,48 @@ class RepairTask
     }
 
     /**
-     * Set user_id
+     * Set userId
      *
      * @param integer $userId
-     * @return RepairTask
+     * @return FaultOrder
      */
     public function setUserId($userId)
     {
-        $this->user_id = $userId;
+        $this->userId = $userId;
 
         return $this;
     }
 
     /**
-     * Get user_id
+     * Get userId
      *
      * @return integer 
      */
     public function getUserId()
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
     /**
-     * Set create_time
+     * Set leaderOrder
      *
-     * @param \DateTime $createTime
-     * @return RepairTask
+     * @param string $leaderOrder
+     * @return FaultOrder
      */
-    public function setCreateTime($createTime)
+    public function setLeaderOrder($leaderOrder)
     {
-        $this->create_time = $createTime;
+        $this->leaderOrder = $leaderOrder;
 
         return $this;
     }
 
     /**
-     * Get create_time
+     * Get leaderOrder
      *
-     * @return \DateTime 
+     * @return string 
      */
-    public function getCreateTime()
+    public function getLeaderOrder()
     {
-        return $this->create_time;
+        return $this->leaderOrder;
     }
 }

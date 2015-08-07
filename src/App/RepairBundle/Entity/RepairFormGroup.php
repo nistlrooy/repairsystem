@@ -21,6 +21,14 @@ class RepairFormGroup
      */
     private $id;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="update_user_id", type="integer")
+     *
+     *
+     */
+    private $update_user_id;
 
     /**
      * Get id
@@ -30,5 +38,28 @@ class RepairFormGroup
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set update_user_id
+     *
+     * @param integer $updateUserId
+     * @return RepairFormGroup
+     */
+    public function setUpdateUserId($updateUserId)
+    {
+        $this->update_user_id = $updateUserId;
+
+        return $this;
+    }
+
+    /**
+     * Get update_user_id
+     *
+     * @return integer 
+     */
+    public function getUpdateUserId()
+    {
+        return $this->update_user_id;
     }
 }

@@ -15,7 +15,7 @@ class RegistrationFormType extends AbstractType
                 ->add('groups','entity',array(
                     'class' => 'UserBundle:Group',
                     'property' => 'name',
-                    'multiple' => true,
+                    //'multiple' => true,
                     'label' => 'form.groupname',
                     'translation_domain' => 'FOSUserBundle'
                 ));
