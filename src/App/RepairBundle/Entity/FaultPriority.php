@@ -5,12 +5,12 @@ namespace App\RepairBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FormPriority
+ * FaultPriority
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\RepairBundle\Entity\FormPriorityRepository")
+ * @ORM\Entity(repositoryClass="App\RepairBundle\Entity\FaultPriorityRepository")
  */
-class FormPriority
+class FaultPriority
 {
     /**
      * @var integer
@@ -50,7 +50,7 @@ class FormPriority
      * Set name
      *
      * @param string $name
-     * @return FormPriority
+     * @return FaultPriority
      */
     public function setName($name)
     {
@@ -73,7 +73,7 @@ class FormPriority
      * Set description
      *
      * @param string $description
-     * @return FormPriority
+     * @return FaultPriority
      */
     public function setDescription($description)
     {

@@ -66,16 +66,11 @@ class FaultInfo
     /**
      * @var integer
      *
-     * @ORM\Column(name="priority", type="smallint")
+     * @ORM\Column(name="priority_id", type="smallint")
      */
-    private $priority;
+    private $priorityId;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="comment_id", type="integer")
-     */
-    private $commentId;
+
 
     /**
      * @var integer
@@ -232,51 +227,9 @@ class FaultInfo
         return $this->maintenanceSchedule;
     }
 
-    /**
-     * Set priority
-     *
-     * @param integer $priority
-     * @return FaultInfo
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
 
-        return $this;
-    }
 
-    /**
-     * Get priority
-     *
-     * @return integer 
-     */
-    public function getPriority()
-    {
-        return $this->priority;
-    }
 
-    /**
-     * Set commentId
-     *
-     * @param integer $commentId
-     * @return FaultInfo
-     */
-    public function setCommentId($commentId)
-    {
-        $this->commentId = $commentId;
-
-        return $this;
-    }
-
-    /**
-     * Get commentId
-     *
-     * @return integer 
-     */
-    public function getCommentId()
-    {
-        return $this->commentId;
-    }
 
     /**
      * Set orderId
@@ -299,5 +252,28 @@ class FaultInfo
     public function getOrderId()
     {
         return $this->orderId;
+    }
+
+    /**
+     * Set priorityId
+     *
+     * @param integer $priorityId
+     * @return FaultInfo
+     */
+    public function setPriorityId($priorityId)
+    {
+        $this->priorityId = $priorityId;
+
+        return $this;
+    }
+
+    /**
+     * Get priorityId
+     *
+     * @return integer 
+     */
+    public function getPriorityId()
+    {
+        return $this->priorityId;
     }
 }

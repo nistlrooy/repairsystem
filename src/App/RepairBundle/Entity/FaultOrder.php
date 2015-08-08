@@ -24,9 +24,9 @@ class FaultOrder
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Column(name="leader_id", type="integer")
      */
-    private $userId;
+    private $leaderId;
 
     /**
      * @var string
@@ -44,29 +44,6 @@ class FaultOrder
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set userId
-     *
-     * @param integer $userId
-     * @return FaultOrder
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->userId;
     }
 
     /**
@@ -90,5 +67,28 @@ class FaultOrder
     public function getLeaderOrder()
     {
         return $this->leaderOrder;
+    }
+
+    /**
+     * Set leaderId
+     *
+     * @param integer $leaderId
+     * @return FaultOrder
+     */
+    public function setLeaderId($leaderId)
+    {
+        $this->leaderId = $leaderId;
+
+        return $this;
+    }
+
+    /**
+     * Get leaderId
+     *
+     * @return integer 
+     */
+    public function getLeaderId()
+    {
+        return $this->leaderId;
     }
 }

@@ -13,6 +13,7 @@
         {
             // add your custom field
             $builder->add('faultInfo', new FaultInfoType());
+
         }
 
         public function configureOptions(OptionsResolver $resolver)

@@ -52,6 +52,12 @@ class RepairForm
      */
     private $repairTaskId;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="comment_id", type="integer")
+     */
+    private $commentId;
 
 
     /**
@@ -204,5 +210,28 @@ class RepairForm
     public function getRepairFormGroupId()
     {
         return $this->repairFormGroupId;
+    }
+
+    /**
+     * Set commentId
+     *
+     * @param integer $commentId
+     * @return RepairForm
+     */
+    public function setCommentId($commentId)
+    {
+        $this->commentId = $commentId;
+
+        return $this;
+    }
+
+    /**
+     * Get commentId
+     *
+     * @return integer 
+     */
+    public function getCommentId()
+    {
+        return $this->commentId;
     }
 }

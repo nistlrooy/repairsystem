@@ -13,7 +13,7 @@
         {
             // add your custom field
             $builder->add('priority','entity',array(
-                            'class' => 'RepairBundle:FormPriority',
+                            'class' => 'RepairBundle:FaultPriority',
                             'property' => 'name',
                             'label' => 'form.faultPriority',
                             'translation_domain' => 'RepairBundle'
@@ -47,13 +47,7 @@
                             'property' => 'lead_order',
                             'label' => 'form.faultOrder',
                             'translation_domain' => 'RepairBundle'
-                        ))
-                    ->add('faultOrder','entity',array(
-                            'class' => 'RepairBundle:FaultOrder',
-                            'property' => 'lead_order',
-                            'label' => 'form.faultOrder',
-                            'translation_domain' => 'RepairBundle'
-                        ))
+                        ));
         }
 
         public function configureOptions(OptionsResolver $resolver)
