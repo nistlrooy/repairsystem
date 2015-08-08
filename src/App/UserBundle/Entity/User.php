@@ -39,6 +39,20 @@ class User extends BaseUser
     protected $name;
 
     /**
+     * @ORM\Column(type="string", length=30)
+     *
+     * @Assert\NotBlank(message="Please enter your phone.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max="30",
+     *     minMessage="The number is too short.",
+     *     maxMessage="The number is too long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $phone;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\UserBundle\Entity\Group")
      * @ORM\JoinTable(name="fos_user_user_group",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
@@ -87,6 +101,29 @@ class User extends BaseUser
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
 

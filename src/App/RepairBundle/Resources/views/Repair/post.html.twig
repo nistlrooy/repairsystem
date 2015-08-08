@@ -4,4 +4,18 @@
 
 {% block body %}
 <h1>Welcome to the Repair:post page</h1>
+
+    {% trans_default_domain 'RepairBundle' %}
+    <form action="{{ path('repair_report') }}" {{ form_enctype(form) }} method="post">
+        {{ form_row(form.faultInfo.faultType) }}
+        {{ form_row(form.faultInfo.location) }}
+        {{ form_row(form.faultInfo.priority) }}
+        {{ form_row(form.faultInfo.reporterDescription) }}
+
+
+        {{ form_row(form._token) }}
+        <div>
+            <input type="submit" value="{{ 'submit.submit'|trans }}" />
+        </div>
+    </form>
 {% endblock %}

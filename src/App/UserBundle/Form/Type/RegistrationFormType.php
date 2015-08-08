@@ -12,6 +12,7 @@ class RegistrationFormType extends AbstractType
     {
         // add your custom field
         $builder->add('name', null, array('label' => 'form.name', 'translation_domain' => 'FOSUserBundle'))
+                ->add('phone', null, array('label' => 'form.phone', 'translation_domain' => 'FOSUserBundle'))
                 ->add('groups','entity',array(
                     'class' => 'UserBundle:Group',
                     'property' => 'name',

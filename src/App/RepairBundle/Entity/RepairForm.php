@@ -5,6 +5,7 @@ namespace App\RepairBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * RepairForm
  *
@@ -69,22 +70,16 @@ class RepairForm
 
 
     /**
-     * @Assert\Type(type="RepairBundle\Entity\FaultInfo")
+     * @ORM\OneToOne(targetEntity="FaultInfo")
+     * @ORM\JoinColumn(name="fault_info_id", referencedColumnName="id")
+     * @Assert\Type(type="App\RepairBundle\Entity\FaultInfo")
      * @Assert\Valid()
      */
     protected $faultInfo;
 
     //嵌入FaultInfo
 
-    public function getFaultInfo()
-    {
-        return $this->faultInfo;
-    }
 
-    public function setFaultInfo(FaultInfo $faultInfo = null)
-    {
-        $this->faultInfo = $faultInfo;
-    }
 
 
     /**
@@ -233,5 +228,28 @@ class RepairForm
     public function getCommentId()
     {
         return $this->commentId;
+    }
+
+    /**
+     * Set faultInfo
+     *
+     * @param \App\RepairBundle\Entity\FaultInfo $faultInfo
+     * @return RepairForm
+     */
+    public function setFaultInfo(\App\RepairBundle\Entity\FaultInfo $faultInfo = null)
+    {
+        $this->faultInfo = $faultInfo;
+
+        return $this;
+    }
+
+    /**
+     * Get faultInfo
+     *
+     * @return \App\RepairBundle\Entity\FaultInfo 
+     */
+    public function getFaultInfo()
+    {
+        return $this->faultInfo;
     }
 }

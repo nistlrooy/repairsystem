@@ -24,13 +24,6 @@ class FaultInfo
     /**
      * @var integer
      *
-     * @ORM\Column(name="repair_form_id", type="integer")
-     */
-    private $repairFormId;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="type_id", type="integer")
      */
     private $typeId;
@@ -89,28 +82,6 @@ class FaultInfo
         return $this->id;
     }
 
-    /**
-     * Set repairFormId
-     *
-     * @param integer $repairFormId
-     * @return FaultInfo
-     */
-    public function setRepairFormId($repairFormId)
-    {
-        $this->repairFormId = $repairFormId;
-
-        return $this;
-    }
-
-    /**
-     * Get repairFormId
-     *
-     * @return integer 
-     */
-    public function getRepairFormId()
-    {
-        return $this->repairFormId;
-    }
 
     /**
      * Set typeId

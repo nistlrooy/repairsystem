@@ -6,6 +6,7 @@
 
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\FormBuilderInterface;
+    use Symfony\Component\OptionsResolver\OptionsResolver;
 
     class FaultInfoType extends AbstractType
     {
@@ -30,8 +31,8 @@
                             'label' => 'form.location',
                             'translation_domain' => 'RepairBundle'
                         ))
-                    ->add('reportDescription','textarea',array(
-                            'label' => 'form.reportDescription',
+                    ->add('reporterDescription','textarea',array(
+                            'label' => 'form.reporterDescription',
                             'translation_domain' => 'RepairBundle'
                         ))
                     ->add('workerDescription','textarea',array(
@@ -53,7 +54,7 @@
         public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults(array(
-                'data_class' => 'RepairBundle\Entity\FaultInfo',
+                'data_class' => 'App\RepairBundle\Entity\FaultInfo',
             ));
         }
 
