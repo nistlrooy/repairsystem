@@ -13,7 +13,7 @@
         public function buildForm(FormBuilderInterface $builder, array $options)
         {
             // add your custom field
-            $builder->add('priority','entity',array(
+            $builder->add('faultPriority','entity',array(
                             'class' => 'RepairBundle:FaultPriority',
                             'property' => 'name',
                             'label' => 'form.faultPriority',
@@ -25,7 +25,7 @@
                             'label' => 'form.faultType',
                             'translation_domain' => 'RepairBundle'
                         ))
-                    ->add('location','entity',array(
+                    ->add('group','entity',array(
                             'class' => 'UserBundle:Group',
                             'property' => 'name',
                             'label' => 'form.location',

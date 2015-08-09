@@ -22,13 +22,10 @@ class RepairTask
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer")
-     *
-     *
+     * @ORM\ManyToOne(targetEntity="App\UserBundle\Entity\User",inversedBy="repairTask")
+     * @ORM\JoinColumn(name="create_user_id", referencedColumnName="id")
      */
-    private $user_id;
+    private $user;
 
     /**
      * @var \Datetime
@@ -49,28 +46,6 @@ class RepairTask
         return $this->id;
     }
 
-    /**
-     * Set user_id
-     *
-     * @param integer $userId
-     * @return RepairTask
-     */
-    public function setUserId($userId)
-    {
-        $this->user_id = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get user_id
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
 
     /**
      * Set create_time
@@ -93,5 +68,28 @@ class RepairTask
     public function getCreateTime()
     {
         return $this->create_time;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \App\UserBundle\Entity\User $user
+     * @return RepairTask
+     */
+    public function setUser(\App\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \App\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

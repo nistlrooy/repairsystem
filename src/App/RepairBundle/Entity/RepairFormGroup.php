@@ -22,13 +22,10 @@ class RepairFormGroup
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="update_user_id", type="integer")
-     *
-     *
+     * @ORM\ManyToOne(targetEntity="App\UserBundle\Entity\User",inversedBy="repairFormGroup")
+     * @ORM\JoinColumn(name="update_user_id", referencedColumnName="id")
      */
-    private $update_user_id;
+    private $user;
 
     /**
      * Get id
@@ -40,26 +37,28 @@ class RepairFormGroup
         return $this->id;
     }
 
+
+
     /**
-     * Set update_user_id
+     * Set user
      *
-     * @param integer $updateUserId
+     * @param \App\UserBundle\Entity\User $user
      * @return RepairFormGroup
      */
-    public function setUpdateUserId($updateUserId)
+    public function setUser(\App\UserBundle\Entity\User $user = null)
     {
-        $this->update_user_id = $updateUserId;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get update_user_id
+     * Get user
      *
-     * @return integer 
+     * @return \App\UserBundle\Entity\User 
      */
-    public function getUpdateUserId()
+    public function getUser()
     {
-        return $this->update_user_id;
+        return $this->user;
     }
 }

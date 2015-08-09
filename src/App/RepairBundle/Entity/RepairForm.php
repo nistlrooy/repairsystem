@@ -24,11 +24,10 @@ class RepairForm
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="condition_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="FormCondition",inversedBy="repairForm")
+     * @ORM\JoinColumn(name="form_condition_id", referencedColumnName="id")
      */
-    private $conditionId;
+    private $formCondition;
 
     /**
      * @var \DateTime
@@ -38,39 +37,35 @@ class RepairForm
     private $lastUpdateTime;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="last_update_user", type="integer")
+     * @ORM\ManyToOne(targetEntity="App\UserBundle\Entity\User",inversedBy="repairForm")
+     * @ORM\JoinColumn(name="last_update_user_id", referencedColumnName="id")
      */
-    private $lastUpdateUser;
+    private $user;
 
 
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="repair_task_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="RepairTask",inversedBy="repairForm")
+     * @ORM\JoinColumn(name="repair_task_id", referencedColumnName="id")
      */
-    private $repairTaskId;
+    private $repairTask;
 
     /**
-     * @var integer
+     * @ORM\OneToMany(targetEntity="FormComment",mappedBy="repairForm")
      *
-     * @ORM\Column(name="comment_id", type="integer")
      */
-    private $commentId;
+    private $formComment;
 
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="repair_form_group_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="RepairFormGroup",inversedBy="repairForm")
+     * @ORM\JoinColumn(name="repair_form_group_id", referencedColumnName="id")
      */
-    private $repairFormGroupId;
+    private $repairFormGroup;
 
 
     /**
-     * @ORM\OneToOne(targetEntity="FaultInfo")
+     * @ORM\OneToOne(targetEntity="FaultInfo",mappedBy="repairForm")
      * @ORM\JoinColumn(name="fault_info_id", referencedColumnName="id")
      * @Assert\Type(type="App\RepairBundle\Entity\FaultInfo")
      * @Assert\Valid()
@@ -82,6 +77,16 @@ class RepairForm
 
 
 
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->formComment = new \Doctrine\Common\Collections\ArrayCollection();
+
+    }
+
     /**
      * Get id
      *
@@ -90,29 +95,6 @@ class RepairForm
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set conditionId
-     *
-     * @param integer $conditionId
-     * @return RepairForm
-     */
-    public function setConditionId($conditionId)
-    {
-        $this->conditionId = $conditionId;
-
-        return $this;
-    }
-
-    /**
-     * Get conditionId
-     *
-     * @return integer 
-     */
-    public function getConditionId()
-    {
-        return $this->conditionId;
     }
 
     /**
@@ -139,95 +121,128 @@ class RepairForm
     }
 
     /**
-     * Set lastUpdateUser
+     * Set formCondition
      *
-     * @param integer $lastUpdateUser
+     * @param \App\RepairBundle\Entity\FormCondition $formCondition
      * @return RepairForm
      */
-    public function setLastUpdateUser($lastUpdateUser)
+    public function setFormCondition(\App\RepairBundle\Entity\FormCondition $formCondition = null)
     {
-        $this->lastUpdateUser = $lastUpdateUser;
+        $this->formCondition = $formCondition;
 
         return $this;
     }
 
     /**
-     * Get lastUpdateUser
+     * Get formCondition
      *
-     * @return integer 
+     * @return \App\RepairBundle\Entity\FormCondition 
      */
-    public function getLastUpdateUser()
+    public function getFormCondition()
     {
-        return $this->lastUpdateUser;
+        return $this->formCondition;
     }
 
     /**
-     * Set repairTaskId
+     * Set user
      *
-     * @param integer $repairTaskId
+     * @param \App\UserBundle\Entity\User $user
      * @return RepairForm
      */
-    public function setRepairTaskId($repairTaskId)
+    public function setUser(\App\UserBundle\Entity\User $user = null)
     {
-        $this->repairTaskId = $repairTaskId;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get repairTaskId
+     * Get user
      *
-     * @return integer 
+     * @return \App\UserBundle\Entity\User 
      */
-    public function getRepairTaskId()
+    public function getUser()
     {
-        return $this->repairTaskId;
+        return $this->user;
     }
 
     /**
-     * Set repairFormGroupId
+     * Set repairTask
      *
-     * @param integer $repairFormGroupId
+     * @param \App\RepairBundle\Entity\RepairTask $repairTask
      * @return RepairForm
      */
-    public function setRepairFormGroupId($repairFormGroupId)
+    public function setRepairTask(\App\RepairBundle\Entity\RepairTask $repairTask = null)
     {
-        $this->repairFormGroupId = $repairFormGroupId;
+        $this->repairTask = $repairTask;
 
         return $this;
     }
 
     /**
-     * Get repairFormGroupId
+     * Get repairTask
      *
-     * @return integer 
+     * @return \App\RepairBundle\Entity\RepairTask 
      */
-    public function getRepairFormGroupId()
+    public function getRepairTask()
     {
-        return $this->repairFormGroupId;
+        return $this->repairTask;
     }
 
     /**
-     * Set commentId
+     * Add formComment
      *
-     * @param integer $commentId
+     * @param \App\RepairBundle\Entity\FormComment $formComment
      * @return RepairForm
      */
-    public function setCommentId($commentId)
+    public function addFormComment(\App\RepairBundle\Entity\FormComment $formComment)
     {
-        $this->commentId = $commentId;
+        $this->formComment[] = $formComment;
 
         return $this;
     }
 
     /**
-     * Get commentId
+     * Remove formComment
      *
-     * @return integer 
+     * @param \App\RepairBundle\Entity\FormComment $formComment
      */
-    public function getCommentId()
+    public function removeFormComment(\App\RepairBundle\Entity\FormComment $formComment)
     {
-        return $this->commentId;
+        $this->formComment->removeElement($formComment);
+    }
+
+    /**
+     * Get formComment
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFormComment()
+    {
+        return $this->formComment;
+    }
+
+    /**
+     * Set repairFormGroup
+     *
+     * @param \App\RepairBundle\Entity\RepairFormGroup $repairFormGroup
+     * @return RepairForm
+     */
+    public function setRepairFormGroup(\App\RepairBundle\Entity\RepairFormGroup $repairFormGroup = null)
+    {
+        $this->repairFormGroup = $repairFormGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get repairFormGroup
+     *
+     * @return \App\RepairBundle\Entity\RepairFormGroup 
+     */
+    public function getRepairFormGroup()
+    {
+        return $this->repairFormGroup;
     }
 
     /**

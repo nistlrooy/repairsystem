@@ -30,6 +30,15 @@ class FormComment
 
 
     /**
+     * @ORM\ManyToOne(targetEntity="RepairForm",inversedBy="formComment")
+     * @ORM\JoinColumn(name="repair_form_id", referencedColumnName="id")
+     */
+    private $repairForm;
+
+
+
+
+    /**
      * Get id
      *
      * @return integer 
@@ -60,5 +69,28 @@ class FormComment
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * Set repairForm
+     *
+     * @param \App\RepairBundle\Entity\RepairForm $repairForm
+     * @return FormComment
+     */
+    public function setRepairForm(\App\RepairBundle\Entity\RepairForm $repairForm = null)
+    {
+        $this->repairForm = $repairForm;
+
+        return $this;
+    }
+
+    /**
+     * Get repairForm
+     *
+     * @return \App\RepairBundle\Entity\RepairForm 
+     */
+    public function getRepairForm()
+    {
+        return $this->repairForm;
     }
 }

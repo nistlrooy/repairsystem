@@ -22,11 +22,10 @@ class FaultOrder
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="leader_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="App\UserBundle\Entity\User",inversedBy="faultOrder")
+     * @ORM\JoinColumn(name="leader_id", referencedColumnName="id")
      */
-    private $leaderId;
+    private $user;
 
     /**
      * @var string
@@ -34,6 +33,8 @@ class FaultOrder
      * @ORM\Column(name="leader_order", type="string", length=255)
      */
     private $leaderOrder;
+
+
 
 
     /**
@@ -70,25 +71,25 @@ class FaultOrder
     }
 
     /**
-     * Set leaderId
+     * Set user
      *
-     * @param integer $leaderId
+     * @param \App\UserBundle\Entity\User $user
      * @return FaultOrder
      */
-    public function setLeaderId($leaderId)
+    public function setUser(\App\UserBundle\Entity\User $user = null)
     {
-        $this->leaderId = $leaderId;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get leaderId
+     * Get user
      *
-     * @return integer 
+     * @return \App\UserBundle\Entity\User 
      */
-    public function getLeaderId()
+    public function getUser()
     {
-        return $this->leaderId;
+        return $this->user;
     }
 }

@@ -22,18 +22,18 @@ class FaultInfo
     private $id;
 
     /**
-     * @var integer
      *
-     * @ORM\Column(name="type_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="FaultType",inversedBy="faultInfo")
+     * @ORM\JoinColumn(name="fault_type_id", referencedColumnName="id")
      */
-    private $typeId;
+    private $faultType;
 
     /**
-     * @var integer
+     * @ORM\ManyToOne(targetEntity="App\UserBundle\Entity\Group",inversedBy="faultInfo")
+     * @ORM\JoinColumn(name="location_id",referencedColumnName="id")
      *
-     * @ORM\Column(name="location_id", type="integer")
      */
-    private $locationId;
+    private $group;
 
     /**
      * @var string
@@ -57,20 +57,23 @@ class FaultInfo
     private $maintenanceSchedule;
 
     /**
-     * @var integer
+     * @ORM\ManyToOne(targetEntity="FaultPriority",inversedBy="faultInfo")
+     * @ORM\JoinColumn(name="fault_priority_id", referencedColumnName="id")
      *
-     * @ORM\Column(name="priority_id", type="smallint")
+     *
      */
-    private $priorityId;
+    private $faultPriority;
 
 
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="order_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="FaultOrder",inversedBy="faultInfo")
+     * @ORM\JoinColumn(name="fault_order_id", referencedColumnName="id")
      */
-    private $orderId;
+    private $faultOrder;
+
+
+
 
     /**
      * Get id
@@ -80,53 +83,6 @@ class FaultInfo
     public function getId()
     {
         return $this->id;
-    }
-
-
-    /**
-     * Set typeId
-     *
-     * @param integer $typeId
-     * @return FaultInfo
-     */
-    public function setTypeId($typeId)
-    {
-        $this->typeId = $typeId;
-
-        return $this;
-    }
-
-    /**
-     * Get typeId
-     *
-     * @return integer 
-     */
-    public function getTypeId()
-    {
-        return $this->typeId;
-    }
-
-    /**
-     * Set locationId
-     *
-     * @param integer $locationId
-     * @return FaultInfo
-     */
-    public function setLocationId($locationId)
-    {
-        $this->locationId = $locationId;
-
-        return $this;
-    }
-
-    /**
-     * Get locationId
-     *
-     * @return integer 
-     */
-    public function getLocationId()
-    {
-        return $this->locationId;
     }
 
     /**
@@ -198,53 +154,95 @@ class FaultInfo
         return $this->maintenanceSchedule;
     }
 
-
-
-
-
     /**
-     * Set orderId
+     * Set faultType
      *
-     * @param integer $orderId
+     * @param \App\RepairBundle\Entity\FaultType $faultType
      * @return FaultInfo
      */
-    public function setOrderId($orderId)
+    public function setFaultType(\App\RepairBundle\Entity\FaultType $faultType = null)
     {
-        $this->orderId = $orderId;
+        $this->faultType = $faultType;
 
         return $this;
     }
 
     /**
-     * Get orderId
+     * Get faultType
      *
-     * @return integer 
+     * @return \App\RepairBundle\Entity\FaultType 
      */
-    public function getOrderId()
+    public function getFaultType()
     {
-        return $this->orderId;
+        return $this->faultType;
     }
 
     /**
-     * Set priorityId
+     * Set group
      *
-     * @param integer $priorityId
+     * @param \App\UserBundle\Entity\Group $group
      * @return FaultInfo
      */
-    public function setPriorityId($priorityId)
+    public function setGroup(\App\UserBundle\Entity\Group $group = null)
     {
-        $this->priorityId = $priorityId;
+        $this->group = $group;
 
         return $this;
     }
 
     /**
-     * Get priorityId
+     * Get group
      *
-     * @return integer 
+     * @return \App\UserBundle\Entity\Group 
      */
-    public function getPriorityId()
+    public function getGroup()
     {
-        return $this->priorityId;
+        return $this->group;
+    }
+
+    /**
+     * Set faultPriority
+     *
+     * @param \App\RepairBundle\Entity\FaultPriority $faultPriority
+     * @return FaultInfo
+     */
+    public function setFaultPriority(\App\RepairBundle\Entity\FaultPriority $faultPriority = null)
+    {
+        $this->faultPriority = $faultPriority;
+
+        return $this;
+    }
+
+    /**
+     * Get faultPriority
+     *
+     * @return \App\RepairBundle\Entity\FaultPriority 
+     */
+    public function getFaultPriority()
+    {
+        return $this->faultPriority;
+    }
+
+    /**
+     * Set faultOrder
+     *
+     * @param \App\RepairBundle\Entity\FaultOrder $faultOrder
+     * @return FaultInfo
+     */
+    public function setFaultOrder(\App\RepairBundle\Entity\FaultOrder $faultOrder = null)
+    {
+        $this->faultOrder = $faultOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get faultOrder
+     *
+     * @return \App\RepairBundle\Entity\FaultOrder 
+     */
+    public function getFaultOrder()
+    {
+        return $this->faultOrder;
     }
 }
