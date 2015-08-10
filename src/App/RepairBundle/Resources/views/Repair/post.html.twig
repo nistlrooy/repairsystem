@@ -7,11 +7,21 @@
 
     {% trans_default_domain 'RepairBundle' %}
     <form action="{{ path('repair_report') }}" {{ form_enctype(form) }} method="post">
-        {{ form_row(form.faultType) }}
-        {{ form_row(form.group) }}
-        {{ form_row(form.faultPriority) }}
-        {{ form_row(form.reporterDescription) }}
 
+        <fieldset>
+            <legend>{{ 'faultInfo'|trans }}</legend>
+            {{ form_row(form.faultType) }}
+            {{ form_row(form.group) }}
+            {{ form_row(form.faultPriority) }}
+            {{ form_row(form.reporterDescription) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ 'faultInfo'|trans }}</legend>
+        <div>                <label for="fault_info_form_faultType1" class="required">form.faultType</label><select id="fault_info_form_faultType1" name="fault_info_form1[faultType]">            <option value="1" >水电类</option>            <option value="2" >办公电器</option></select></div>
+        <div>                <label for="fault_info_form_group1" class="required">form.location</label><select id="fault_info_form_group1" name="fault_info_form1[group]">            <option value="1" >甲机房</option>            <option value="2" >乙机房</option>            <option value="3" >技术办公室</option>            <option value="4" >维修室</option>            <option value="5" >台办室</option>            <option value="6" >行政科</option></select></div>
+        <div>                <label for="fault_info_form_faultPriority1" class="required">form.faultPriority</label><select id="fault_info_form_faultPriority1" name="fault_info_form1[faultPriority]">            <option value="1" >普通</option>            <option value="2" >优先</option></select></div>
+        <div>                <label for="fault_info_form_reporterDescription1" class="required">form.reporterDescription</label><textarea id="fault_info_form_reporterDescription1" name="fault_info_form1[reporterDescription]" required="required"></textarea></div>
+        </fieldset>
 
         {{ form_row(form._token) }}
         <div>

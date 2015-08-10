@@ -32,27 +32,28 @@ class RepairController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // the validation passed, do something with the $author object
+            // the validation passed, do something with the object
 
-
+            //get form data
             $data = $form->getData();
-
+            var_dump($data);
+            die;
             $repairForm = new RepairForm();
             //var_dump($data->getFaultType()->getId());
-
+            //默认设置为一个空格
             if(!$data->getWorkerDescription())
                 $data->setWorkerDescription(' ');
             if(!$data->getMaintenanceSchedule())
                 $data->setMaintenanceSchedule(' ');
-
+            //set datetime to now
             $repairForm->setLastUpdateTime(new \DateTime());
 
-            $condition = new FormCondition();
-            $condition->getId(1);//待改，应改为getById，在repository里面添加相应函数
+            //find id = 1 ,get the obj and update
+            $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(1);
             $repairForm->setFormCondition($condition);
 
-            $user = new User();
-            $user->getId($this->get('security.token_storage')->getToken()->getUser()->getId());//同上
+            //get current user id and update
+            $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
             $repairForm->setUser($user);
 
             $em = $this->getDoctrine()->getManager();

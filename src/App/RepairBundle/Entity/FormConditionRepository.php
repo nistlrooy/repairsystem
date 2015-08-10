@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class FormConditionRepository extends EntityRepository
 {
+    public function findById()
+    {
+
+    }
 }
+
