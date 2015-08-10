@@ -26,8 +26,6 @@ class RepairController extends Controller
     public function postAction(Request $request)
     {
 
-
-
         $form = $this->createForm(new FaultInfoType(),new FaultInfo());
         $form->handleRequest($request);
 
@@ -36,8 +34,7 @@ class RepairController extends Controller
 
             //get form data
             $data = $form->getData();
-            var_dump($data);
-            die;
+
             $repairForm = new RepairForm();
             //var_dump($data->getFaultType()->getId());
             //默认设置为一个空格

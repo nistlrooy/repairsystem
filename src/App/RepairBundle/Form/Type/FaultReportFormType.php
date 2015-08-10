@@ -6,6 +6,8 @@
 
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\FormBuilderInterface;
+    use Symfony\Component\Form\FormEvents;
+    use Symfony\Component\Form\FormEvent;
     use Symfony\Component\OptionsResolver\OptionsResolver;
 
     class FaultReportFormType extends AbstractType
@@ -13,8 +15,8 @@
         public function buildForm(FormBuilderInterface $builder, array $options)
         {
             // add your custom field
-            $builder->add('faultInfo', new FaultInfoType());
-
+            $builder->add('faultInfo', new FaultInfoType())
+               ;
 
         }
 
