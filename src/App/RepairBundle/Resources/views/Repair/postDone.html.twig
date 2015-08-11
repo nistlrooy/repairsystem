@@ -1,0 +1,10 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}RepairBundle:Repair:postDone{% endblock %}
+
+{% block body %}
+    <h1>post done</h1>
+    <a href="{{ path('fault_report') }}">{{ 'form.postAnather'|trans }}</a>
+
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}RepairBundle:Repair:show{% endblock %}
+
+{% block body %}
+    <h1>detail</h1>
+
+    {{ repairForm.faultInfo.faultPriority.name }}
+    <br>
+    {{ repairForm.user.name }}
+    <br>
+    {{ repairForm.formCondition.name }}
+    <br>
+    {{ repairForm.repairTask.user.name }}
+    <br>
+    {{ repairForm.lastUpdateTime|date('Y-m-d H:i:s') }}
+    <br>
+    {{ repairForm.faultInfo.faultType.name }}
+    <br>
+    {{ repairForm.faultInfo.group.name }}
+    <br>
+    {% if orderIsNull != true %}
+        {{ repairForm.repairForm.faultInfo.faultOrder.leaderOrder }}
+    {% endif %}
+    <br>
+    {{ repairForm.faultInfo.reporterDescription }}
+
+{% endblock %}

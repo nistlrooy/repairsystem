@@ -6,7 +6,7 @@
 <h1>Welcome to the Repair:post page</h1>
 
     {% trans_default_domain 'RepairBundle' %}
-    <form action="{{ path('repair_report') }}" {{ form_enctype(form) }} method="post">
+    <form action="{{ path('fault_report') }}" {{ form_enctype(form) }} method="post">
 
         {#
         {{ form_row(form.formNumber) }}
