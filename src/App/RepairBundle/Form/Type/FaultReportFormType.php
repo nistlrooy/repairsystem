@@ -16,7 +16,10 @@
         {
             // add your custom field
             $builder->add('faultInfo', new FaultInfoType())
-               ;
+                ->add('done', 'submit', array('label' => 'done'))
+                ->add('edit', 'submit', array('label' => 'edit'))
+                ->add('save', 'submit', array('label' => 'save'))
+                ;
 
         }
 

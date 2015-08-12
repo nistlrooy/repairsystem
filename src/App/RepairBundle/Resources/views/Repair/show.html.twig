@@ -3,26 +3,18 @@
 {% block title %}RepairBundle:Repair:show{% endblock %}
 
 {% block body %}
-    <h1>detail</h1>
+    <h1>fault list</h1>
 
-    {{ repairForm.faultInfo.faultPriority.name }}
-    <br>
-    {{ repairForm.user.name }}
-    <br>
-    {{ repairForm.formCondition.name }}
-    <br>
-    {{ repairForm.repairTask.user.name }}
-    <br>
-    {{ repairForm.lastUpdateTime|date('Y-m-d H:i:s') }}
-    <br>
-    {{ repairForm.faultInfo.faultType.name }}
-    <br>
-    {{ repairForm.faultInfo.group.name }}
-    <br>
-    {% if orderIsNull != true %}
-        {{ repairForm.repairForm.faultInfo.faultOrder.leaderOrder }}
-    {% endif %}
-    <br>
-    {{ repairForm.faultInfo.reporterDescription }}
+    {% for form in repairForm %}
+        {{ form.faultInfo.faultPriority.name }}
+        <br>
+        {{ form.faultInfo.faultType.name }}
+        <br>
+        {{ form.faultInfo.group.name }}
 
+        <br>
+        {{ form.faultInfo.reporterDescription }}
+
+        <hr>
+    {% endfor %}
 {% endblock %}

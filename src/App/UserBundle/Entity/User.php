@@ -53,13 +53,10 @@ class User extends BaseUser
     protected $phone;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\UserBundle\Entity\Group")
-     * @ORM\JoinTable(name="fos_user_user_group",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToOne(targetEntity="App\UserBundle\Entity\Group")
+     * @ORM\JoinColumn(name="fos_group_id", referencedColumnName="id")
      */
-    protected $groups;
+    protected $group;
 
 
     public function __construct()
@@ -127,4 +124,27 @@ class User extends BaseUser
     }
 
 
+
+    /**
+     * Set group
+     *
+     * @param \App\UserBundle\Entity\Group $group
+     * @return User
+     */
+    public function setGroup(\App\UserBundle\Entity\Group $group = null)
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return \App\UserBundle\Entity\Group 
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
 }
