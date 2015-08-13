@@ -12,5 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class RepairFormRepository extends EntityRepository
 {
-
+    public function isCreater($id)
+    {
+        $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
+        $createrId = $repairForm->getRepairTask()->getUser()->getId();
+        if($id = $createrId)
+        {
+            return true;
+        }
+        return false;
+    }
 }

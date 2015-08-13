@@ -22,6 +22,7 @@ class RepairController extends Controller
     /**
      * @Route("/fault/post",name="fault_report")
      * @Template()
+     * 提交报修单
      */
     public function postAction(Request $request)
     {
@@ -35,7 +36,7 @@ class RepairController extends Controller
             $repairTask = new RepairTask();
             $repairFormGroup = new RepairFormGroup();
             //var_dump($data->getFaultType()->getId());
-            //默认设置为一个空格
+            //默认设置为none
             if(!$data->getWorkerDescription())
                 $data->setWorkerDescription('none');
             if(!$data->getMaintenanceSchedule())
@@ -44,6 +45,7 @@ class RepairController extends Controller
             $repairForm->setLastUpdateTime(new \DateTime());
             $repairTask->setCreateTime(new \Datetime());
             //find id = 1 ,get the obj and update
+            //设置状态为待接单
             $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(1);
             $repairForm->setFormCondition($condition);
             //get current user id and update
@@ -73,6 +75,8 @@ class RepairController extends Controller
      *
      * @Route("/fault/show",name="fault_show")
      * @Template()
+     *
+     * 显示所有故障
      */
     public function showAction()
     {
@@ -88,6 +92,7 @@ class RepairController extends Controller
      * @Route("/fault/info/{id}",name="fault_info")
      * @Template()
      *
+     * 每个故障的信息
      */
     public function infoAction($id)
     {
@@ -97,15 +102,15 @@ class RepairController extends Controller
                 'No repair form found for this id: '.$id
             );
         }
-        $orderIsNull = false;
-        if($repairForm->getfaultInfo()->getFaultOrder() == Null);
-        {
-            $orderIsNull=true;
-        }
+        $orderIsNull = is_null($repairForm->getfaultInfo()->getFaultOrder());
+        $receiveIsNull = is_null($repairForm->getReceive());
+
+
         $form = $this->createForm(new FaultReportFormType(),$repairForm);
         return array(
             'repairForm' => $repairForm,
             'orderIsNull' => $orderIsNull,
+            'receiveIsNull' =>$receiveIsNull,
             'form' => $form->createView()
         );
     }
@@ -116,6 +121,10 @@ class RepairController extends Controller
      */
     public function receiveAction($id)
     {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_REPAIR'))
+        {
+            throw new HttpException(403,'Repair Person Only');
+        }
         $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
         if (!$repairForm) {
             throw $this->createNotFoundException(
@@ -128,6 +137,7 @@ class RepairController extends Controller
             $repairForm->setFormCondition($condition);
             $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
             $repairForm->setUser($user);
+            $repairForm->setReceive($user);
             $repairForm->setLastUpdateTime(new \DateTime());
             $em = $this->getDoctrine()->getManager();
             $em->persist($repairForm);
@@ -152,11 +162,17 @@ class RepairController extends Controller
         if ($form->isValid()) {
 
             $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
+
+            if($repairForm->getReceive()->getId() != $this->get('security.token_storage')->getToken()->getUser()->getId())
+            {
+                throw new HttpException(403,"Only receiver can confirm the repair form");
+            }
             $faultInfo = $repairForm->getFaultInfo();
             $faultInfo->setWorkerDescription($data->getFaultInfo()->getWorkerDescription());
             $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
             $repairForm->setFaultInfo($faultInfo);
             $repairForm->setLastUpdateTime(new \DateTime());
+
             $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
             $repairForm->setUser($user);
             if($form->get('done')->isClicked())
@@ -177,5 +193,7 @@ class RepairController extends Controller
         return array(
                 // ...
             );    }
+
+
 
 }

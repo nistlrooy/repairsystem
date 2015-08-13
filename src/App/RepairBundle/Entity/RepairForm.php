@@ -42,7 +42,11 @@ class RepairForm
      */
     private $user;
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity="App\UserBundle\Entity\User",inversedBy="repairForm")
+     * @ORM\JoinColumn(name="receive_user_id", referencedColumnName="id")
+     */
+    private $receive;
 
     /**
      * @ORM\ManyToOne(targetEntity="RepairTask",inversedBy="repairForm")
@@ -267,5 +271,28 @@ class RepairForm
     public function getFaultInfo()
     {
         return $this->faultInfo;
+    }
+
+    /**
+     * Set receive
+     *
+     * @param \App\UserBundle\Entity\User $receive
+     * @return RepairForm
+     */
+    public function setReceive(\App\UserBundle\Entity\User $receive = null)
+    {
+        $this->receive = $receive;
+
+        return $this;
+    }
+
+    /**
+     * Get receive
+     *
+     * @return \App\UserBundle\Entity\User 
+     */
+    public function getReceive()
+    {
+        return $this->receive;
     }
 }
