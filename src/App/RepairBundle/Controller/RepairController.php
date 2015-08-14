@@ -102,6 +102,7 @@ class RepairController extends Controller
                 'No repair form found for this id: '.$id
             );
         }
+        //判断批示和接受者的值是否为空
         $orderIsNull = is_null($repairForm->getfaultInfo()->getFaultOrder());
         $receiveIsNull = is_null($repairForm->getReceive());
 
@@ -118,19 +119,24 @@ class RepairController extends Controller
     /**
      * @Route("/fault/receive/{id}",name="fault_receive")
      * @Template()
+     *
+     * 维修人员接收工单
      */
     public function receiveAction($id)
     {
+        //不是维修者则抛出403错误
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_REPAIR'))
         {
             throw new HttpException(403,'Repair Person Only');
         }
+        //判断是否存在此id工单
         $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
         if (!$repairForm) {
             throw $this->createNotFoundException(
                 'No repair form found for this id: '.$id
             );
         }
+        //状态为待接单才可运行，否则抛出422错误
         if($repairForm->getFormCondition()->getId() == 1)
         {
             $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(2);
@@ -150,10 +156,12 @@ class RepairController extends Controller
     }
 
     /**
-     * @Route("/fault/confirm/{id}",name="fault_confirm")
+     * @Route("/fault/submit/{id}",name="fault_submit")
      * @Template()
+     *
+     * 维修完成提交工单
      */
-    public function confirmAction(Request $request,$id)
+    public function submitAction(Request $request,$id)
     {
         $form = $this->createForm(new FaultReportFormType(),new RepairForm());
         $form->handleRequest($request);
@@ -163,6 +171,7 @@ class RepairController extends Controller
 
             $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
 
+            //只有接收工单者才能提交维修工单，否则抛出403错误
             if($repairForm->getReceive()->getId() != $this->get('security.token_storage')->getToken()->getUser()->getId())
             {
                 throw new HttpException(403,"Only receiver can confirm the repair form");
@@ -196,4 +205,16 @@ class RepairController extends Controller
 
 
 
+    /**
+     * @Route("/fault/{action}/{id}")
+     *
+     *
+     *
+     */
+    public function editAction()
+    {
+
+
+
+    }
 }
