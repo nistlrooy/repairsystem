@@ -35,20 +35,19 @@
     {% if is_granted('ROLE_REPAIR') %}
 
         {% if repairForm.formCondition.id == 1 %}
-            <a href="{{ path('fault_receive',{'id':repairForm.id})}}">{{ 'receive'|trans }}</a>
+            <form action="{{ path('fault_action',{'action':'receive','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                {{ form_widget(form.save, { 'label': 'Click me' }) }}
 
         {% elseif repairForm.formCondition.id == 2 %}
-            <form action="{{ path('fault_submit',{'id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+            <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
             {{ form_row(form.faultInfo.workerDescription,{ 'label': 'workerDescription' }) }}
             {{ form_row(form.faultInfo.maintenanceSchedule,{ 'label': 'maintenanceSchedule' }) }}
-            {{ form_row(form.done) }}
-            {{ form_row(form.save) }}
-            {{ form_row(form.edit) }}
-            {{ form_row(form._token) }}
-            </form>
+                {{ form_widget(form.save, { 'label': 'Click me' }) }}
+
+
         {% endif %}
-
-
+             {{ form_row(form._token) }}
+                </form>
 
     {% else %}
         {{ repairForm.faultInfo.workerDescription }}

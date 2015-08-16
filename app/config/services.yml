@@ -7,3 +7,8 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    security.access.edit_voter:
+        class: App\RepairBundle\Security\Authorization\Voter\EditVoter
+        arguments: ["@service_container"]
+        tags:
+           - { name: security.voter }

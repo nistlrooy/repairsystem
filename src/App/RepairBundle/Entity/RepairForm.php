@@ -55,7 +55,7 @@ class RepairForm
     private $repairTask;
 
     /**
-     * @ORM\OneToMany(targetEntity="FormComment",mappedBy="repairForm")
+     * @ORM\OneTo(targetEntity="FormComment",mappedBy="repairForm")
      *
      */
     private $formComment;

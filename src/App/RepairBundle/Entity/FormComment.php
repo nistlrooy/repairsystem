@@ -87,7 +87,7 @@ class FormComment
     /**
      * Get repairForm
      *
-     * @return \App\RepairBundle\Entity\RepairForm 
+     * @return \App\RepairBundle\Entity\RepairForm
      */
     public function getRepairForm()
     {
