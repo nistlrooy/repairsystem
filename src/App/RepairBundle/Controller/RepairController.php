@@ -91,7 +91,7 @@ class RepairController extends Controller
     /**
      *
      *
-     * @Route("/fault/info/{id}",name="fault_info")
+     * @Route("/fault/info/{id}",name="fault_info",requirements={"id": "\d+"})
      * @Template()
      *
      * 每个故障的信息
@@ -120,7 +120,7 @@ class RepairController extends Controller
 
 
     /**
-     * @Route("/fault/comment/{id}",name="fault_comment")
+     * @Route("/fault/comment/{id}",requirements={"id":"\d+"},name="fault_comment")
      *
      *
      *
@@ -155,22 +155,28 @@ class RepairController extends Controller
             $em->flush();
             return $this->redirectToRoute('fault_info',array('id' => $id));
         }
-        //return $this->render('@Repair/Repair/info.html.twig');
+        return $this->render('@Repair/Repair/info.html.twig');
     }
 
     /**
-     *
+     * @Route("/fault/order/{id}/{action}", requirements={"id": "\d+"},defaults={"action": "view"},name="fault_order")
      *
      *
      */
-    public function orderAction()
+    public function orderAction(Request $request,$id,$action)
     {
-
+        if($action == "view")
+        {
+        }
+        if($action == "add")
+        {
+        }
+        throw $this->createNotFoundException('No this action: '.$action);
     }
 
 
     /**
-     * @Route("/fault/{action}/{id}",name="fault_action")
+     * @Route("/fault/{action}/{id}", requirements={"id": "\d+"},name="fault_action")
      *
      *
      *
