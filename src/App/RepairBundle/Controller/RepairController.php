@@ -155,7 +155,7 @@ class RepairController extends Controller
             $em->flush();
             return $this->redirectToRoute('fault_info',array('id' => $id));
         }
-        return $this->render('@Repair/Repair/info.html.twig');
+        //return $this->render('@Repair/Repair/info.html.twig');
     }
 
     /**
@@ -164,6 +164,9 @@ class RepairController extends Controller
      *
      */
     public function orderAction()
+    {
+
+    }
 
 
     /**

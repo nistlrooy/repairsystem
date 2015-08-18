@@ -55,7 +55,7 @@ class RepairForm
     private $repairTask;
 
     /**
-     * @ORM\OneTo(targetEntity="FormComment",mappedBy="repairForm")
+     * @ORM\OneToMany(targetEntity="FormComment",mappedBy="repairForm")
      *
      */
     private $formComment;
@@ -78,6 +78,13 @@ class RepairForm
 
     //嵌入FaultInfo
 
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="cost",type="decimal", scale=2)
+     *
+     */
+    private $cost;
 
 
 
@@ -294,5 +301,28 @@ class RepairForm
     public function getReceive()
     {
         return $this->receive;
+    }
+
+    /**
+     * Set cost
+     *
+     * @param string $cost
+     * @return RepairForm
+     */
+    public function setCost($cost)
+    {
+        $this->cost = $cost;
+
+        return $this;
+    }
+
+    /**
+     * Get cost
+     *
+     * @return string 
+     */
+    public function getCost()
+    {
+        return $this->cost;
     }
 }
