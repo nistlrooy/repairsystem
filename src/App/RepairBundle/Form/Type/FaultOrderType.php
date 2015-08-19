@@ -6,31 +6,26 @@
 
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\FormBuilderInterface;
-    use Symfony\Component\Form\FormEvents;
-    use Symfony\Component\Form\FormEvent;
+
     use Symfony\Component\OptionsResolver\OptionsResolver;
 
-    class FaultReportFormType extends AbstractType
+    class FaultOrderType extends AbstractType
     {
         public function buildForm(FormBuilderInterface $builder, array $options)
         {
             // add your custom field
-            $builder->add('faultInfo', new FaultInfoType())
-
-                ->add('save', 'submit', array('label' => 'save'))
-                ;
-
+            $builder->add('leaderOrder','textarea',array('label' => 'form.order','translation_domain' => 'RepairBundle'));
         }
 
         public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults(array(
-                'data_class' => 'App\RepairBundle\Entity\RepairForm',
+                'data_class' => 'App\RepairBundle\Entity\FaultOrder',
             ));
         }
 
         public function getName()
         {
-            return 'fault_report_form';
+            return 'fault_order_form';
         }
     }

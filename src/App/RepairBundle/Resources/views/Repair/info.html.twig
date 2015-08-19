@@ -32,6 +32,32 @@
     {{ repairForm.faultInfo.reporterDescription }}
     <br>
 
+
+
+    {% if repairForm.formCondition.id == 1 %}
+        {% if is_granted('ROLE_REPAIR') %}
+            <form action="{{ path('fault_action',{'action':'receive','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                {{ form_widget(form.save, { 'label': 'form.receive' }) }}
+        {% endif %}
+        {% if is_granted('ROLE_REPAIR') %}
+            <form action="{{ path('fault_action',{'action':'receive','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                {{ form_widget(form.save, { 'label': 'form.receive' }) }}
+        {% endif %}
+
+    {% endif %}
+    {% if repairForm.formCondition.id == 2 %}
+        {% if is_granted('ROLE_REPAIR') %}
+            <form action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                <input type="button" id="switch" />
+                {{ form_widget(form.save, { 'label': 'form.submit' }) }}
+        {% endif %}
+    {% endif %}
+
+
+
+
+
+
     {% if is_granted('ROLE_REPAIR') %}
 
         {% if repairForm.formCondition.id == 1 %}

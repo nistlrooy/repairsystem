@@ -113,10 +113,15 @@ class EditVoter extends AbstractVoter
                 }
                 break;
             case self::ORDERCREATE:
-                //只有维修人员才能上报故障给领导
+                //只有维修人员才能把未上报的维修工单上报给领导
                 if($authChecker->isGranted('ROLE_REPAIR'))
                 {
-                    return true;
+                    $order = $repairForm->getFaultInfo()->getFaultOrder();
+                    //没有上报过才能上报
+                    if(!$order)
+                    {
+                        return true;
+                    }
                 }
                 break;
             case self::ORDERSET:
@@ -124,13 +129,9 @@ class EditVoter extends AbstractVoter
                 if($authChecker->isGranted('ROLE_LEADER'))
                 {
                     $faultOrder = $repairForm->getFaultInfo()->getFaultOrder();
-                    if($faultOrder)
+                    if($faultOrder&&(!$faultOrder->getUser()))
                     {
                         return true;
-                    }
-                    else
-                    {
-                        return false;
                     }
                 }
 

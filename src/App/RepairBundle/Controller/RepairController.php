@@ -4,6 +4,7 @@ namespace App\RepairBundle\Controller;
 
 
 use App\RepairBundle\Entity\FormComment;
+use App\RepairBundle\Form\Type\FaultOrderType;
 use App\RepairBundle\Form\Type\FaultReportFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -31,7 +32,8 @@ class RepairController extends Controller
     {
         $form = $this->createForm(new FaultInfoType(),new FaultInfo());
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isValid())
+        {
             // the validation passed, do something with the object
             //get form data
             $data = $form->getData();
@@ -172,19 +174,29 @@ class RepairController extends Controller
                 'No repair form found for this id: '.$id
             );
         }
+        $authChecker = $this->get('security.authorization_checker');
         if($action == "set")
         {
-
+            if(false === $authChecker->isGranted('orderSet',$repairForm))
+            {
+                throw $this->createAccessDeniedException('Unauthorized access!');
+            }
+            $form = $this->createForm(new FaultOrderType(),new FaultOrder());
+            $form->handleRequest($request);
+            if($form->isValid())
+            {
+                $data = $form->getData();
+                $order = $repairForm->getFaultInfo()->getFaultOrder();
+                $order->setLeaderOrder($data->getLeaderOrder());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($order);
+                $em->flush();
+                return $this->redirectToRoute('');
+            }
+            return $this->render('',array( 'form' => $form->createView()));
         }
         if($action == "create")
         {
-            $order = $repairForm->getFaultInfo()->getFaultOrder();
-            //没有上报过才能上报
-            if($order)
-            {
-                throw $this->createAccessDeniedException('The order has been created');
-            }
-            $authChecker = $this->get('security.authorization_checker');
             //验证是否有操作权限
             if(false === $authChecker->isGranted('orderCreate',$repairForm))
             {
@@ -200,7 +212,7 @@ class RepairController extends Controller
             $em->flush();
 
 
-            return $this->render('');
+            return $this->redirectToRoute('');
         }
         throw $this->createNotFoundException('No this action: '.$action);
     }
@@ -339,6 +351,7 @@ class RepairController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($repairForm);
                     $em->flush();
+                    return $this->redirectToRoute('fault_info',array('id' => $id));
                 default:
                     throw $this->createNotFoundException(
                         'No this action: '.$action
