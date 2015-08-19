@@ -14,7 +14,8 @@ class EditVoter extends AbstractVoter
     const SUBMIT = 'submit';
     const CONFIRM = 'confirm';
     const COMMENT = 'comment';
-    const ORDER = 'order';
+    const ORDERCREATE = 'orderCreate';
+    const ORDERSET = 'orderSet';
     const CANCEL = 'cancel';
     const REJECT = 'reject';
 
@@ -27,7 +28,7 @@ class EditVoter extends AbstractVoter
 
     protected function getSupportedAttributes()
     {
-        return array(self::VIEW,self::RECEIVE, self::EDIT,self::SUBMIT,self::CONFIRM,self::REJECT,self::COMMENT,self::ORDER,self::CANCEL);
+        return array(self::VIEW,self::RECEIVE, self::EDIT,self::SUBMIT,self::CONFIRM,self::REJECT,self::COMMENT,self::ORDERCREATE,self::ORDERSET,self::CANCEL);
     }
 
     protected function getSupportedClasses()
@@ -110,6 +111,29 @@ class EditVoter extends AbstractVoter
                     if($repairForm->getFormCondition()->getId() == 4)
                         return true;
                 }
+                break;
+            case self::ORDERCREATE:
+                //只有维修人员才能上报故障给领导
+                if($authChecker->isGranted('ROLE_REPAIR'))
+                {
+                    return true;
+                }
+                break;
+            case self::ORDERSET:
+                //只有领导才能对表单进行批示
+                if($authChecker->isGranted('ROLE_LEADER'))
+                {
+                    $faultOrder = $repairForm->getFaultInfo()->getFaultOrder();
+                    if($faultOrder)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
                 break;
             case self::CANCEL:
                 //只有报修单状态为待接单，报修人才能取消自己的报修单

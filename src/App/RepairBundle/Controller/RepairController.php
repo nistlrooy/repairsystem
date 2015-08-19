@@ -13,6 +13,7 @@ use App\RepairBundle\Entity\RepairTask;
 use App\RepairBundle\Entity\RepairFormGroup;
 use App\RepairBundle\Entity\RepairForm;
 use App\RepairBundle\Entity\FaultInfo;
+use App\RepairBundle\Entity\FaultOrder;
 use App\RepairBundle\Form\Type\FaultInfoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -159,17 +160,47 @@ class RepairController extends Controller
     }
 
     /**
-     * @Route("/fault/order/{id}/{action}", requirements={"id": "\d+"},defaults={"action": "view"},name="fault_order")
+     * @Route("/fault/order/{id}/{action}", requirements={"id": "\d+"},defaults={"action": "set"},name="fault_order")
      *
      *
      */
     public function orderAction(Request $request,$id,$action)
     {
-        if($action == "view")
-        {
+        $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
+        if (!$repairForm) {
+            throw $this->createNotFoundException(
+                'No repair form found for this id: '.$id
+            );
         }
-        if($action == "add")
+        if($action == "set")
         {
+
+        }
+        if($action == "create")
+        {
+            $order = $repairForm->getFaultInfo()->getFaultOrder();
+            //没有上报过才能上报
+            if($order)
+            {
+                throw $this->createAccessDeniedException('The order has been created');
+            }
+            $authChecker = $this->get('security.authorization_checker');
+            //验证是否有操作权限
+            if(false === $authChecker->isGranted('orderCreate',$repairForm))
+            {
+                throw $this->createAccessDeniedException('Unauthorized access!');
+            }
+            $order = new FaultOrder();
+            $faultInfo = $repairForm->getFaultInfo();
+            $faultInfo->setFaultOrder($order);
+            $repairForm->setFaultInfo($faultInfo);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($order);
+            $em->persist($repairForm);
+            $em->flush();
+
+
+            return $this->render('');
         }
         throw $this->createNotFoundException('No this action: '.$action);
     }
