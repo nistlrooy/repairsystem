@@ -110,13 +110,22 @@ class RepairController extends Controller
         //判断批示和接受者的值是否为空
         $orderIsNull = is_null($repairForm->getfaultInfo()->getFaultOrder());
         $receiveIsNull = is_null($repairForm->getReceive());
-
-
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $createrId = $repairForm->getRepairTask()->getUser()->getId();
+        if($createrId == $userId)
+        {
+            $isCreater = true;
+        }
+        else
+        {
+            $isCreater = false;
+        }
         $form = $this->createForm(new FaultReportFormType(),$repairForm);
         return array(
             'repairForm' => $repairForm,
             'orderIsNull' => $orderIsNull,
-            'receiveIsNull' =>$receiveIsNull,
+            'receiveIsNull' => $receiveIsNull,
+            'isCreater' => $isCreater,
             'form' => $form->createView()
         );
     }

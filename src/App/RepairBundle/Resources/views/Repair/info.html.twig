@@ -35,9 +35,8 @@
 
 
     {% if repairForm.formCondition.id == 1 %}
-        {% if is_granted('ROLE_REPAIR') %}
-            <form action="{{ path('fault_action',{'action':'receive','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
-                {{ form_widget(form.save, { 'label': 'form.receive' }) }}
+        {% if isCreater %}
+
         {% endif %}
         {% if is_granted('ROLE_REPAIR') %}
             <form action="{{ path('fault_action',{'action':'receive','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
@@ -83,4 +82,8 @@
     {% endif %}
 
 
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('bundles/repair/js/jquery-1.11.3.min.js') }}"></script>
 {% endblock %}
