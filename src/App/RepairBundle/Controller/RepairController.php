@@ -111,6 +111,21 @@ class RepairController extends Controller
         $orderIsNull = is_null($repairForm->getfaultInfo()->getFaultOrder());
         $receiveIsNull = is_null($repairForm->getReceive());
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $isReceiver = false;
+        if(!$receiveIsNull)
+        {
+            if($repairForm->getReceive() == $userId)
+                $isReceiver = true;
+        }
+
+        $orderSet = false;
+        if(!$orderIsNull)
+        {
+            if($repairForm->getFaultInfo()->getFaultOrder()->getUser())
+            {
+                $orderSet = true;
+            }
+        }
         $createrId = $repairForm->getRepairTask()->getUser()->getId();
         if($createrId == $userId)
         {
@@ -126,6 +141,8 @@ class RepairController extends Controller
             'orderIsNull' => $orderIsNull,
             'receiveIsNull' => $receiveIsNull,
             'isCreater' => $isCreater,
+            'isReceiver' => $isReceiver,
+            'orderSet' => $orderSet,
             'form' => $form->createView()
         );
     }
@@ -295,7 +312,7 @@ class RepairController extends Controller
 
                     $repairForm->setFaultInfo($faultInfo);
                     $repairForm->setLastUpdateTime(new \DateTime());
-
+                    $repairForm->setCost($data->getCost());
                     $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                     $repairForm->setUser($user);
 
@@ -316,7 +333,7 @@ class RepairController extends Controller
                         $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
                     $repairForm->setFaultInfo($faultInfo);
                     $repairForm->setLastUpdateTime(new \DateTime());
-
+                    $repairForm->setCost($data->getCost());
                     $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                     $repairForm->setUser($user);
                     $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(3);

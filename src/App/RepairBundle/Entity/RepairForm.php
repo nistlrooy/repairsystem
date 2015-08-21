@@ -81,7 +81,7 @@ class RepairForm
     /**
      * @var decimal
      *
-     * @ORM\Column(name="cost",type="decimal", scale=2)
+     * @ORM\Column(name="cost",type="decimal",precision=12,scale=2)
      *
      */
     private $cost;

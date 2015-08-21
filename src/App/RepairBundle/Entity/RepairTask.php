@@ -34,7 +34,7 @@ class RepairTask
      *
      *
      */
-    private $create_time;
+    private $createTime;
 
     /**
      * Get id
@@ -48,26 +48,26 @@ class RepairTask
 
 
     /**
-     * Set create_time
+     * Set createTime
      *
      * @param \DateTime $createTime
      * @return RepairTask
      */
     public function setCreateTime($createTime)
     {
-        $this->create_time = $createTime;
+        $this->createTime = $createTime;
 
         return $this;
     }
 
     /**
-     * Get create_time
+     * Get createTime
      *
      * @return \DateTime 
      */
     public function getCreateTime()
     {
-        return $this->create_time;
+        return $this->createTime;
     }
 
     /**
