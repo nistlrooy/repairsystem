@@ -34,12 +34,15 @@
 
 
     {% trans_default_domain 'RepairBundle' %}
-
+    {# 状态为待接单 #}
     {% if repairForm.formCondition.id == 1 %}
+        {# 判断是否是报修人 #}
         {% if isCreater %}
+            {# 判断是否有维修人员权限 #}
             {%  if is_granted('ROLE_REPAIR') %}
                 <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <table>
+                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
                             <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_row(form.faultInfo.group) }}</td>
                         </tr>
@@ -59,9 +62,11 @@
 
                     {{ form_row(form._token) }}
                 </form>
+            {# 无维修人权限 #}
             {% else %}
                 <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <table>
+                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
                             <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_row(form.faultInfo.group) }}</td>
                         </tr>
@@ -82,9 +87,12 @@
                     {{ form_row(form._token) }}
                 </form>
             {% endif %}
+        {# 不是报修人 #}
         {% else %}
+            {# 判断是否有维修人权限 #}
             {%  if is_granted('ROLE_REPAIR') %}
                 <table>
+                    <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                     <tr>
                         <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
                     </tr>
@@ -103,6 +111,7 @@
                 </table>
             {% else %}
                 <table>
+                    <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                     <tr>
                         <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
                     </tr>
@@ -122,12 +131,15 @@
             {% endif %}
         {% endif %}
     {% endif %}
-
+    {# 状态为维修中 #}
     {% if repairForm.formCondition.id == 2 %}
+        {# 判断是否是表单接收者 #}
         {% if isReceiver %}
+            {# 判断是否有领导权限 #}
             {% if is_granted('ROLE_LEADER') %}
                 <form action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <table>
+                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
                             <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
                         </tr>
@@ -180,9 +192,11 @@
 
                     {{ form_row(form._token) }}
                 </form>
+            {# 无领导权限 #}
             {% else %}
                 <form action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <table>
+                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
                             <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
                         </tr>
@@ -231,9 +245,12 @@
                     {{ form_row(form._token) }}
                 </form>
             {% endif %}
+        {# 不是表单接收人 #}
         {% else %}
+            {# 有领导权限 #}
             {% if is_granted('ROLE_LEADER') %}
                 <table>
+                    <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                     <tr>
                         <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
                     </tr>
@@ -268,6 +285,8 @@
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                         <td>
                             {% if not orderSet %}
                                 {% if not orderIsNull %}
@@ -277,43 +296,149 @@
                                 &nbsp;
                             {% endif %}
                         </td>
-                        <td><button id="saveOrSubmit" type="button" >change</button></td><td><button id="submit" type="button" >{{ 'form.submit' }}</button></td>
                     </tr>
                 </table>
+            {# 无领导权限 #}
             {% else %}
-
+                <table>
+                    <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                    <tr>
+                        <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'form.order'|trans }}</td>
+                        <td>
+                            {% if orderSet %}
+                                {{ repairForm.faultInfo.faultOrder.leaderOrder }}
+                            {% else %}
+                                {{ 'form.none'|trans }}
+                            {% endif %}
+                        </td>
+                        <td>{{ 'form.money'|trans }}</td><td{{ repairForm.cost }}></td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
             {% endif %}
         {% endif %}
     {% endif %}
 
-
-
-
-
-
-    {% if is_granted('ROLE_REPAIR') %}
-
-        {% if repairForm.formCondition.id == 1 %}
-            <form action="{{ path('fault_action',{'action':'receive','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
-                {{ form_widget(form.save, { 'label': 'Click me' }) }}
-
-        {% elseif repairForm.formCondition.id == 2 %}
-            <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
-            {{ form_row(form.faultInfo.workerDescription,{ 'label': 'workerDescription' }) }}
-            {{ form_row(form.faultInfo.maintenanceSchedule,{ 'label': 'maintenanceSchedule' }) }}
-                {{ form_widget(form.save, { 'label': 'Click me' }) }}
-
-
+    {# 状态为待确认 #}
+    {% if repairForm.formCondition.id == 3 %}
+        {# 判断是否是报修人 #}
+        {% if isCreater %}
+            <table>
+                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                <tr>
+                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.order'|trans }}</td>
+                    <td>
+                        {% if orderSet %}
+                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
+                        {% else %}
+                            {{ 'form.none'|trans }}
+                        {% endif %}
+                    </td>
+                    <td>{{ 'form.money'|trans }}</td><td{{ repairForm.cost }}></td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><button type="button" id="confirm">{{ 'form.confirm'|trans }}</button></td>
+                </tr>
+            </table>
+        {% else %}
+            <table>
+                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                <tr>
+                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.order'|trans }}</td>
+                    <td>
+                        {% if orderSet %}
+                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
+                        {% else %}
+                            {{ 'form.none'|trans }}
+                        {% endif %}
+                    </td>
+                    <td>{{ 'form.money'|trans }}</td><td{{ repairForm.cost }}></td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
         {% endif %}
-             {{ form_row(form._token) }}
-                </form>
 
-    {% else %}
-        {{ repairForm.faultInfo.workerDescription }}
-        <br>
-        {{ repairForm.faultInfo.maintenanceSchedule }}
-        <br>
-    {% endif %}
+
+
+
+
+
 
 
 {% endblock %}
