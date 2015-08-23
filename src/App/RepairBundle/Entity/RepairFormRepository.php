@@ -4,6 +4,7 @@ namespace App\RepairBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+
 /**
  * RepairFormRepository
  *
@@ -12,14 +13,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class RepairFormRepository extends EntityRepository
 {
-    public function isCreater($id)
+    public function getRepairForms($createrId,$conditionId)
     {
-        $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
-        $createrId = $repairForm->getRepairTask()->getUser()->getId();
-        if($id = $createrId)
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT r FROM RepairBundle:RepairForm r
+            JOIN r.repairTask t
+            JOIN r.formCondition c
+            JOIN t.user u
+            WHERE u.id = :createrId AND c.id = :conditionId'
+        )->setParameters(array('createrId'=>$createrId,'conditionId'=>$conditionId));
+        try
         {
-            return true;
+            return $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
         }
-        return false;
+
     }
+
+
 }

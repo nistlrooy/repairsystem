@@ -1,1 +1,39 @@
-Hello !
+{% extends "::base.html.twig" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block body %}
+
+
+    {% trans_default_domain 'RepairBundle' %}
+    <form action="{{ path('fault_report') }}" {{ form_enctype(form) }} method="post">
+        <fieldset>
+            <legend>{{ 'faultInfo'|trans }}</legend>
+            {{ form_row(form.faultType) }}
+            {{ form_row(form.group) }}
+            {{ form_row(form.faultPriority) }}
+            {{ form_row(form.reporterDescription) }}
+        </fieldset>
+        {{ form_row(form._token) }}
+        <div>
+            <input type="submit" value="{{ 'form.post'|trans }}" />
+        </div>
+    </form>
+
+<table>
+    <tr>
+        <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
+    </tr>
+    {% for repair in repairForm %}
+
+        <tr>
+            <a href="{{ path('fault_info',{'id':repair.id})  }}">
+            <td>{{ repair.faultInfo.reporterDescription| truncate(5) }}</td>
+            <td>{{ repair.faultInfo.group.name }}</td>
+            <td>{{ repair.repairTask.createTime|date('Y-m-d') }}</td>
+            </a>
+        </tr>
+
+    {% endfor %}
+</table>
+{% endblock %}

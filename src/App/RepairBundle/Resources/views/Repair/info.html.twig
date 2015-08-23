@@ -3,34 +3,6 @@
 {% block title %}RepairBundle:Repair:show{% endblock %}
 
 {% block body %}
-    <h1>infomation</h1>
-
-    {{ repairForm.faultInfo.faultPriority.name }}
-    <br>
-    {{ repairForm.user.name }}
-    <br>
-    {{ repairForm.formCondition.name }}
-    <br>
-    {{ repairForm.repairTask.user.name }}
-    <br>
-    {{ repairForm.lastUpdateTime|date('Y-m-d H:i:s') }}
-    <br>
-    {{ repairForm.faultInfo.faultType.name }}
-    <br>
-    {{ repairForm.faultInfo.group.name }}
-    <br>
-    {% if not orderIsNull %}
-        {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-        <br>
-    {% endif %}
-
-    {% if not receiveIsNull %}
-        {{ repairForm.receive.name }}
-        <br>
-    {% endif %}
-
-    {{ repairForm.faultInfo.reporterDescription }}
-    <br>
 
 
     {% trans_default_domain 'RepairBundle' %}
@@ -275,7 +247,7 @@
                                 {{ 'form.none'|trans }}
                             {% endif %}
                         </td>
-                        <td>{{ 'form.money'|trans }}</td><td{{ repairForm.cost }}></td>
+                        <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
                     </tr>
                     <tr>
                         <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -326,7 +298,7 @@
                                 {{ 'form.none'|trans }}
                             {% endif %}
                         </td>
-                        <td>{{ 'form.money'|trans }}</td><td{{ repairForm.cost }}></td>
+                        <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
                     </tr>
                     <tr>
                         <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -375,7 +347,7 @@
                             {{ 'form.none'|trans }}
                         {% endif %}
                     </td>
-                    <td>{{ 'form.money'|trans }}</td><td{{ repairForm.cost }}></td>
+                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
                 </tr>
                 <tr>
                     <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -417,7 +389,7 @@
                             {{ 'form.none'|trans }}
                         {% endif %}
                     </td>
-                    <td>{{ 'form.money'|trans }}</td><td{{ repairForm.cost }}></td>
+                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
                 </tr>
                 <tr>
                     <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -433,7 +405,138 @@
                 </tr>
             </table>
         {% endif %}
+    {% endif %}
 
+    {# 状态为待评价 #}
+    {% if repairForm.formCondition.id == 4 %}
+        {# 判断是否是报修人 #}
+        {% if isCreater %}
+            <table>
+                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                <tr>
+                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.order'|trans }}</td>
+                    <td>
+                        {% if orderSet %}
+                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
+                        {% else %}
+                            {{ 'form.none'|trans }}
+                        {% endif %}
+                    </td>
+                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><button type="button" id="comment">{{ 'form.comment'|trans }}</button></td>
+                </tr>
+            </table>
+        {% else %}
+            <table>
+                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                <tr>
+                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.order'|trans }}</td>
+                    <td>
+                        {% if orderSet %}
+                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
+                        {% else %}
+                            {{ 'form.none'|trans }}
+                        {% endif %}
+                    </td>
+                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        {% endif %}
+    {% endif %}
+
+
+    {% if repairForm.formCondition.id == 5 or repairForm.formCondition.id == 6 %}
+            <table>
+                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                <tr>
+                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.order'|trans }}</td>
+                    <td>
+                        {% if orderSet %}
+                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
+                        {% else %}
+                            {{ 'form.none'|trans }}
+                        {% endif %}
+                    </td>
+                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
+                </tr>
+
+            </table>
+
+    {% endif %}
 
 
 

@@ -49,6 +49,7 @@ class RepairController extends Controller
             //set datetime to now
             $repairForm->setLastUpdateTime(new \DateTime());
             $repairTask->setCreateTime(new \Datetime());
+            $repairForm->setCost(0);
             //find id = 1 ,get the obj and update
             //设置状态为待接单
             $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(1);
@@ -114,7 +115,7 @@ class RepairController extends Controller
         $isReceiver = false;
         if(!$receiveIsNull)
         {
-            if($repairForm->getReceive() == $userId)
+            if($repairForm->getReceive()->getId() == $userId)
                 $isReceiver = true;
         }
 

@@ -45,7 +45,7 @@
                         ))
                     ->add('faultOrder','entity',array(
                             'class' => 'RepairBundle:FaultOrder',
-                            'property' => 'lead_order',
+                            'property' => 'leader_order',
                             'label' => 'form.faultOrder',
                             'translation_domain' => 'RepairBundle'
                         ));
