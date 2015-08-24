@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class RepairFormRepository extends EntityRepository
 {
-    public function getRepairForms($createrId,$conditionId)
+    public function getRepairFormByCreater($createrId,$conditionId)
     {
         $query = $this->getEntityManager()->createQuery(
             'SELECT r FROM RepairBundle:RepairForm r
@@ -31,5 +31,33 @@ class RepairFormRepository extends EntityRepository
 
     }
 
+    public function getRepairFormByReceiver($receiverId,$conditionId)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT r From RepairBundle:RepairForm r
+            JOIN r.formCondition c
+            JOIN r.receive u
+            WHERE u.id = :receiverId AND c.id = :conditionId'
+        )->setParameters(array('receiverId'=>$receiverId,'conditionId'=>$conditionId));
+        try{
+            return $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
+    }
+
+    public function getRepairFormByNotReceived()
+    {
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT r FROM RepairBundle:RepairForm r
+            WHERE r.receive is NULL '
+        );
+        try{
+            return $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
+    }
 
 }

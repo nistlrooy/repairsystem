@@ -1,0 +1,44 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block body %}
+
+
+    {% trans_default_domain 'RepairBundle' %}
+
+
+    <table id="received">
+        <tr>
+            <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
+        </tr>
+        {% for r in received %}
+
+            <tr>
+                <a href="{{ path('fault_info',{'id':r.id})  }}">
+                    <td>{{ r.faultInfo.reporterDescription| truncate(5) }}</td>
+                    <td>{{ r.faultInfo.group.name }}</td>
+                    <td>{{ r.repairTask.createTime|date('Y-m-d') }}</td>
+                </a>
+            </tr>
+
+        {% endfor %}
+    </table>
+
+    <table id="notReceived">
+        <tr>
+            <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
+        </tr>
+        {% for r in notReceived %}
+
+            <tr>
+                <a href="{{ path('fault_info',{'id':r.id})  }}">
+                    <td>{{ r.faultInfo.reporterDescription| truncate(5) }}</td>
+                    <td>{{ r.faultInfo.group.name }}</td>
+                    <td>{{ r.repairTask.createTime|date('Y-m-d') }}</td>
+                </a>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}
