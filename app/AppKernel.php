@@ -25,8 +25,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
-            new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
-            new Craue\FormFlowBundle\CraueFormFlowBundle(),
+
 
             // If you haven't already, add the storage bundle
             // This example uses SonataDoctrineORMAdmin but
