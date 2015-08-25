@@ -1,0 +1,26 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}history{% endblock %}
+
+{% block body %}
+
+
+    {% trans_default_domain 'RepairBundle' %}
+
+    <table>
+        <tr>
+            <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
+        </tr>
+        {% for h in history %}
+
+            <tr>
+                <a href="{{ path('fault_info',{'id':h.id})  }}">
+                    <td>{{ h.faultInfo.reporterDescription| truncate(5) }}</td>
+                    <td>{{ h.faultInfo.group.name }}</td>
+                    <td>{{ h.repairTask.createTime|date('Y-m-d') }}</td>
+                </a>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}

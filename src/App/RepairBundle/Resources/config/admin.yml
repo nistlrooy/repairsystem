@@ -1,0 +1,11 @@
+services:
+    sonata.admin.repair:
+        class: App\RepairBundle\Admin\RepairFormAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Repair", label: "RepairForm" }
+        arguments:
+            - ~
+            - App\RepairBundle\Entity\RepairForm
+            - ~
+        calls:
+            - [ setTranslationDomain, [RepairBundle]]

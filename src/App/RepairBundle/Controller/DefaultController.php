@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
+     * 首页
      * @Route("/",name="homepage")
      * @Template()
      */
@@ -30,6 +31,7 @@ class DefaultController extends Controller
     }
 
     /**
+     *
      * @Route("/default/index",name="default_homepage")
      * @Template()
      */
@@ -60,6 +62,33 @@ class DefaultController extends Controller
         return array(
             'received' => $received,
             'notReceived' => $notReceived
+        );
+    }
+
+
+    /**
+     * @Route("/default/history",name="reported_history")
+     * @Template()
+     *
+     */
+    public function MyReportedHistoryAction()
+    {
+        $history = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreaterHistory($this->get('security.token_storage')->getToken()->getUser()->getId());
+        return array(
+            'history'=>$history
+        );
+    }
+
+    /**
+     * @Route("/repair/history",name="repaired_history")
+     * @Template()
+     *
+     */
+    public function MyRepairedHistoryAction()
+    {
+        $history = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByReceiverHistory($this->get('security.token_storage')->getToken()->getUser()->getId());
+        return array(
+            'history'=>$history
         );
     }
 

@@ -13,6 +13,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class RepairFormRepository extends EntityRepository
 {
+    /**
+     * 获取由$createrId用户创建且状态为$conditonId的维修工单
+     * @param $createrId 创建者Id
+     * @param $conditionId 状态Id
+     * @return array|null
+     *
+     */
     public function getRepairFormByCreater($createrId,$conditionId)
     {
         $query = $this->getEntityManager()->createQuery(
@@ -31,6 +38,12 @@ class RepairFormRepository extends EntityRepository
 
     }
 
+    /**
+     * 获取由$receiverId用户接收的且状态为$conditionId的维修工单
+     * @param $receiverId 接收工单者Id
+     * @param $conditionId 状态Id
+     * @return array|null
+     */
     public function getRepairFormByReceiver($receiverId,$conditionId)
     {
         $query = $this->getEntityManager()->createQuery(
@@ -46,6 +59,10 @@ class RepairFormRepository extends EntityRepository
         }
     }
 
+    /**
+     * 获取没有被接收的维修工单
+     * @return array|null
+     */
     public function getRepairFormByNotReceived()
     {
 
@@ -53,6 +70,50 @@ class RepairFormRepository extends EntityRepository
             'SELECT r FROM RepairBundle:RepairForm r
             WHERE r.receive is NULL '
         );
+        try{
+            return $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
+    }
+
+    /**
+     * 获取已确认或取消的维修工单记录
+     * @param $createrId
+     * @return array|null
+     *
+     */
+    public function getRepairFormByCreaterHistory($createrId)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT r FROM RepairBundle:RepairForm r
+            JOIN r.repairTask t
+            JOIN r.formCondition c
+            JOIN t.user u
+            WHERE u.id = :createrId AND (c.id >=4 OR c.id<=6)'
+        )->setParameters(array('createrId'=>$createrId));
+        try
+        {
+            return $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
+    }
+
+    /**
+     * 获取由$receiverId用户接收的维修工单历史记录
+     * @param $receiverId 接收工单者Id
+     *
+     * @return array|null
+     */
+    public function getRepairFormByReceiverHistory($receiverId)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT r From RepairBundle:RepairForm r
+            JOIN r.formCondition c
+            JOIN r.receive u
+            WHERE u.id = :receiverId AND (c.id >=4 OR c.id<=6)'
+        )->setParameters(array('receiverId'=>$receiverId));
         try{
             return $query->getResult();
         }catch (\Doctrine\ORM\NoResultException $e){

@@ -20,20 +20,24 @@
         </div>
     </form>
 
-    <table>
-        <tr>
-            <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
-        </tr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
+            </tr>
+        </thead>
+        <tbody data-link="row" class="rowlink">
         {% for repair in repairForm %}
 
             <tr>
-                <a href="{{ path('fault_info',{'id':repair.id})  }}">
-                    <td>{{ repair.faultInfo.reporterDescription| truncate(5) }}</td>
-                    <td>{{ repair.faultInfo.group.name }}</td>
-                    <td>{{ repair.repairTask.createTime|date('Y-m-d') }}</td>
-                </a>
+
+                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.reporterDescription| truncate(5) }}</a></td>
+                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.group.name }}</a></td>
+                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.repairTask.createTime|date('Y-m-d') }}</a></td>
+
             </tr>
 
         {% endfor %}
+        </tbody>
     </table>
 {% endblock %}
