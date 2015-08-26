@@ -6,6 +6,7 @@
 
 
     {% trans_default_domain 'RepairBundle' %}
+    <div class="table">
     <form action="{{ path('fault_report') }}" {{ form_enctype(form) }} method="post">
         <fieldset>
             <legend>{{ 'faultInfo'|trans }}</legend>
@@ -19,7 +20,8 @@
             <input type="submit" value="{{ 'form.post'|trans }}" />
         </div>
     </form>
-
+    </div>
+    <div class="table">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -40,4 +42,5 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
 {% endblock %}
