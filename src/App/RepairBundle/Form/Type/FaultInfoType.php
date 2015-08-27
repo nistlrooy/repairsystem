@@ -16,37 +16,37 @@
             $builder->add('faultPriority','entity',array(
                             'class' => 'RepairBundle:FaultPriority',
                             'property' => 'name',
-                            'label' => 'form.faultPriority',
+
                             'translation_domain' => 'RepairBundle'
                         ))
                     ->add('faultType','entity',array(
                             'class' => 'RepairBundle:FaultType',
                             'property' => 'name',
-                            'label' => 'form.faultType',
+
                             'translation_domain' => 'RepairBundle'
                         ))
                     ->add('group','entity',array(
                             'class' => 'UserBundle:Group',
                             'property' => 'name',
-                            'label' => 'form.location',
+
                             'translation_domain' => 'RepairBundle'
                         ))
                     ->add('reporterDescription','textarea',array(
-                            'label' => 'form.reporterDescription',
+
                             'translation_domain' => 'RepairBundle'
                         ))
                     ->add('workerDescription','textarea',array(
-                            'label' => 'form.workertDescription',
+
                             'translation_domain' => 'RepairBundle'
                         ))
                     ->add('maintenanceSchedule','textarea',array(
-                            'label' => 'form.maintenanceSchedule',
+
                             'translation_domain' => 'RepairBundle'
                         ))
                     ->add('faultOrder','entity',array(
                             'class' => 'RepairBundle:FaultOrder',
                             'property' => 'leader_order',
-                            'label' => 'form.faultOrder',
+
                             'translation_domain' => 'RepairBundle'
                         ));
         }

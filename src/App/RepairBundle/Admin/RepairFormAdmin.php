@@ -15,6 +15,20 @@
         {
 
             $formMapper
+                ->add('faultInfo','sonata_type_collection',array(
+                    'type_options' => array(
+                        // Prevents the "Delete" option from being displayed
+                        'delete' => false,
+                        'delete_options' => array(
+                            // You may otherwise choose to put the field but hide it
+                            'type'         => 'hidden',
+                            // In that case, you need to fill in the options as well
+                            'type_options' => array(
+                                'mapped'   => false,
+                                'required' => false,
+                            )
+                        ))
+                ))
                 ->add('cost','number')
                 ->add('formCondition', 'entity', array(
                     'label' => 'form.condition',

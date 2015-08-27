@@ -16,13 +16,13 @@
                     <table>
                         <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
-                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_row(form.faultInfo.group) }}</td>
+                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_widget(form.faultInfo.group) }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.type'|trans }}</td><td>{{ form_row(form.faultInfo.faultType) }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ form_row(form.faultInfo.faultPriority) }}</td>
+                            <td>{{ 'form.type'|trans }}</td><td>{{ form_widget(form.faultInfo.faultType) }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ form_widget(form.faultInfo.faultPriority) }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ form_row(form.faultInfo.reporterDescription) }}</td>
+                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.reporterDescription) }}</td>
                         </tr>
                         <tr>
                             <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -32,7 +32,7 @@
                         </tr>
                     </table>
 
-                    {{ form_row(form._token) }}
+                    {{ form_widget(form._token) }}
                 </form>
             {# 无维修人权限 #}
             {% else %}
@@ -40,13 +40,13 @@
                     <table>
                         <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
-                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_row(form.faultInfo.group) }}</td>
+                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_widget(form.faultInfo.group) }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.type'|trans }}</td><td>{{ form_row(form.faultInfo.faultType) }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ form_row(form.faultInfo.faultPriority) }}</td>
+                            <td>{{ 'form.type'|trans }}</td><td>{{ form_widget(form.faultInfo.faultType) }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ form_widget(form.faultInfo.faultPriority) }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ form_row(form.faultInfo.reporterDescription) }}</td>
+                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.reporterDescription) }}</td>
                         </tr>
                         <tr>
                             <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -56,7 +56,7 @@
                         </tr>
                     </table>
 
-                    {{ form_row(form._token) }}
+                    {{ form_widget(form._token) }}
                 </form>
             {% endif %}
         {# 不是报修人 #}
@@ -122,10 +122,10 @@
                             <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ form_row(form.faultInfo.workerDescription) }}</td>
+                            <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.workerDescription) }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ form_row(form.faultInfo.maintenanceSchedule) }}</td>
+                            <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.maintenanceSchedule) }}</td>
                         </tr>
                         <tr>
                             <td>{{ 'form.order'|trans }}</td>
@@ -136,7 +136,7 @@
                                     {{ 'form.none'|trans }}
                                 {% endif %}
                             </td>
-                            <td>{{ 'form.money'|trans }}</td><td{{ form_row(form.cost) }}></td>
+                            <td>{{ 'form.money'|trans }}</td><td{{ form_widget(form.cost) }}></td>
                         </tr>
                         <tr>
                             <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -162,7 +162,7 @@
                         </tr>
                     </table>
 
-                    {{ form_row(form._token) }}
+                    {{ form_widget(form._token) }}
                 </form>
             {# 无领导权限 #}
             {% else %}
@@ -179,10 +179,10 @@
                             <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ form_row(form.faultInfo.workerDescription) }}</td>
+                            <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.workerDescription) }}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ form_row(form.faultInfo.maintenanceSchedule) }}</td>
+                            <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.maintenanceSchedule) }}</td>
                         </tr>
                         <tr>
                             <td>{{ 'form.order'|trans }}</td>
@@ -193,7 +193,7 @@
                                     {{ 'form.none'|trans }}
                                 {% endif %}
                             </td>
-                            <td>{{ 'form.money'|trans }}</td><td{{ form_row(form.cost) }}></td>
+                            <td>{{ 'form.money'|trans }}</td><td{{ form_widget(form.cost) }}></td>
                         </tr>
                         <tr>
                             <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -214,7 +214,7 @@
                         </tr>
                     </table>
 
-                    {{ form_row(form._token) }}
+                    {{ form_widget(form._token) }}
                 </form>
             {% endif %}
         {# 不是表单接收人 #}

@@ -34,7 +34,10 @@ class FaultOrder
      */
     private $leaderOrder;
 
-
+    public function __toString()
+    {
+        return $this->leaderOrder;
+    }
 
 
     /**

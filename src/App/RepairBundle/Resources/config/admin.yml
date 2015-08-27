@@ -9,3 +9,13 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [RepairBundle]]
+    sonata.admin.faultInfo:
+        class: App\RepairBundle\Admin\FaultInfoAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Repair", label: "FaultInfo" }
+        arguments:
+            - ~
+            - App\RepairBundle\Entity\FaultInfo
+            - ~
+        calls:
+            - [ setTranslationDomain, [RepairBundle]]
