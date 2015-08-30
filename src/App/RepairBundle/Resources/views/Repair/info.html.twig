@@ -14,7 +14,7 @@
             {%  if is_granted('ROLE_REPAIR') %}
                 <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <div class="row">
-                        <div class="">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                        <th>{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
                             <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_widget(form.faultInfo.group) }}</td>
                         </tr>
@@ -36,28 +36,97 @@
                 </form>
             {# 无维修人权限 #}
             {% else %}
+             <div class="row">
                 <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
-                    <table>
-                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                        <tr>
-                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_widget(form.faultInfo.group) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.type'|trans }}</td><td>{{ form_widget(form.faultInfo.faultType) }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ form_widget(form.faultInfo.faultPriority) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.reporterDescription) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td><td>&nbsp;</td><td>{{ form_widget(form.save, { 'label': 'form.edit' }) }}</td><td><button id="cancel" type="button" >{{ 'form.cancel'|trans }}</button></td>
-                        </tr>
-                    </table>
 
+                    <div class="col-sm-8 form-group">
+                        <h3>{{ 'form.repairFormInfo'|trans }}</h3>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>{{ repairForm.FormCondition.name }}</h4>
+                    </div>
+                    <div class="col-sm-2">
+                        {{ 'form.time'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ 'form.location'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ form_widget(form.faultInfo.group, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ 'form.type'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ form_widget(form.faultInfo.faultType, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ 'form.priority'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ form_widget(form.faultInfo.faultPriority, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ 'form.title'|trans }}
+                    </div>
+                    <div class="col-sm-8 form-group">
+                        {{ form_widget(form.faultInfo.title, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ 'form.reporterDescription'|trans }}
+                    </div>
+                    <div class="col-sm-8 form-group">
+                        {{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ 'form.reporter'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ repairForm.repairTask.user.name }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ 'form.phone'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ repairForm.repairTask.user.phone }}
+                    </div>
+
+                    {#
+                    <table>
+                        <thead>
+                            <td class="col-sm-2 col-sm-offset-1">&nbsp;</td>
+                            <td class="col-sm-3"><h3>{{ 'form.repairFormInfo'|trans }}</h3></td>
+                            <td class="col-sm-2">&nbsp;</td>
+                            <td class="col-sm-3"><h4>{{ repairForm.FormCondition.name }}</h4></td>
+                        </thead>
+                        <tbody>
+                            <tr class="form-group">
+                                <td >{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_widget(form.faultInfo.group, {'attr': {'class': 'form-control'}}) }}</td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>{{ 'form.type'|trans }}</td><td>{{ form_widget(form.faultInfo.faultType, {'attr': {'class': 'form-control'}}) }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ form_widget(form.faultInfo.faultPriority, {'attr': {'class': 'form-control'}}) }}</td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>{{ 'form.title'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.title, {'attr': {'class': 'form-control'}}) }}</td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control'}}) }}</td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>&nbsp;</td><td>&nbsp;</td><td>{{ form_widget(form.save, { 'label': 'form.edit' }) }}</td><td><button id="cancel" type="button" >{{ 'form.cancel'|trans }}</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    #}
                     {{ form_widget(form._token) }}
                 </form>
+             </div>
             {% endif %}
         {# 不是报修人 #}
         {% else %}

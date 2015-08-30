@@ -71,9 +71,13 @@ class RepairController extends Controller
             $em->flush();
             return $this->redirectToRoute('default_homepage');
         }
-        return array(
+        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),1);
+
+        return $this->render('@Repair/Default/defaultIndex.html.twig',array(
             'form' => $form->createView(),
-            );
+            'repairForm' =>$repairForm
+        ));
+
     }
 
     /**
@@ -298,6 +302,8 @@ class RepairController extends Controller
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
             case 'reject':
+                $u = new User();
+                $repairForm->setReceive($u);
                 $repairForm->setLastUpdateTime(new \DateTime());
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
@@ -330,7 +336,8 @@ class RepairController extends Controller
             {
                 case 'edit':
                     $faultInfo = $repairForm->getFaultInfo();
-
+                    if($data->getFaultInfo()->getTitle())
+                        $faultInfo->setTitle($data->getFaultInfo()->getTitle());
                     if($data->getFaultInfo()->getReporterDescription())
                         $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
                     if($data->getFaultInfo()->getWorkerDescription())
@@ -367,7 +374,8 @@ class RepairController extends Controller
                     break;
                 case 'submit':
                     $faultInfo = $repairForm->getFaultInfo();
-
+                    if($data->getFaultInfo()->getTitle())
+                        $faultInfo->setTitle($data->getFaultInfo()->getTitle());
                     if($data->getFaultInfo()->getReporterDescription())
                         $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
                     if($data->getFaultInfo()->getWorkerDescription())

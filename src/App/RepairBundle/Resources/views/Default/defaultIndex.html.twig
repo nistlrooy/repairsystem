@@ -38,13 +38,19 @@
                     {{ form_widget(form.faultPriority, {'attr': {'class': 'form-control'}}) }}
                 </div>
                 <div class="col-md-4">
+                    {{ 'form.Title'|trans }}
+                </div>
+                <div class="col-md-8 form-group">
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-4">
                     {{ 'form.reporterDescription'|trans }}
                 </div>
                 <div class="col-md-8 form-group">
                     {{ form_widget(form.reporterDescription, {'attr': {'class': 'form-control'}}) }}
                 </div>
                 <div class="col-md-2 col-md-offset-4 form-group">
-                    <button type="submit" class="form-control" >{{ 'form.post'|trans }}</button>
+                    <button type="submit"  id="myButton" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">{{ 'form.post =>'|trans }}</button>
                 </div>
             </div>
             {{ form_row(form._token) }}
@@ -56,13 +62,13 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td><td>{{ 'form.condition'|trans }}</td>
+                <td>{{ 'form.title'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td><td>{{ 'form.condition'|trans }}</td>
             </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
         {% for repair in repairForm %}
             <tr>
-                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.reporterDescription| truncate(5) }}</a></td>
+                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.title| truncate(8) }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.group.name }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.repairTask.createTime|date('Y-m-d') }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.formCondition.name }}</a></td>
@@ -73,4 +79,16 @@
     </table>
     </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $('#myButton').on('click', function () {
+            var $btn = $(this).button('loading')
+            // business logic...
+            $btn.button('reset')
+        })
+    </script>
+
 {% endblock %}

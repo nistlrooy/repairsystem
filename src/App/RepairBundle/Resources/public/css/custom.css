@@ -6,6 +6,11 @@
     display: block;
 }
 
+.navbar-brand img
+{
+    margin-left: 20px;
+}
+
 html,
 body {
     /* Margin bottom by footer height */

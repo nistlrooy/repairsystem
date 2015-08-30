@@ -43,6 +43,10 @@
 
                             'translation_domain' => 'RepairBundle'
                         ))
+                    ->add('title','text',array(
+
+                        'translation_domain' => 'RepairBundle'
+                    ))
                     ->add('faultOrder','entity',array(
                             'class' => 'RepairBundle:FaultOrder',
                             'property' => 'leader_order',

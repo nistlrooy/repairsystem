@@ -27,7 +27,11 @@ class RepairFormRepository extends EntityRepository
             JOIN r.repairTask t
             JOIN r.formCondition c
             JOIN t.user u
-            WHERE u.id = :createrId AND c.id = :conditionId'
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            WHERE u.id = :createrId AND c.id = :conditionId
+            ORDER BY p.id DESC,
+             t.createTime DESC'
         )->setParameters(array('createrId'=>$createrId,'conditionId'=>$conditionId));
         try
         {
@@ -50,7 +54,12 @@ class RepairFormRepository extends EntityRepository
             'SELECT r From RepairBundle:RepairForm r
             JOIN r.formCondition c
             JOIN r.receive u
-            WHERE u.id = :receiverId AND c.id = :conditionId'
+            JOIN r.repairTask t
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            WHERE u.id = :receiverId AND c.id = :conditionId
+            ORDER BY p.id DESC,
+             t.createTime DESC'
         )->setParameters(array('receiverId'=>$receiverId,'conditionId'=>$conditionId));
         try{
             return $query->getResult();
@@ -68,7 +77,12 @@ class RepairFormRepository extends EntityRepository
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT r FROM RepairBundle:RepairForm r
-            WHERE r.receive is NULL '
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            JOIN r.repairTask t
+            WHERE r.receive is NULL
+            ORDER BY p.id DESC,
+             t.createTime DESC'
         );
         try{
             return $query->getResult();
@@ -90,7 +104,11 @@ class RepairFormRepository extends EntityRepository
             JOIN r.repairTask t
             JOIN r.formCondition c
             JOIN t.user u
-            WHERE u.id = :createrId AND (c.id >=4 OR c.id<=6)'
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            WHERE u.id = :createrId AND (c.id >=4 OR c.id<=6)
+             ORDER BY p.id DESC,
+             t.createTime DESC'
         )->setParameters(array('createrId'=>$createrId));
         try
         {
@@ -110,9 +128,14 @@ class RepairFormRepository extends EntityRepository
     {
         $query = $this->getEntityManager()->createQuery(
             'SELECT r From RepairBundle:RepairForm r
+            JOIN r.repairTask t
             JOIN r.formCondition c
-            JOIN r.receive u
-            WHERE u.id = :receiverId AND (c.id >=4 OR c.id<=6)'
+            JOIN t.user u
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            WHERE u.id = :receiverId AND (c.id >=4 OR c.id<=6)
+             ORDER BY p.id DESC,
+             t.createTime DESC'
         )->setParameters(array('receiverId'=>$receiverId));
         try{
             return $query->getResult();
