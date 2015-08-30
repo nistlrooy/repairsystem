@@ -45,6 +45,13 @@ class FaultInfo
     /**
      * @var string
      *
+     * @ORM\Column(name="fault_title", type="text")
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="worker_description", type="text")
      */
     private $workerDescription;
@@ -154,6 +161,30 @@ class FaultInfo
         return $this->maintenanceSchedule;
     }
 
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return FaultInfo
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
     /**
      * Set faultType
      *
@@ -245,4 +276,7 @@ class FaultInfo
     {
         return $this->faultOrder;
     }
+
+
+
 }

@@ -69,7 +69,7 @@ class RepairController extends Controller
             $em->persist($repairForm);
             $em->persist($data);
             $em->flush();
-            return $this->render('@Repair/Repair/postDone.html.twig');
+            return $this->redirectToRoute('default_homepage');
         }
         return array(
             'form' => $form->createView(),
@@ -256,36 +256,78 @@ class RepairController extends Controller
 
         $form = $this->createForm(new FaultReportFormType(),new RepairForm());
         $form->handleRequest($request);
+        $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
+        if (!$repairForm) {
+            throw $this->createNotFoundException(
+                'No repair form found for this id: '.$id
+            );
+        }
+        $authChecker = $this->get('security.authorization_checker');
+
+        if(false === $authChecker->isGranted($action,$repairForm))
+        {
+            throw $this->createAccessDeniedException('Unauthorized access!');
+        }
+
+        $data = $form->getData();
+
+        switch($action)
+        {
+            case 'receive':
+                $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(2);
+                $repairForm->setFormCondition($condition);
+                $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
+                $repairForm->setUser($user);
+                $repairForm->setReceive($user);
+                $repairForm->setLastUpdateTime(new \DateTime());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($repairForm);
+                $em->flush();
+                return $this->redirectToRoute('repair_homepage');
+                break;
+            case 'confirm':
+                $repairForm->setLastUpdateTime(new \DateTime());
+                $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
+                $repairForm->setUser($user);
+                $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(4);
+                $repairForm->setFormCondition($condition);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($repairForm);
+                $em->flush();
+
+                return $this->redirectToRoute('fault_info',array('id' => $id));
+                break;
+            case 'reject':
+                $repairForm->setLastUpdateTime(new \DateTime());
+                $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
+                $repairForm->setUser($user);
+                $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(1);
+                $repairForm->setFormCondition($condition);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($repairForm);
+                $em->flush();
+
+                return $this->redirectToRoute('fault_info',array('id' => $id));
+                break;
+            case 'cancel':
+                $repairForm->setLastUpdateTime(new \DateTime());
+                $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
+                $repairForm->setUser($user);
+                $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(6);
+                $repairForm->setFormCondition($condition);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($repairForm);
+                $em->flush();
+                return $this->redirectToRoute('fault_info',array('id' => $id));
+            default:
+                break;
+        }
+
         if($form->isValid())
         {
-            $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
-            if (!$repairForm) {
-                throw $this->createNotFoundException(
-                    'No repair form found for this id: '.$id
-                );
-            }
-            $authChecker = $this->get('security.authorization_checker');
 
-            if(false === $authChecker->isGranted($action,$repairForm))
-            {
-                throw $this->createAccessDeniedException('Unauthorized access!');
-            }
-
-            $data = $form->getData();
             switch($action)
             {
-                case 'receive':
-                    $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(2);
-                    $repairForm->setFormCondition($condition);
-                    $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
-                    $repairForm->setUser($user);
-                    $repairForm->setReceive($user);
-                    $repairForm->setLastUpdateTime(new \DateTime());
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($repairForm);
-                    $em->flush();
-                    return $this->redirectToRoute('fault_info',array('id' => $id));
-                    break;
                 case 'edit':
                     $faultInfo = $repairForm->getFaultInfo();
 
@@ -345,52 +387,13 @@ class RepairController extends Controller
 
                     return $this->redirectToRoute('fault_info',array('id' => $id));
                     break;
-                case 'confirm':
-                    $repairForm->setLastUpdateTime(new \DateTime());
-                    $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
-                    $repairForm->setUser($user);
-                    $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(4);
-                    $repairForm->setFormCondition($condition);
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($repairForm);
-                    $em->flush();
-
-                    return $this->redirectToRoute('fault_info',array('id' => $id));
-                    break;
-                case 'reject':
-                    $repairForm->setLastUpdateTime(new \DateTime());
-                    $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
-                    $repairForm->setUser($user);
-                    $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(1);
-                    $repairForm->setFormCondition($condition);
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($repairForm);
-                    $em->flush();
-
-                    return $this->redirectToRoute('fault_info',array('id' => $id));
-                    break;
-                case 'cancel':
-                    $repairForm->setLastUpdateTime(new \DateTime());
-                    $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
-                    $repairForm->setUser($user);
-                    $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(6);
-                    $repairForm->setFormCondition($condition);
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($repairForm);
-                    $em->flush();
-                    return $this->redirectToRoute('fault_info',array('id' => $id));
                 default:
                     throw $this->createNotFoundException(
                         'No this action: '.$action
                     );
                     break;
-
-
             }
-
-
         }
-        return $this->render('@Repair/Repair/info.html.twig');
-
+        return $this->redirectToRoute('fault_info',array('id' => $id));
     }
 }

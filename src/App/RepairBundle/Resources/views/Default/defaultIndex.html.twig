@@ -1,46 +1,76 @@
-{% extends "::base.html.twig" %}
+{% extends "RepairBundle::layout.html.twig" %}
 
 {% block title %}Home Page{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        form .col-md-4 {}
 
+
+    </style>
+{% endblock %}
+{% block body %}
+<div class="row">
 
     {% trans_default_domain 'RepairBundle' %}
-    <div class="table">
+    <div class="col-md-4 col-md-offset-1">
     <form action="{{ path('fault_report') }}" {{ form_enctype(form) }} method="post">
-        <fieldset>
-            <legend>{{ 'faultInfo'|trans }}</legend>
-            {{ form_row(form.faultType) }}
-            {{ form_row(form.group) }}
-            {{ form_row(form.faultPriority) }}
-            {{ form_row(form.reporterDescription) }}
+        <fieldset >
+            <legend>{{ 'form.faultInfo'|trans }}</legend>
+            <div class="row">
+                <div class="col-md-4 ">
+                    {{ 'form.faultType'|trans }}
+                </div>
+                <div class="col-md-8 form-group">
+                    {{ form_widget(form.faultType, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-4">
+                    {{ 'form.group'|trans }}
+                </div>
+                <div class="col-md-8 form-group">
+                    {{ form_widget(form.group, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-4">
+                    {{ 'form.faultPriority'|trans }}
+                </div>
+                <div class="col-md-8 form-group">
+                    {{ form_widget(form.faultPriority, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-4">
+                    {{ 'form.reporterDescription'|trans }}
+                </div>
+                <div class="col-md-8 form-group">
+                    {{ form_widget(form.reporterDescription, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-2 col-md-offset-4 form-group">
+                    <button type="submit" class="form-control" >{{ 'form.post'|trans }}</button>
+                </div>
+            </div>
+            {{ form_row(form._token) }}
         </fieldset>
-        {{ form_row(form._token) }}
-        <div>
-            <input type="submit" value="{{ 'form.post'|trans }}" />
-        </div>
+
     </form>
     </div>
-    <div class="table">
+    <div class="col-md-4 col-md-offset-1">
     <table class="table table-striped">
         <thead>
             <tr>
-                <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
+                <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td><td>{{ 'form.condition'|trans }}</td>
             </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
         {% for repair in repairForm %}
-
             <tr>
-
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.reporterDescription| truncate(5) }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.group.name }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.repairTask.createTime|date('Y-m-d') }}</a></td>
-
+                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.formCondition.name }}</a></td>
             </tr>
 
         {% endfor %}
         </tbody>
     </table>
     </div>
+</div>
 {% endblock %}

@@ -1,10 +1,10 @@
-{% extends "::base.html.twig" %}
+{% extends "RepairBundle::layout.html.twig" %}
 
 {% block title %}RepairBundle:Repair:show{% endblock %}
 
 {% block body %}
-
-
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
     {% trans_default_domain 'RepairBundle' %}
     {# 状态为待接单 #}
     {% if repairForm.formCondition.id == 1 %}
@@ -13,8 +13,8 @@
             {# 判断是否有维修人员权限 #}
             {%  if is_granted('ROLE_REPAIR') %}
                 <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
-                    <table>
-                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                    <div class="row">
+                        <div class="">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
                         <tr>
                             <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_widget(form.faultInfo.group) }}</td>
                         </tr>
@@ -30,7 +30,7 @@
                         <tr>
                             <td>&nbsp;</td><td>{{ form_widget(form.save, { 'label': 'form.edit' }) }}</td><td><button id="cancel" type="button" >{{ 'form.cancel'|trans }}</button></td><td><button id="receive" type="button" >{{ 'form.receive'|trans }}</button></td>
                         </tr>
-                    </table>
+                    </div>
 
                     {{ form_widget(form._token) }}
                 </form>
@@ -136,7 +136,7 @@
                                     {{ 'form.none'|trans }}
                                 {% endif %}
                             </td>
-                            <td>{{ 'form.money'|trans }}</td><td{{ form_widget(form.cost) }}></td>
+                            <td>{{ 'form.money'|trans }}</td><td>{{ form_widget(form.cost)|number_format(2, '.') }}></td>
                         </tr>
                         <tr>
                             <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -168,7 +168,10 @@
             {% else %}
                 <form action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <table>
-                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
+                        <thead>
+                            <td colspan="2">{{ 'form.repairFormInfo'|trans }}</td><td colspan="2">{{ repairForm.FormCondition.name }}</td>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
                         </tr>
@@ -193,7 +196,7 @@
                                     {{ 'form.none'|trans }}
                                 {% endif %}
                             </td>
-                            <td>{{ 'form.money'|trans }}</td><td{{ form_widget(form.cost) }}></td>
+                            <td>{{ 'form.money'|trans }}</td><td>{{ form_widget(form.cost)|number_format(2, '.') }}</td>
                         </tr>
                         <tr>
                             <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
@@ -212,6 +215,7 @@
                             </td>
                             <td><button id="saveOrSubmit" type="button" >change</button></td><td><button id="submit" type="button" >{{ 'form.submit' }}</button></td>
                         </tr>
+                        </tbody>
                     </table>
 
                     {{ form_widget(form._token) }}
@@ -540,9 +544,9 @@
 
 
 
+    </div>
 
-
-
+</div>
 
 {% endblock %}
 {% block javascripts %}
