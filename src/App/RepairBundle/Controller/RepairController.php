@@ -222,7 +222,7 @@ class RepairController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($order);
                 $em->flush();
-                return $this->redirectToRoute('');
+                return $this->redirectToRoute('fault_info',array('id' => $id));
             }
             return $this->render('',array( 'form' => $form->createView()));
         }
@@ -243,7 +243,7 @@ class RepairController extends Controller
             $em->flush();
 
 
-            return $this->redirectToRoute('');
+            return $this->redirectToRoute('fault_info',array('id' => $id));
         }
         throw $this->createNotFoundException('No this action: '.$action);
     }
