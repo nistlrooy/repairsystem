@@ -53,7 +53,7 @@
                 <td class="visible-lg visible-md visible-sm"><a href="{{ path('fault_info',{'id':r.id})  }}">{{ r.faultInfo.group.name }}</a></td>
                 <td class="visible-lg visible-md"><a href="{{ path('fault_info',{'id':r.id})  }}">{{ r.repairTask.createTime|date('Y-m-d') }}</a></td>
                 <td class="visible-lg visible-md visible-sm visible-xs"><a href="{{ path('fault_info',{'id':r.id})  }}">{{ r.faultInfo.faultPriority.name }}</a></td>
-                <td class="rowlink-skip"><a href="{{ path('fault_action',{'action':'receive','id':r.id}) }}"><button class="btn btn-primary">{{ 'form.receiveIt'|trans }}</button></a></td>
+                <td class="rowlink-skip"><a href="{{ path('fault_action',{'action':'receive','id':r.id}) }}"><button class="btn btn-primary" data-toggle="confirmation-singleton" data-placement="top">{{ 'form.receiveIt'|trans }}</button></a></td>
             </tr>
         {% endfor %}
         </tbody>
@@ -63,3 +63,10 @@
 
 {% endblock %}
 
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $('[data-toggle="confirmation-singleton"]').confirmation();
+    </script>
+
+{% endblock %}

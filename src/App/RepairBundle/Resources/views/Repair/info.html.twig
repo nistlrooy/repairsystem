@@ -13,25 +13,31 @@
             {# 判断是否有维修人员权限 #}
             {%  if is_granted('ROLE_REPAIR') %}
                 <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
-                    <div class="row">
-                        <th>{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                        <tr>
-                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ form_widget(form.faultInfo.group) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.type'|trans }}</td><td>{{ form_widget(form.faultInfo.faultType) }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ form_widget(form.faultInfo.faultPriority) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.reporterDescription) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td><td>{{ form_widget(form.save, { 'label': 'form.edit' }) }}</td><td><button id="cancel" type="button" >{{ 'form.cancel'|trans }}</button></td><td><button id="receive" type="button" >{{ 'form.receive'|trans }}</button></td>
-                        </tr>
-                    </div>
 
+                    <table>
+                        <thead>
+                            <tr class="form-group">
+                                <td>{{ 'form.repairFormInfo'|trans }}</td><td colspan="2">{{ repairForm.FormCondition.name }}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr >
+                                <td class="form-group">{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td class="form-group">{{ form_widget(form.faultInfo.group, {'attr': {'class': 'form-control'}}) }}</td>
+                            </tr>
+                            <tr>
+                                <td class="form-group">{{ 'form.type'|trans }}</td><td>{{ form_widget(form.faultInfo.faultType, {'attr': {'class': 'form-control'}}) }}</td><td>{{ 'form.priority'|trans }}</td><td class="form-group">{{ form_widget(form.faultInfo.faultPriority, {'attr': {'class': 'form-control'}}) }}</td>
+                            </tr>
+                            <tr>
+                                <td class="form-group">{{ 'form.reporterDescription'|trans }}</td><td colspan="3" class="form-group">{{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control'}}) }}</td>
+                            </tr>
+                            <tr>
+                                <td class="form-group">{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
+                            </tr>
+                            <tr class="form-group">
+                                <td>&nbsp;</td><td>{{ form_widget(form.save, { 'label': 'form.edit' }) }}</td><td><button id="cancel" type="button" >{{ 'form.cancel'|trans }}</button></td><td><button id="receive" type="button" >{{ 'form.receive'|trans }}</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     {{ form_widget(form._token) }}
                 </form>
             {# 无维修人权限 #}
@@ -94,8 +100,8 @@
                         {{ repairForm.repairTask.user.phone }}
                     </div>
                     <div class="col-sm-6 col-sm-offset-6">
-                        <button class="btn" id="save" type="submit" >{{ 'form.save'|trans }}</button>
-                        <button class="btn" id="cancel" type="button" >{{ 'form.cancel'|trans }}</button>
+                        <button  id="save" type="submit" class="btn btn-default" data-toggle="confirmation-singleton" data-placement="top">{{ 'form.save'|trans }}</button>
+                        <a href="{{ path('fault_action',{'action':'cancel','id':repairForm.id}) }}"><button  id="cancel" type="button" class="btn btn-default" data-toggle="confirmation-singleton" data-placement="top">{{ 'form.cancel'|trans }}</button></a>
                     </div>
                     {#
                     <table>
@@ -624,6 +630,6 @@
 {% block javascripts %}
 {{ parent() }}
 <script>
-    $('.btn').confirmation(options);
+    $('[data-toggle="confirmation-singleton"]').confirmation();
 </script>
 {% endblock %}
