@@ -24,3 +24,7 @@ body {
     height: 60px;
     background-color: #f5f5f5;
 }
+
+#content{
+    margin-top: 50px;
+}

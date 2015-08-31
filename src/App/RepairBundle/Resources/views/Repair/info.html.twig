@@ -42,58 +42,61 @@
                     <div class="col-sm-8 form-group">
                         <h3>{{ 'form.repairFormInfo'|trans }}</h3>
                     </div>
-                    <div class="col-sm-4">
-                        <h4>{{ repairForm.FormCondition.name }}</h4>
+                    <div class="col-sm-4 form-group">
+                        <h3>{{ repairForm.FormCondition.name }}</h3>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 form-group">
                         {{ 'form.time'|trans }}
                     </div>
                     <div class="col-sm-4 form-group">
                         {{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 form-group">
                         {{ 'form.location'|trans }}
                     </div>
                     <div class="col-sm-4 form-group">
                         {{ form_widget(form.faultInfo.group, {'attr': {'class': 'form-control'}}) }}
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 form-group">
                         {{ 'form.type'|trans }}
                     </div>
                     <div class="col-sm-4 form-group">
                         {{ form_widget(form.faultInfo.faultType, {'attr': {'class': 'form-control'}}) }}
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 form-group">
                         {{ 'form.priority'|trans }}
                     </div>
                     <div class="col-sm-4 form-group">
                         {{ form_widget(form.faultInfo.faultPriority, {'attr': {'class': 'form-control'}}) }}
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 form-group">
                         {{ 'form.title'|trans }}
                     </div>
                     <div class="col-sm-8 form-group">
                         {{ form_widget(form.faultInfo.title, {'attr': {'class': 'form-control'}}) }}
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 form-group">
                         {{ 'form.reporterDescription'|trans }}
                     </div>
                     <div class="col-sm-8 form-group">
                         {{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control'}}) }}
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 form-group">
                         {{ 'form.reporter'|trans }}
                     </div>
                     <div class="col-sm-4 form-group">
                         {{ repairForm.repairTask.user.name }}
                     </div>
-                    <div class="col-sm-2">
-                        {{ 'form.phone'|trans }}
+                    <div class="col-sm-2 form-group">
+                        {{ 'form.reporterPhone'|trans }}
                     </div>
                     <div class="col-sm-4 form-group">
                         {{ repairForm.repairTask.user.phone }}
                     </div>
-
+                    <div class="col-sm-6 col-sm-offset-6">
+                        <button class="btn" id="save" type="submit" >{{ 'form.save'|trans }}</button>
+                        <button class="btn" id="cancel" type="button" >{{ 'form.cancel'|trans }}</button>
+                    </div>
                     {#
                     <table>
                         <thead>
@@ -620,5 +623,7 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
-<script src="{{ asset('bundles/repair/js/jquery-1.11.3.min.js') }}"></script>
+<script>
+    $('.btn').confirmation(options);
+</script>
 {% endblock %}
