@@ -27,8 +27,8 @@
         "friendsofsymfony/rest-bundle": "^1.6",
         "knplabs/knp-time-bundle": "^1.3",
         "sonata-project/doctrine-orm-admin-bundle": "^2.3",
-        "phpoffice/phpexcel": "^1.8",
-        "twbs/bootstrap": "dev-master"
+        "phpoffice/phpexcel": "^1.8"
+
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
