@@ -6,6 +6,7 @@ namespace App\RepairBundle\Controller;
 use App\RepairBundle\Entity\FormComment;
 use App\RepairBundle\Form\Type\FaultOrderType;
 use App\RepairBundle\Form\Type\FaultReportFormType;
+use App\RepairBundle\Form\Type\FormCommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -158,6 +159,21 @@ class RepairController extends Controller
             );
         }
 
+        if($repairForm->getFormCondition()->getId() == 4)
+        {
+            $comment = $this->createForm(new FormCommentType(),new FormComment());
+            return array(
+                'repairForm' => $repairForm,
+                'orderIsNull' => $orderIsNull,
+                'receiveIsNull' => $receiveIsNull,
+                'isCreater' => $isCreater,
+                'isReceiver' => $isReceiver,
+                'orderSet' => $orderSet,
+                'errorMsg' => $errorMsg,
+                'form' => $form->createView(),
+                'comment' => $comment->createView()
+            );
+        }
         return array(
             'repairForm' => $repairForm,
             'orderIsNull' => $orderIsNull,
@@ -179,10 +195,8 @@ class RepairController extends Controller
      */
     public function commentAction(Request $request,$id)
     {
-        $comment = new FormComment();
-        $form = $this->createFormBuilder($comment)
-            ->add('comment','text')
-            ->getForm();
+
+        $form = $this->createForm(new FormCommentType(),new FormComment());
         $form->handleRequest($request);
         $data = $form->getData();
 
@@ -200,14 +214,19 @@ class RepairController extends Controller
             {
                 throw $this->createAccessDeniedException('Unauthorized access!');
             }
+            $comment = new FormComment();
             $comment->setComment($data->getComment());
             $comment->setRepairForm($repairForm);
+            $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(5);
+            $repairForm->setFormCondition($condition);
             $em = $this->getDoctrine()->getManager();
+            $em->persist($repairForm);
             $em->persist($comment);
             $em->flush();
             return $this->redirectToRoute('fault_info',array('id' => $id));
         }
-        return $this->render('@Repair/Repair/info.html.twig');
+
+        return $this->redirectToRoute('fault_info',array('id' => $id));
     }
 
     /**
@@ -322,8 +341,7 @@ class RepairController extends Controller
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
             case 'reject':
-                $u = new User();
-                $repairForm->setReceive($u);
+                $repairForm->setReceive(null);
                 $repairForm->setLastUpdateTime(new \DateTime());
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
@@ -345,6 +363,7 @@ class RepairController extends Controller
                 $em->persist($repairForm);
                 $em->flush();
                 return $this->redirectToRoute('fault_info',array('id' => $id));
+                break;
             default:
                 break;
         }
