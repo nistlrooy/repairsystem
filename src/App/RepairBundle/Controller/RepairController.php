@@ -99,12 +99,12 @@ class RepairController extends Controller
     /**
      *
      *
-     * @Route("/fault/info/{id}",name="fault_info",requirements={"id": "\d+"})
+     * @Route("/fault/info/{id}/{errorMsg}",name="fault_info",requirements={"id": "\d+"})
      * @Template()
      *
      * 每个故障的信息
      */
-    public function infoAction($id)
+    public function infoAction($id,$errorMsg = null)
     {
         $repairForm = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairForm')->find($id);
         if (!$repairForm) {
@@ -141,6 +141,23 @@ class RepairController extends Controller
             $isCreater = false;
         }
         $form = $this->createForm(new FaultReportFormType(),$repairForm);
+        if((!$orderIsNull)&&(!$orderSet))
+        {
+
+            $order = $this->createForm(new FaultOrderType(),new FaultOrder());
+            return array(
+                'repairForm' => $repairForm,
+                'orderIsNull' => $orderIsNull,
+                'receiveIsNull' => $receiveIsNull,
+                'isCreater' => $isCreater,
+                'isReceiver' => $isReceiver,
+                'orderSet' => $orderSet,
+                'errorMsg' => $errorMsg,
+                'form' => $form->createView(),
+                'order' => $order->createView()
+            );
+        }
+
         return array(
             'repairForm' => $repairForm,
             'orderIsNull' => $orderIsNull,
@@ -148,6 +165,7 @@ class RepairController extends Controller
             'isCreater' => $isCreater,
             'isReceiver' => $isReceiver,
             'orderSet' => $orderSet,
+            'errorMsg' => $errorMsg,
             'form' => $form->createView()
         );
     }
@@ -219,6 +237,8 @@ class RepairController extends Controller
                 $data = $form->getData();
                 $order = $repairForm->getFaultInfo()->getFaultOrder();
                 $order->setLeaderOrder($data->getLeaderOrder());
+                $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
+                $order->setUser($user);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($order);
                 $em->flush();
@@ -332,74 +352,68 @@ class RepairController extends Controller
         if($form->isValid())
         {
 
-            switch($action)
+            if($form->get('save')->isClicked())
             {
-                case 'edit':
-                    $faultInfo = $repairForm->getFaultInfo();
-                    if($data->getFaultInfo()->getTitle())
-                        $faultInfo->setTitle($data->getFaultInfo()->getTitle());
-                    if($data->getFaultInfo()->getReporterDescription())
-                        $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
-                    if($data->getFaultInfo()->getWorkerDescription())
-                        $faultInfo->setWorkerDescription($data->getFaultInfo()->getWorkerDescription());
-                    if($data->getFaultInfo()->getMaintenanceSchedule())
-                        $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
-                    if($data->getFaultInfo()->getGroup())
-                    {
-                        $group = $this->getDoctrine()->getManager()->getRepository('UserBundle:Group')->find($data->getFaultInfo()->getGroup()->getId());
-                        $faultInfo->setGroup($group);
-                    }
-                    if($data->getFaultInfo()->getFaultType())
-                    {
-                        $type = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FaultType')->find($data->getFaultInfo()->getFaultType()->getId());
-                        $faultInfo->setFaultType($type);
-                    }
-                    if($data->getFaultInfo()->getFaultPriority())
-                    {
-                        $priority = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FaultPriority')->find($data->getFaultInfo()->getFaultPriority()->getId());
-                        $faultInfo->setFaultPriority($priority);
-                    }
+                $faultInfo = $repairForm->getFaultInfo();
+                if($data->getFaultInfo()->getTitle())
+                    $faultInfo->setTitle($data->getFaultInfo()->getTitle());
+                if($data->getFaultInfo()->getReporterDescription())
+                    $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
+                if($data->getFaultInfo()->getWorkerDescription())
+                    $faultInfo->setWorkerDescription($data->getFaultInfo()->getWorkerDescription());
+                if($data->getFaultInfo()->getMaintenanceSchedule())
+                    $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
+                if($data->getFaultInfo()->getGroup())
+                {
+                    $group = $this->getDoctrine()->getManager()->getRepository('UserBundle:Group')->find($data->getFaultInfo()->getGroup()->getId());
+                    $faultInfo->setGroup($group);
+                }
+                if($data->getFaultInfo()->getFaultType())
+                {
+                    $type = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FaultType')->find($data->getFaultInfo()->getFaultType()->getId());
+                    $faultInfo->setFaultType($type);
+                }
+                if($data->getFaultInfo()->getFaultPriority())
+                {
+                    $priority = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FaultPriority')->find($data->getFaultInfo()->getFaultPriority()->getId());
+                    $faultInfo->setFaultPriority($priority);
+                }
 
-                    $repairForm->setFaultInfo($faultInfo);
-                    $repairForm->setLastUpdateTime(new \DateTime());
-                    $repairForm->setCost($data->getCost());
-                    $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
-                    $repairForm->setUser($user);
+                $repairForm->setFaultInfo($faultInfo);
+                $repairForm->setLastUpdateTime(new \DateTime());
+                $repairForm->setCost($data->getCost());
+                $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
+                $repairForm->setUser($user);
 
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($repairForm);
-                    $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($repairForm);
+                $em->flush();
 
-                    return $this->redirectToRoute('fault_info',array('id' => $id));
-                    break;
-                case 'submit':
-                    $faultInfo = $repairForm->getFaultInfo();
-                    if($data->getFaultInfo()->getTitle())
-                        $faultInfo->setTitle($data->getFaultInfo()->getTitle());
-                    if($data->getFaultInfo()->getReporterDescription())
-                        $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
-                    if($data->getFaultInfo()->getWorkerDescription())
-                        $faultInfo->setWorkerDescription($data->getFaultInfo()->getWorkerDescription());
-                    if($data->getFaultInfo()->getMaintenanceSchedule())
-                        $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
-                    $repairForm->setFaultInfo($faultInfo);
-                    $repairForm->setLastUpdateTime(new \DateTime());
-                    $repairForm->setCost($data->getCost());
-                    $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
-                    $repairForm->setUser($user);
-                    $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(3);
-                    $repairForm->setFormCondition($condition);
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($repairForm);
-                    $em->flush();
+                return $this->redirectToRoute('fault_info',array('id' => $id));
+            }
+            else
+            {
+                $faultInfo = $repairForm->getFaultInfo();
+                if($data->getFaultInfo()->getTitle())
+                    $faultInfo->setTitle($data->getFaultInfo()->getTitle());
+                if($data->getFaultInfo()->getReporterDescription())
+                    $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
+                if($data->getFaultInfo()->getWorkerDescription())
+                    $faultInfo->setWorkerDescription($data->getFaultInfo()->getWorkerDescription());
+                if($data->getFaultInfo()->getMaintenanceSchedule())
+                    $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
+                $repairForm->setFaultInfo($faultInfo);
+                $repairForm->setLastUpdateTime(new \DateTime());
+                $repairForm->setCost($data->getCost());
+                $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
+                $repairForm->setUser($user);
+                $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(3);
+                $repairForm->setFormCondition($condition);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($repairForm);
+                $em->flush();
 
-                    return $this->redirectToRoute('fault_info',array('id' => $id));
-                    break;
-                default:
-                    throw $this->createNotFoundException(
-                        'No this action: '.$action
-                    );
-                    break;
+                return $this->redirectToRoute('fault_info',array('id' => $id));
             }
         }
         return $this->redirectToRoute('fault_info',array('id' => $id));

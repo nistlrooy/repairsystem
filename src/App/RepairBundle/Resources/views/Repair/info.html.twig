@@ -6,6 +6,10 @@
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
     {% trans_default_domain 'RepairBundle' %}
+
+        <div class="col-sm-12">
+            <h3 class="danger">{{ errorMsg }}</h3>
+        </div>
     {# 状态为待接单 #}
     {% if repairForm.formCondition.id == 1 %}
         {# 判断是否是报修人 #}
@@ -68,7 +72,7 @@
                         {{ repairForm.repairTask.user.phone }}
                     </div>
                     <div class="col-sm-8 col-sm-offset-4">
-                        <button  id="save" type="submit" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.edit'|trans }}</button>
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
                         <button  id="receive" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.receive'|trans }}</button>
                         <button  id="cancel" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.cancel'|trans }}</button>
                     </div>
@@ -134,7 +138,7 @@
                         {{ repairForm.repairTask.user.phone }}
                     </div>
                     <div class="col-sm-6 col-sm-offset-6">
-                        <button  id="save" type="submit" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.edit'|trans }}</button>
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
                         <button  id="cancel" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.cancel'|trans }}</button>
                     </div>
 
@@ -329,12 +333,15 @@
                     </div>
                     {% if orderSet %}
                         <div class="col-sm-9 form-group">
-                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
+                            <blockquote>
+                                <p>{{ repairForm.faultInfo.faultOrder.leaderOrder }}</p>
+                                <footer>{{ repairForm.faultInfo.faultOrder.user.name }}</footer>
+                            </blockquote>
                         </div>
                     {% else %}
                         <div class="col-sm-9 form-group">
                         {% if orderIsNull %}
-                            <button type="button" id="reportToLeader" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定" >{{ 'form.reportToLeader'|trans }}</button>
+                            <button type="button" id="reportToLeader" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="上报" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否上报" >{{ 'form.reportToLeader'|trans }}</button>
                         {% else %}
                             {% if not orderSet %}
                                 <button type="button" id="order" class="btn btn-default" data-toggle="modal" data-target="#orderModal">{{ 'form.order'|trans }}</button>
@@ -345,7 +352,7 @@
                         </div>
                     {% endif %}
 
-                    <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ form_widget(form.cost) }}元</div>
+                    <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ form_widget(form.cost, {'attr': {'class': 'form-control'}}) }}</div>
 
                     <div class="col-sm-3 form-group">
                         {{ 'form.reporter'|trans }}
@@ -373,69 +380,12 @@
                         {{ repairForm.receive.phone }}
                     </div>
                     <div class="col-sm-4 col-sm-offset-8">
-                        <button type="button" class="btn btn-default" id="state"></button>
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
                         <button id="submit" type="submit" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">提交</button>
                     </div>
-
-
-
-
-                    {#
-                    <table>
-                        <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                        <tr>
-                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.workerDescription) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.maintenanceSchedule) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.order'|trans }}</td>
-                            <td>
-                                {% if orderSet %}
-                                    {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                                {% else %}
-                                    {{ 'form.none'|trans }}
-                                {% endif %}
-                            </td>
-                            <td>{{ 'form.money'|trans }}</td><td>{{ form_widget(form.cost)|number_format(2, '.') }}></td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>
-                                {% if orderIsNull %}
-                                    <button type="button" id="reportToLeader" >{{ 'form.reportToLeader'|trans }}</button>
-                                {% else %}
-                                    {% if not orderSet %}
-                                        <button type="button" id="order">{{ 'form.order'|trans }}</button>
-                                    {% else %}
-                                        &nbsp;
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-
-                            <td><button id="saveOrSubmit" type="button" >change</button></td><td><button id="submit" type="button" >{{ 'form.submit' }}</button></td>
-                        </tr>
-                    </table>
-#}
                     {{ form_widget(form._token) }}
                 </form>
-
+{% if not orderSet and not orderIsNull %}
                 {# 批示弹出框 #}
                 <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                     <div class="modal-dialog" role="document">
@@ -445,76 +395,130 @@
                                 <h4 class="modal-title" id="exampleModalLabel">领导批示</h4>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ path('fault_order',{'action':'set','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                                <form action="{{ path('fault_order',{'action':'set','id':repairForm.id}) }}" {{ form_enctype(order) }} method="post">
                                     <div class="form-group">
                                         <label for="message-text" class="control-label">批示:</label>
-                                        <textarea class="form-control" id="message-text"></textarea>
+                                        {{ form_widget(order.leaderOrder, {'attr': {'class': 'form-control'}}) }}
                                     </div>
-                                    {{ form_widget(form._token) }}
+                                    {{ form_widget(order._token) }}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                        <button type="submit" class="btn btn-primary">确定</button>
+                                    </div>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                <button type="submit" class="btn btn-primary">确定</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
+{% endif %}
             {# 无领导权限 #}
             {% else %}
                 <form action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
-                    <table>
-                        <thead>
-                            <td colspan="2">{{ 'form.repairFormInfo'|trans }}</td><td colspan="2">{{ repairForm.FormCondition.name }}</td>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.workerDescription) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ form_widget(form.faultInfo.maintenanceSchedule) }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.order'|trans }}</td>
-                            <td>
-                                {% if orderSet %}
-                                    {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                                {% else %}
-                                    {{ 'form.none'|trans }}
-                                {% endif %}
-                            </td>
-                            <td>{{ 'form.money'|trans }}</td><td>{{ form_widget(form.cost)|number_format(2, '.') }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>
-                                {% if orderIsNull %}
-                                    <button type="button" id="reportToLeader" >{{ 'form.reportToLeader'|trans }}</button>
-                                {% else %}
-                                    &nbsp;
-                                {% endif %}
-                            </td>
-                            <td><button id="saveOrSubmit" type="button" >change</button></td><td><button id="submit" type="button" >{{ 'form.submit' }}</button></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="col-sm-8 form-group">
+                        <h3>{{ 'form.repairFormInfo'|trans }}</h3>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <h3>{{ repairForm.FormCondition.name }}</h3>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        {{ 'form.time'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        {{ 'form.location'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ repairForm.faultInfo.group }}
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        {{ 'form.type'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ repairForm.faultInfo.faultType }}
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        {{ 'form.priority'|trans }}
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        {{ repairForm.faultInfo.faultPriority }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.title'|trans }}
+                    </div>
+                    <div class="col-sm-9 form-group">
+                        {{ repairForm.faultInfo.title }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.reporterDescription'|trans }}
+                    </div>
+                    <div class="col-sm-9 form-group">
+                        {{ repairForm.faultInfo.reporterDescription }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.workerDescription'|trans }}
+                    </div>
+                    <div class="col-sm-9 form-group">
+                        {{ form_widget(form.faultInfo.workerDescription, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.maintenanceSchedule'|trans }}
+                    </div>
+                    <div class="col-sm-9 form-group">
+                        {{ form_widget(form.faultInfo.maintenanceSchedule, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.order'|trans }}
+                    </div>
+                    {% if orderSet %}
+                        <div class="col-sm-9 form-group">
+                            <blockquote>
+                                <p>{{ repairForm.faultInfo.faultOrder.leaderOrder }}</p>
+                                <footer>{{ repairForm.faultInfo.faultOrder.user.name }}</footer>
+                            </blockquote>
+                        </div>
+                    {% else %}
+                        <div class="col-sm-9 form-group">
+                            {% if orderIsNull %}
+                                <button type="button" id="reportToLeader" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="上报" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否上报" >{{ 'form.reportToLeader'|trans }}</button>
+                            {% else %}
+                                {{ 'form.none'|trans }}
+                            {% endif %}
+                        </div>
+                    {% endif %}
 
+                    <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ form_widget(form.cost, {'attr': {'class': 'form-control'}}) }}</div>
+
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.reporter'|trans }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ repairForm.repairTask.user.name }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.reporterPhone'|trans }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ repairForm.repairTask.user.phone }}
+                    </div>
+
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.receiver'|trans }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ repairForm.receive.name }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ 'form.reporterPhone'|trans }}
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        {{ repairForm.receive.phone }}
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-8">
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
+                        <button id="submit" type="submit" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">提交</button>
+                    </div>
                     {{ form_widget(form._token) }}
                 </form>
             {% endif %}
@@ -522,279 +526,478 @@
         {% else %}
             {# 有领导权限 #}
             {% if is_granted('ROLE_LEADER') %}
-                <table>
-                    <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                    <tr>
-                        <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.order'|trans }}</td>
-                        <td>
-                            {% if orderSet %}
-                                {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                            {% else %}
-                                {{ 'form.none'|trans }}
-                            {% endif %}
-                        </td>
-                        <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>
-                            {% if not orderSet %}
-                                {% if not orderIsNull %}
-                                    <button type="button" id="order">{{ 'form.order'|trans }}</button>
-                                {% endif %}
-                            {% else %}
-                                &nbsp;
-                            {% endif %}
-                        </td>
-                    </tr>
-                </table>
+                <div class="col-sm-8 form-group">
+                    <h3>{{ 'form.repairFormInfo'|trans }}</h3>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <h3>{{ repairForm.FormCondition.name }}</h3>
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.time'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.location'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.faultInfo.group }}
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.type'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.faultInfo.faultType }}
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.priority'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.faultInfo.faultPriority }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.title'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.title }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.reporterDescription'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.reporterDescription }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.workerDescription'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.workerDescription }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.maintenanceSchedule'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.maintenanceSchedule }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.order'|trans }}
+                </div>
+                {% if orderSet %}
+                    <div class="col-sm-9 form-group">
+                        <blockquote>
+                            <p>{{ repairForm.faultInfo.faultOrder.leaderOrder }}</p>
+                            <footer>{{ repairForm.faultInfo.faultOrder.user.name }}</footer>
+                        </blockquote>
+                    </div>
+                {% else %}
+                    <div class="col-sm-9 form-group">
+                    {% if not orderIsNull and not orderSet %}
+                        <button type="button" id="order" class="btn btn-default" data-toggle="modal" data-target="#orderModal">{{ 'form.order'|trans }}</button>
+                    {% else %}
+                        {{ 'form.none'|trans }}
+                    {% endif %}
+                    </div>
+                {% endif %}
+
+                <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ repairForm.cost }}</div>
+
+                <div class="col-sm-3 form-group">
+                        {{ 'form.reporter'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.repairTask.user.name }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.reporterPhone'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.repairTask.user.phone }}
+                </div>
+
+                <div class="col-sm-3 form-group">
+                    {{ 'form.receiver'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.receive.name }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.reporterPhone'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.receive.phone }}
+                </div>
+
+
+{% if not orderSet and not orderIsNull %}
+        {# 批示弹出框 #}
+        <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">领导批示</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ path('fault_order',{'action':'set','id':repairForm.id}) }}" {{ form_enctype(order) }} method="post">
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">批示:</label>
+                                {{ form_widget(order.leaderOrder, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            {{ form_widget(order._token) }}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">确定</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
             {# 无领导权限 #}
             {% else %}
-                <table>
-                    <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                    <tr>
-                        <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.order'|trans }}</td>
-                        <td>
-                            {% if orderSet %}
-                                {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                            {% else %}
-                                {{ 'form.none'|trans }}
-                            {% endif %}
-                        </td>
-                        <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                </table>
+                <div class="col-sm-8 form-group">
+                    <h3>{{ 'form.repairFormInfo'|trans }}</h3>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <h3>{{ repairForm.FormCondition.name }}</h3>
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.time'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.location'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.faultInfo.group }}
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.type'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.faultInfo.faultType }}
+                </div>
+                <div class="col-sm-2 form-group">
+                    {{ 'form.priority'|trans }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ repairForm.faultInfo.faultPriority }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.title'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.title }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.reporterDescription'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.reporterDescription }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.workerDescription'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.workerDescription }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.maintenanceSchedule'|trans }}
+                </div>
+                <div class="col-sm-9 form-group">
+                    {{ repairForm.faultInfo.maintenanceSchedule }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.order'|trans }}
+                </div>
+                {% if orderSet %}
+                    <div class="col-sm-9 form-group">
+                        <blockquote>
+                            <p>{{ repairForm.faultInfo.faultOrder.leaderOrder }}</p>
+                            <footer>{{ repairForm.faultInfo.faultOrder.user.name }}</footer>
+                        </blockquote>
+                    </div>
+                {% else %}
+                    <div class="col-sm-9 form-group">
+                            {{ 'form.none'|trans }}
+                    </div>
+                {% endif %}
+
+                <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ repairForm.cost }}</div>
+
+                <div class="col-sm-3 form-group">
+                    {{ 'form.reporter'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.repairTask.user.name }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.reporterPhone'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.repairTask.user.phone }}
+                </div>
+
+                <div class="col-sm-3 form-group">
+                    {{ 'form.receiver'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.receive.name }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ 'form.reporterPhone'|trans }}
+                </div>
+                <div class="col-sm-3 form-group">
+                    {{ repairForm.receive.phone }}
+                </div>
             {% endif %}
         {% endif %}
     {% endif %}
 
     {# 状态为待确认 #}
     {% if repairForm.formCondition.id == 3 %}
+
+            <div class="col-sm-8 form-group">
+                <h3>{{ 'form.repairFormInfo'|trans }}</h3>
+            </div>
+            <div class="col-sm-4 form-group">
+                <h3>{{ repairForm.FormCondition.name }}</h3>
+            </div>
+            <div class="col-sm-2 form-group">
+                {{ 'form.time'|trans }}
+            </div>
+            <div class="col-sm-4 form-group">
+                {{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}
+            </div>
+            <div class="col-sm-2 form-group">
+                {{ 'form.location'|trans }}
+            </div>
+            <div class="col-sm-4 form-group">
+                {{ repairForm.faultInfo.group }}
+            </div>
+            <div class="col-sm-2 form-group">
+                {{ 'form.type'|trans }}
+            </div>
+            <div class="col-sm-4 form-group">
+                {{ repairForm.faultInfo.faultType }}
+            </div>
+            <div class="col-sm-2 form-group">
+                {{ 'form.priority'|trans }}
+            </div>
+            <div class="col-sm-4 form-group">
+                {{ repairForm.faultInfo.faultPriority }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ 'form.title'|trans }}
+            </div>
+            <div class="col-sm-9 form-group">
+                {{ repairForm.faultInfo.title }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ 'form.reporterDescription'|trans }}
+            </div>
+            <div class="col-sm-9 form-group">
+                {{ repairForm.faultInfo.reporterDescription }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ 'form.workerDescription'|trans }}
+            </div>
+            <div class="col-sm-9 form-group">
+                {{ repairForm.faultInfo.workerDescription }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ 'form.maintenanceSchedule'|trans }}
+            </div>
+            <div class="col-sm-9 form-group">
+                {{ repairForm.faultInfo.maintenanceSchedule }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ 'form.order'|trans }}
+            </div>
+            {% if orderSet %}
+                <div class="col-sm-9 form-group">
+                    <blockquote>
+                        <p>{{ repairForm.faultInfo.faultOrder.leaderOrder }}</p>
+                        <footer>{{ repairForm.faultInfo.faultOrder.user.name }}</footer>
+                    </blockquote>
+                </div>
+            {% else %}
+                <div class="col-sm-9 form-group">
+                    {{ 'form.none'|trans }}
+                </div>
+            {% endif %}
+
+            <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ repairForm.cost }}</div>
+
+            <div class="col-sm-3 form-group">
+                {{ 'form.reporter'|trans }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ repairForm.repairTask.user.name }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ 'form.reporterPhone'|trans }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ repairForm.repairTask.user.phone }}
+            </div>
+
+            <div class="col-sm-3 form-group">
+                {{ 'form.receiver'|trans }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ repairForm.receive.name }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ 'form.reporterPhone'|trans }}
+            </div>
+            <div class="col-sm-3 form-group">
+                {{ repairForm.receive.phone }}
+            </div>
         {# 判断是否是报修人 #}
         {% if isCreater %}
-            <table>
-                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                <tr>
-                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.order'|trans }}</td>
-                    <td>
-                        {% if orderSet %}
-                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                        {% else %}
-                            {{ 'form.none'|trans }}
-                        {% endif %}
-                    </td>
-                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td><button type="button" id="confirm">{{ 'form.confirm'|trans }}</button></td>
-                </tr>
-            </table>
-        {% else %}
-            <table>
-                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                <tr>
-                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.order'|trans }}</td>
-                    <td>
-                        {% if orderSet %}
-                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                        {% else %}
-                            {{ 'form.none'|trans }}
-                        {% endif %}
-                    </td>
-                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
+            <div class="col-sm-8 col-sm-offset-4">
+                <button  id="reject" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="驳回" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否驳回">{{ 'form.confirm'|trans }}</button>
+
+                <button  id="confirm" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.confirm'|trans }}</button>
+            </div>
         {% endif %}
     {% endif %}
 
     {# 状态为待评价 #}
     {% if repairForm.formCondition.id == 4 %}
+        <div class="col-sm-8 form-group">
+            <h3>{{ 'form.repairFormInfo'|trans }}</h3>
+        </div>
+        <div class="col-sm-4 form-group">
+            <h3>{{ repairForm.FormCondition.name }}</h3>
+        </div>
+        <div class="col-sm-2 form-group">
+            {{ 'form.time'|trans }}
+        </div>
+        <div class="col-sm-4 form-group">
+            {{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}
+        </div>
+        <div class="col-sm-2 form-group">
+            {{ 'form.location'|trans }}
+        </div>
+        <div class="col-sm-4 form-group">
+            {{ repairForm.faultInfo.group }}
+        </div>
+        <div class="col-sm-2 form-group">
+            {{ 'form.type'|trans }}
+        </div>
+        <div class="col-sm-4 form-group">
+            {{ repairForm.faultInfo.faultType }}
+        </div>
+        <div class="col-sm-2 form-group">
+            {{ 'form.priority'|trans }}
+        </div>
+        <div class="col-sm-4 form-group">
+            {{ repairForm.faultInfo.faultPriority }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ 'form.title'|trans }}
+        </div>
+        <div class="col-sm-9 form-group">
+            {{ repairForm.faultInfo.title }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ 'form.reporterDescription'|trans }}
+        </div>
+        <div class="col-sm-9 form-group">
+            {{ repairForm.faultInfo.reporterDescription }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ 'form.workerDescription'|trans }}
+        </div>
+        <div class="col-sm-9 form-group">
+            {{ repairForm.faultInfo.workerDescription }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ 'form.maintenanceSchedule'|trans }}
+        </div>
+        <div class="col-sm-9 form-group">
+            {{ repairForm.faultInfo.maintenanceSchedule }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ 'form.order'|trans }}
+        </div>
+        {% if orderSet %}
+            <div class="col-sm-9 form-group">
+                <blockquote>
+                    <p>{{ repairForm.faultInfo.faultOrder.leaderOrder }}</p>
+                    <footer>{{ repairForm.faultInfo.faultOrder.user.name }}</footer>
+                </blockquote>
+            </div>
+        {% else %}
+            <div class="col-sm-9 form-group">
+                {{ 'form.none'|trans }}
+            </div>
+        {% endif %}
+
+        <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ repairForm.cost }}</div>
+
+        <div class="col-sm-3 form-group">
+            {{ 'form.reporter'|trans }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ repairForm.repairTask.user.name }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ 'form.reporterPhone'|trans }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ repairForm.repairTask.user.phone }}
+        </div>
+
+        <div class="col-sm-3 form-group">
+            {{ 'form.receiver'|trans }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ repairForm.receive.name }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ 'form.reporterPhone'|trans }}
+        </div>
+        <div class="col-sm-3 form-group">
+            {{ repairForm.receive.phone }}
+        </div>
         {# 判断是否是报修人 #}
         {% if isCreater %}
-            <table>
-                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                <tr>
-                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.order'|trans }}</td>
-                    <td>
-                        {% if orderSet %}
-                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                        {% else %}
-                            {{ 'form.none'|trans }}
-                        {% endif %}
-                    </td>
-                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td><button type="button" id="comment">{{ 'form.comment'|trans }}</button></td>
-                </tr>
-            </table>
-        {% else %}
-            <table>
-                <th colspan="2">{{ 'form.repairFormInfo'|trans }}</th><th colspan="2">{{ repairForm.FormCondition.name }}</th>
-                <tr>
-                    <td>{{ 'form.time'|trans }}</td><td>{{ repairForm.repairTask.createTime|date('Y-m-d H:i:s') }}</td><td>{{ 'form.location'|trans }}</td><td>{{ repairForm.faultInfo.group.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.type'|trans }}</td><td>{{ repairForm.faultInfo.faultType.name }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ repairForm.faultInfo.faultPriority.name }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporterDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.reporterDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.workerDescription'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.workerDescription }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.maintenanceSchedule'|trans }}</td><td colspan="3">{{ repairForm.faultInfo.maintenanceSchedule }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.order'|trans }}</td>
-                    <td>
-                        {% if orderSet %}
-                            {{ repairForm.faultInfo.faultOrder.leaderOrder }}
-                        {% else %}
-                            {{ 'form.none'|trans }}
-                        {% endif %}
-                    </td>
-                    <td>{{ 'form.money'|trans }}</td><td>{{ repairForm.cost }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.reporter'|trans }}</td><td>{{ repairForm.repairTask.user.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.repairTask.user.phone }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'form.receiver'|trans }}</td><td>{{ repairForm.receive.name }}</td><td>{{ 'form.phone'|trans }}</td><td>{{ repairForm.receive.phone }}</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
+            <div class="col-sm-8 col-sm-offset-4">
+                <button type="button" id="comment" class="btn btn-default" data-toggle="modal" data-target="#commentModal">{{ 'form.order'|trans }}</button>
+            </div>
+
+            {# 批示弹出框 #}
+            <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="exampleModalLabel">领导批示</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ path('fault_order',{'action':'set','id':repairForm.id}) }}" {{ form_enctype(order) }} method="post">
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label">批示:</label>
+                                    {{ form_widget(order.leaderOrder, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                {{ form_widget(order._token) }}
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="submit" class="btn btn-primary">确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         {% endif %}
     {% endif %}
 
@@ -857,13 +1060,12 @@ $(document).ready(function() {
     $('#receive').click(function () {
         window.location = "{{ path('fault_action',{'action':'receive','id':repairForm.id}) }}"
     });
-
-    $('#state').toggle(
-            function(){
-                $("body").css("background-color","green");},
-            function(){
-                $("body").css("background-color","red");}
-    );
+    $('#confirm').click(function(){
+        window.location = "{{ path('fault_action',{'action':'confirm','id':repairForm.id}) }}"
+    })
+    $('#reject').click(function(){
+        window.location = "{{ path('fault_action',{'action':'reject','id':repairForm.id}) }}"
+    })
 
 
     $('#reportToLeader').click(function () {

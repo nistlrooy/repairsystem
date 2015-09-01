@@ -17,7 +17,8 @@
             // add your custom field
             $builder->add('faultInfo', new FaultInfoType())
                 ->add('cost','number')
-                ->add('save', 'submit', array('label' => 'save'))
+                ->add('save', 'submit', array('label' => '保存'))
+                ->add('submit', 'submit', array('label' => '提交'))
                 ;
 
         }
