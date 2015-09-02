@@ -13,14 +13,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class RepairFormRepository extends EntityRepository
 {
+
     /**
-     * 获取由$createrId用户创建且状态为$conditonId的维修工单
+     * 获取由$createrId用户创建且状态为为lower和upper之间的维修工单
      * @param $createrId 创建者Id
-     * @param $conditionId 状态Id
+     * @param $conditionLower 状态下限
+     * * @param $conditionUpper 状态上限
      * @return array|null
      *
      */
-    public function getRepairFormByCreater($createrId,$conditionId)
+    public function getRepairFormByCreater($createrId,$conditionLower,$conditionUpper)
     {
         $query = $this->getEntityManager()->createQuery(
             'SELECT r FROM RepairBundle:RepairForm r
@@ -29,10 +31,11 @@ class RepairFormRepository extends EntityRepository
             JOIN t.user u
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
-            WHERE u.id = :createrId AND c.id = :conditionId
+            WHERE u.id = :createrId AND (c.id > :conditionLower and c.id < :conditionUpper)
             ORDER BY p.id DESC,
+             c.id DESC,
              t.createTime DESC'
-        )->setParameters(array('createrId'=>$createrId,'conditionId'=>$conditionId));
+        )->setParameters(array('createrId'=>$createrId,'conditionLower'=>$conditionLower,'conditionUpper'=>$conditionUpper));
         try
         {
             return $query->getResult();
@@ -106,7 +109,7 @@ class RepairFormRepository extends EntityRepository
             JOIN t.user u
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
-            WHERE u.id = :createrId AND (c.id >=4 OR c.id<=6)
+            WHERE u.id = :createrId AND (c.id >=4 AND c.id<=6)
              ORDER BY p.id DESC,
              t.createTime DESC'
         )->setParameters(array('createrId'=>$createrId));
@@ -130,10 +133,10 @@ class RepairFormRepository extends EntityRepository
             'SELECT r From RepairBundle:RepairForm r
             JOIN r.repairTask t
             JOIN r.formCondition c
-            JOIN t.user u
+            JOIN r.receive u
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
-            WHERE u.id = :receiverId AND (c.id >=4 OR c.id<=6)
+            WHERE u.id = :receiverId AND (c.id >=4 AND c.id<=6)
              ORDER BY p.id DESC,
              t.createTime DESC'
         )->setParameters(array('receiverId'=>$receiverId));

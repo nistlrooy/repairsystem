@@ -5,22 +5,34 @@
 {% block body %}
 
 
-    {% trans_default_domain 'RepairBundle' %}
+    <div id="content">
+        <div class="row">
 
-    <table>
-        <tr>
-            <td>{{ 'form.reporterDescription'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td>
-        </tr>
-        {% for h in history %}
+            {% trans_default_domain 'RepairBundle' %}
 
-            <tr>
-                <a href="{{ path('fault_info',{'id':h.id})  }}">
-                    <td>{{ h.faultInfo.reporterDescription| truncate(5) }}</td>
-                    <td>{{ h.faultInfo.group.name }}</td>
-                    <td>{{ h.repairTask.createTime|date('Y-m-d') }}</td>
-                </a>
-            </tr>
+            <div class="col-md-6 col-md-offset-3">
+                <h3>{{ 'form.MyRepairedHistory'|trans }}</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <td>{{ 'form.title'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ 'form.condition'|trans }}</td>
+                    </tr>
+                    </thead>
+                    <tbody data-link="row" class="rowlink">
+                    {% for h in history %}
+                        <tr>
+                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.title| truncate(8) }}</a></td>
+                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.group.name }}</a></td>
+                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.repairTask.createTime|date('Y-m-d') }}</a></td>
+                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.faultPriority.name }}</a></td>
+                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.formCondition.name }}</a></td>
+                        </tr>
 
-        {% endfor %}
-    </table>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}

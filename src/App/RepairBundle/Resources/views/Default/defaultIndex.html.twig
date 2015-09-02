@@ -60,10 +60,11 @@
     </form>
     </div>
     <div class="col-md-4 col-md-offset-1">
+        <h3>{{ 'form.MyRepairRecord'|trans }}</h3>
     <table class="table table-striped">
         <thead>
             <tr>
-                <td>{{ 'form.title'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td><td>{{ 'form.condition'|trans }}</td>
+                <td>{{ 'form.title'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ 'form.condition'|trans }}</td>
             </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
@@ -72,6 +73,7 @@
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.title| truncate(8) }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.group.name }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.repairTask.createTime|date('Y-m-d') }}</a></td>
+                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.faultPriority.name }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.formCondition.name }}</a></td>
             </tr>
 

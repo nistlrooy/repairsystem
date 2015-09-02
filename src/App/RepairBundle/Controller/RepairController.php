@@ -72,7 +72,7 @@ class RepairController extends Controller
             $em->flush();
             return $this->redirectToRoute('default_homepage');
         }
-        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),1);
+        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4);
 
         return $this->render('@Repair/Default/defaultIndex.html.twig',array(
             'form' => $form->createView(),
@@ -95,6 +95,12 @@ class RepairController extends Controller
         return array(
             'repairForm' => $repairForm,
         );
+    }
+
+    public function createByMeAction()
+    {
+        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreaterHistory($this->get('security.token_storage')->getToken()->getUser()->getId());
+
     }
 
     /**

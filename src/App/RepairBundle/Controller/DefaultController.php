@@ -40,7 +40,7 @@ class DefaultController extends Controller
 
         $form = $this->createForm(new FaultInfoType(),new FaultInfo());
 
-        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),1);
+        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4);
 
         return array(
             'repairForm' => $repairForm,
