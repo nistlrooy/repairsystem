@@ -51,7 +51,7 @@
                     {{ form_widget(form.reporterDescription, {'attr': {'class': 'form-control'}}) }}
                 </div>
                 <div class="col-md-2 col-md-offset-4 form-group">
-                    <button type="submit"  id="myButton" data-toggle="confirmation-singleton" data-placement="top" class="btn btn-primary" >{{ 'form.post'|trans }}</button>
+                    <button type="submit"  id="myButton" class="btn btn-primary" >{{ 'form.post'|trans }}</button>
                 </div>
             </div>
             {{ form_row(form._token) }}
@@ -85,10 +85,10 @@
     </div>
 {% endblock %}
 
-{% block javascript %}
+{% block javascripts %}
     {{ parent() }}
     <script>
-        $('[data-toggle="confirmation-singleton"]').confirmation();
+        $('[data-toggle=confirmation]').confirmation();
     </script>
 
 {% endblock %}

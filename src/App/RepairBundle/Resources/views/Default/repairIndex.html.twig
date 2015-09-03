@@ -4,7 +4,36 @@
 {% block stylesheets %}
 {{ parent() }}
 <style type="text/css">
+    body{
+        min-width: 700px;
+    }
     table {margin:auto;}
+    .formTable{
+        float: left;
+        width: 30%;
+    }
+    #middleImg img{
+        width: 90%;
+        padding: 5%;
+    }
+    #middleImg{
+
+        float: left;
+        width: 20%;
+    }
+    .blank{
+        float: left;
+        width: 10%;
+        padding-top:15px;
+        padding-left:10px;
+        padding-right:30px;
+        padding-bottom:40px;
+        border: 1px solid #ffffff;
+    }
+    .topBlank{
+        padding: 25%;
+    }
+
 
 
 </style>
@@ -12,11 +41,10 @@
 
 {% block body %}
 
-<div class="row">
 
     {% trans_default_domain 'RepairBundle' %}
-
-    <div class="col-md-4 col-md-offset-1">
+    <div class="blank"></div>
+    <div class="formTable">
         <h2>{{ 'table.receiveByMe'|trans }}</h2>
     <table id="received" class="table table-striped">
         <thead>
@@ -37,10 +65,11 @@
         </tbody>
     </table>
     </div>
-    <div class="col-md-1">
-        <img src="{{ asset('bundles/repair/images/middle.png') }}" alt=""/>
+    <div id="middleImg">
+        <div class="topBlank"></div>
+        <img src="{{ asset('bundles/repair/images/middle.png') }}" alt="middleImg"/>
     </div>
-    <div class="col-md-4">
+    <div class="formTable">
         <h2>{{ 'table.waitingForReceived'|trans }}</h2>
     <table id="notReceived" class="table table-striped">
         <thead>
@@ -55,20 +84,23 @@
                 <td class="visible-lg visible-md visible-sm"><a href="{{ path('fault_info',{'id':r.id})  }}">{{ r.faultInfo.group.name }}</a></td>
                 <td class="visible-lg visible-md"><a href="{{ path('fault_info',{'id':r.id})  }}">{{ r.repairTask.createTime|date('Y-m-d') }}</a></td>
                 <td class="visible-lg visible-md visible-sm visible-xs"><a href="{{ path('fault_info',{'id':r.id})  }}">{{ r.faultInfo.faultPriority.name }}</a></td>
-                <td class="rowlink-skip"><a href="{{ path('fault_action',{'action':'receive','id':r.id}) }}"><button class="btn btn-primary" data-toggle="confirmation-singleton" data-placement="top">{{ 'form.receiveIt'|trans }}</button></a></td>
+                <td class="rowlink-skip"><a href="{{ path('fault_action',{'action':'receive','id':r.id}) }}"><button class="btn btn-primary" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.receiveIt'|trans }}</button></a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
     </div>
-</div>
-
+    <div class="blank"></div>
 {% endblock %}
 
-{% block javascript %}
+{% block javascripts %}
     {{ parent() }}
     <script>
-        $('[data-toggle="confirmation-singleton"]').confirmation();
+        $(document).ready(function() {
+            $('[data-toggle=confirmation]').confirmation();
+            //alert((parseInt($('table').css('height')))*0.35);
+            //$('.topBlank').css('padding-top',((parseInt($('table').css('height')))*0.35));
+        })
     </script>
 
 {% endblock %}

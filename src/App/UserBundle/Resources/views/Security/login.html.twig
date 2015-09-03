@@ -29,5 +29,12 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function() {
+
+
+            $('.navbar-brand img').css('src',{{ asset('bundles/repair/images/Logo-white.png') }});
+        })
+    </script>
 
 {% endblock %}
