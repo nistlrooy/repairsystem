@@ -277,6 +277,9 @@ class FaultInfo
         return $this->faultOrder;
     }
 
-
+    public function __toString()
+    {
+        return $this->title;
+    }
 
 }

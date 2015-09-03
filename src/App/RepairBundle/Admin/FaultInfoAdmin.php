@@ -15,6 +15,11 @@ class FaultInfoAdmin extends Admin
     {
 
         $formMapper
+            ->add('title','text',array(
+                'label' => 'form.title',
+
+                'translation_domain' => 'RepairBundle'
+            ))
             ->add('faultType','entity',array(
                 'label' => 'form.faultType',
                 'class' => 'App\RepairBundle\Entity\FaultType',
@@ -30,23 +35,22 @@ class FaultInfoAdmin extends Admin
                 'class' => 'App\RepairBundle\Entity\FaultPriority',
                 'translation_domain' => 'RepairBundle'
             ))
+
             ->add('reporterDescription','text',array(
                 'label' => 'form.reporterDescription',
 
                 'translation_domain' => 'RepairBundle'
             ))
-            ->add('workerDescription','text',array(
+            ->add('workerDescription','textarea',array(
                 'label' => 'form.workerDescription',
 
                 'translation_domain' => 'RepairBundle'
             ))
-            ->add('maintenanceSchedule','text',array(
+            ->add('maintenanceSchedule','textarea',array(
                 'label' => 'form.maintenanceSchedule',
 
                 'translation_domain' => 'RepairBundle'
             ))
-
-
         ;
     }
 
@@ -65,7 +69,11 @@ class FaultInfoAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('reporterDescription')
+            ->addIdentifier('title')
+            ->add('reporterDescription')
+            ->add('faultPriority')
+            ->add('faultType')
+            ->add('group')
 
 
         ;

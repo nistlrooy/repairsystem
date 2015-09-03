@@ -2,6 +2,7 @@
 
 namespace App\RepairBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -89,14 +90,7 @@ class RepairForm
 
 
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->formComment = new \Doctrine\Common\Collections\ArrayCollection();
 
-    }
 
     /**
      * Get id
@@ -325,4 +319,12 @@ class RepairForm
     {
         return $this->cost;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->formComment = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }
