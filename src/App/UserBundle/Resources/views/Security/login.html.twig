@@ -2,6 +2,19 @@
 
 {% block title %}RepairBundle:Repair:show{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        body{
+            background-image: url("{{ asset('bundles/repair/img/Background-Gradient.jpg') }}");
+            background-repeat:no-repeat;
+            background-size:100% 100%;
+            background-origin: border-box;
+        }
+
+    </style>
+{% endblock %}
+
 {% block nav %}
 
     <a class="navbar-brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/repair/images/Logo-white.png') }}" alt="logo" width="180" /></a>
@@ -33,6 +46,14 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     </form>
 {% endblock %}
+
+{% block footer %}
+
+
+
+{% endblock %}
+
+
 {% block javascripts %}
     {{ parent() }}
     <script>
