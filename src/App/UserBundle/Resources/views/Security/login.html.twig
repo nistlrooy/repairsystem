@@ -2,6 +2,12 @@
 
 {% block title %}RepairBundle:Repair:show{% endblock %}
 
+{% block nav %}
+
+    <a class="navbar-brand" href="{{ path('homepage') }}"><img src="{{ asset('bundles/repair/images/Logo-white.png') }}" alt="logo" width="180" /></a>
+
+{% endblock %}
+
 {% block body %}
     {% trans_default_domain 'FOSUserBundle' %}
     {% if error %}
@@ -33,7 +39,6 @@
         $(document).ready(function() {
 
 
-            $('.navbar-brand img').css('src',{{ asset('bundles/repair/images/Logo-white.png') }});
         })
     </script>
 
