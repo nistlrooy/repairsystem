@@ -15,7 +15,10 @@
         {
 
             $formMapper
-                ->add('faultInfo','sonata_type_admin'
+                ->add('faultInfo','sonata_type_admin',array(
+                        'btn_delete'    => false,
+                        'btn_add'    => false,
+                    )
                 )
                 ->add('cost','number')
                 ->add('formCondition', 'entity', array(
@@ -32,7 +35,9 @@
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
-                ->add('cost')
+                ->add('faultInfo.group')
+                ->add('faultInfo.faultType')
+                ->add('faultInfo.faultPriority')
 
             ;
         }
@@ -42,6 +47,7 @@
         {
             $listMapper
                 ->addIdentifier('faultInfo.title')
+                ->add('faultInfo.group')
                 ->add('faultInfo', null, array(
                     'lable'=> 'form.faultType',
                     'translation_domain' => 'RepairBundle',

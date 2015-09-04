@@ -6,12 +6,57 @@
     {{ parent() }}
     <style type="text/css">
         body{
+
+            min-height: 480px;
             background-image: url("{{ asset('bundles/repair/img/Background-Gradient.jpg') }}");
             background-repeat:no-repeat;
             background-size:100% 100%;
-            background-origin: border-box;
+            background-origin:content-box;
         }
 
+
+        .navbar-brand{
+            float: left;
+        }
+        .bottom {
+            clear: both;
+
+            bottom: 0;
+            position: absolute;
+            width: 100%;
+        }
+        .bottom img{
+            margin-left: 5%;
+            margin-right: 5%;
+            width: 90%;
+        }
+
+
+
+        div p{
+            font-size: 60px;
+            color: #ffffff;
+
+            padding-bottom:30px;
+
+
+
+            text-align: center;
+        }
+
+        #welcome{
+            padding-top: 60px;
+            color: #ffffff;
+            clear: both;
+
+            text-align: center;
+        }
+        #login{
+            text-align: center;
+        }
+        .checkbox label{
+            color: #ffffff;
+        }
     </style>
 {% endblock %}
 
@@ -22,34 +67,62 @@
 {% endblock %}
 
 {% block body %}
+
+
+    <div id="welcome" class="col-sm-6 col-sm-offset-3">
+        <h4>欢&nbsp;&nbsp;迎&nbsp;&nbsp;使&nbsp;&nbsp;用</h4>
+    </div>
+
+    <div class="col-sm-6 col-sm-offset-3">
+        <p>办公报修系统</p>
+    </div>
+
     {% trans_default_domain 'FOSUserBundle' %}
+
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
+<div id="login">
+    <form class="form-horizontal col-sm-2 col-sm-offset-5" action="{{ path("fos_user_security_check") }}" method="post">
+            <div class="form-group">
 
-    <form class="form-inline" action="{{ path("fos_user_security_check") }}" method="post">
-        <div class="form-group">
-            <label class="sr-only" for="username">{{ 'form.username'|trans }}</label>
-            <input type="text" class="form-control" id="username" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}" required="required">
-        </div>
-        <div class="form-group">
-            <label class="sr-only" for="password">{{ 'form.password'|trans }}</label>
-            <input type="password" class="form-control" id="password"  name="_password" required="required" placeholder="{{ 'security.login.password'|trans }}">
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" id="remember_me" name="_remember_me" value="on">{{ 'security.login.remember_me'|trans }}
-            </label>
-        </div>
-        <input type="submit" id="_submit" name="_submit" class="btn btn-default" value="{{ 'security.login.submit'|trans }}" />
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="username" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}" required="required">
+                </div>
+            </div>
+            <div class="form-group">
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    </form>
+                <div class="col-sm-12">
+                    <input type="password" class="form-control" id="password"  name="_password" required="required" placeholder="{{ 'security.login.password'|trans }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="remember_me" name="_remember_me" value="on">{{ 'security.login.remember_me'|trans }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input type="submit" id="_submit" name="_submit" class="btn btn-default" value="{{ 'security.login.submit'|trans }}" />
+                </div>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        </form>
+
+
+
+</div>
 {% endblock %}
 
 {% block footer %}
 
-
+<div class="bottom">
+    <img src="{{ asset('bundles/repair/img/indexBottom.png') }}" alt="items" />
+</div>
 
 {% endblock %}
 

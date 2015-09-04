@@ -28,6 +28,10 @@
                         'required'    => false,
                     )
                 )
+                ->add('phone','text',array(
+                    'label' => 'form.phone',
+                    'translation_domain' => 'FOSUserBundle'
+                ))
                 ->add('enabled', 'checkbox', array(
                     'label'     => 'Enable Account',
                     'translation_domain' => 'FOSUserBundle',
