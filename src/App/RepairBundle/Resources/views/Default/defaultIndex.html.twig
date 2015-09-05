@@ -5,7 +5,10 @@
 {% block stylesheets %}
     {{ parent() }}
     <style type="text/css">
-        form .col-md-4 {}
+        .count {
+            padding-top:20px;
+            text-align: end;
+        }
 
 
     </style>
@@ -39,7 +42,7 @@
                     {{ form_widget(form.faultPriority, {'attr': {'class': 'form-control'}}) }}
                 </div>
                 <div class="col-md-4">
-                    {{ 'form.Title'|trans }}
+                    {{ 'form.title'|trans }}
                 </div>
                 <div class="col-md-8 form-group">
                     {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
@@ -48,7 +51,7 @@
                     {{ 'form.reporterDescription'|trans }}
                 </div>
                 <div class="col-md-8 form-group">
-                    {{ form_widget(form.reporterDescription, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_widget(form.reporterDescription, {'attr': {'class': 'form-control','rows':'5'}}) }}
                 </div>
                 <div class="col-md-2 col-md-offset-4 form-group">
                     <button type="submit"  id="myButton" class="btn btn-primary" >{{ 'form.post'|trans }}</button>
@@ -60,15 +63,49 @@
     </form>
     </div>
     <div class="col-md-4 col-md-offset-1">
-        <h3>{{ 'form.MyRepairRecord'|trans }}</h3>
+        <div class="col-md-6">
+            <h3>{{ 'form.MyRepairRecord'|trans }}</h3>
+        </div>
+
+
+
+        <div class="col-md-5 col-md-offset-1 count">
+            <h5>共{{ pagination.getTotalItemCount }}条记录分{{ (pagination.getTotalItemCount/9)|round(0, 'ceil') }}页</h5>
+        </div>
+        {#
+        <table>
+            <tr>
+
+                <th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>
+                <th{% if pagination.isSorted('a.Title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'a.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Release', ['a.date', 'a.time']) }}</th>
+            </tr>
+
+
+            {% for article in pagination %}
+                <tr {% if loop.index is odd %}class="color"{% endif %}>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.date | date('Y-m-d') }}, {{ article.time | date('H:i:s') }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        #}
+        {# display navigation #}
+
+
+
+
+
+
     <table class="table table-striped">
         <thead>
             <tr>
-                <td>{{ 'form.title'|trans }}</td><td>{{ 'form.location'|trans }}</td><td>{{ 'form.date'|trans }}</td><td>{{ 'form.priority'|trans }}</td><td>{{ 'form.condition'|trans }}</td>
+                <td>{{ 'form.title'|trans }}</td><td>{{ knp_pagination_sortable(pagination, 'form.location'|trans, 'a.faultInfo.group.name') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.date'|trans, 'a.repairTask.createTime') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.priority'|trans, 'a.faultInfo.faultPriority.name') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.condition'|trans, 'a.formCondition.name') }}</td>
             </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
-        {% for repair in repairForm %}
+        {% for repair in pagination %}
             <tr>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.title| truncate(8) }}</a></td>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.group.name }}</a></td>
@@ -80,6 +117,10 @@
         {% endfor %}
         </tbody>
     </table>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
     </div>
 </div>
     </div>

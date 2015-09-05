@@ -1,6 +1,6 @@
 {% extends "RepairBundle::layout.html.twig" %}
 
-{% block title %}RepairBundle:Repair:show{% endblock %}
+{% block title %}登录{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -59,6 +59,11 @@
             text-align: center;
         }
 
+        #errorMsg
+        {
+
+            color:#ffff00;
+        }
         .checkbox label{
             color:#ffffff;
         }
@@ -84,13 +89,13 @@
 
     {% trans_default_domain 'FOSUserBundle' %}
 
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+
 <div id="login">
     <form class="form-horizontal col-sm-2 col-sm-offset-5" action="{{ path("fos_user_security_check") }}" method="post">
             <div class="form-group">
-
+                {% if error %}
+                    <div id="errorMsg" class="col-sm-12"><h4>{{ error.messageKey|trans(error.messageData, 'security') }}</h4></div>
+                {% endif %}
                 <div class="col-sm-12">
                     <input type="text" class="form-control" id="username" name="_username" placeholder="{{ 'security.login.username'|trans }}" value="{{ last_username }}" required="required">
                 </div>

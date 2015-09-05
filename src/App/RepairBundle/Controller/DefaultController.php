@@ -36,16 +36,21 @@ class DefaultController extends Controller
      * @Route("/default/index",name="default_homepage")
      * @Template()
      */
-    public function defaultIndexAction(Request $request=null)
+    public function defaultIndexAction()
     {
 
         $form = $this->createForm(new FaultInfoType(),new FaultInfo());
 
         $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4);
-
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $repairForm,
+            $this->get('request')->query->get('page', 1)/*page number*/,
+            8/*limit per page*/
+        );
         return array(
-            'repairForm' => $repairForm,
 
+            'pagination' => $pagination,
             'form' => $form->createView(),
         );
     }

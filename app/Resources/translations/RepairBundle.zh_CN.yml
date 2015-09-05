@@ -1,0 +1,40 @@
+Previous: 上页
+Next: 下页
+form:
+    faultInfo: 报修单
+    faultType: 报修类型
+    group: 故障地点
+    faultPriority: 故障优先级
+    MyRepairRecord: 我的报修记录
+    title: 标题
+    reporterDescription: 报修人描述
+    post: 上报
+    location: 故障地点
+    date: 日期
+    priority: 优先级
+    condition: 状态
+    repairFormInfo: 维修单
+    reportTime: 报修时间
+    type: 报修类型
+    workerDescription: 维修人描述
+    maintenanceSchedule: 维修计划
+    order: 领导批示
+    money: 费用
+    reporter: 报修人
+    receiver: 维修人
+    reporterPhone: 报修人电话
+    MyReportedHistory: 我的历史记录
+    cancel: 取消
+    receiveIt: 接收此单
+    none: 暂无
+    reject: 驳回
+    confirm: 确定
+    comment: 评价
+    reporterToLeader: 上报领导
+    receive: 接收
+
+
+table:
+    receiveByMe: 已接收
+    waitingForReceived: 待接收
+    
