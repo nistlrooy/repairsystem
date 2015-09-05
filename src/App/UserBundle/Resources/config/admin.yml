@@ -2,7 +2,7 @@ services:
     sonata.admin.user:
         class: App\UserBundle\Admin\UserAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "User", label: "User" }
+            - { name: sonata.admin, manager_type: orm, group: "用户", label: "用户管理" }
         arguments:
             - ~
             - App\UserBundle\Entity\User

@@ -16,24 +16,24 @@
             $rolesChoices = self::flattenRoles($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles'));
 
             $formMapper
-                ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
-                ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))
-                ->add('name',null,array('label' => 'form.name', 'translation_domain' => 'FOSUserBundle'))
+                ->add('email', 'email', array('label' => '邮箱', 'translation_domain' => 'FOSUserBundle'))
+                ->add('username', null, array('label' => '账号名', 'translation_domain' => 'FOSUserBundle'))
+                ->add('name',null,array('label' => '中文名', 'translation_domain' => 'FOSUserBundle'))
                 ->add('plainPassword', 'repeated', array(
                         'type' => 'password',
                         'options' => array('translation_domain' => 'FOSUserBundle'),
-                        'first_options' => array('label' => 'form.password'),
-                        'second_options' => array('label' => 'form.password_confirmation'),
-                        'invalid_message' => 'fos_user.password.mismatch',
+                        'first_options' => array('label' => '密码'),
+                        'second_options' => array('label' => '密码确认'),
+                        'invalid_message' => '前后密码不一致',
                         'required'    => false,
                     )
                 )
                 ->add('phone','text',array(
-                    'label' => 'form.phone',
+                    'label' => '电话号码',
                     'translation_domain' => 'FOSUserBundle'
                 ))
                 ->add('enabled', 'checkbox', array(
-                    'label'     => 'Enable Account',
+                    'label'     => '启用账号',
                     'translation_domain' => 'FOSUserBundle',
                     'required'  => false,
                 ))
@@ -48,6 +48,7 @@
             $datagridMapper
                 ->add('username')
                 ->add('name')
+                ->add('group')
             ;
         }
 
@@ -57,6 +58,7 @@
             $listMapper
                 ->addIdentifier('username')
                 ->add('name')
+                ->add('group.name')
 
             ;
         }

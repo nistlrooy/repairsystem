@@ -8,6 +8,7 @@ use App\RepairBundle\Entity\RepairForm;
 use App\RepairBundle\Form\Type\FaultInfoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\BrowserKit\Request;
 
 class DefaultController extends Controller
 {
@@ -35,7 +36,7 @@ class DefaultController extends Controller
      * @Route("/default/index",name="default_homepage")
      * @Template()
      */
-    public function defaultIndexAction()
+    public function defaultIndexAction(Request $request=null)
     {
 
         $form = $this->createForm(new FaultInfoType(),new FaultInfo());
@@ -44,6 +45,7 @@ class DefaultController extends Controller
 
         return array(
             'repairForm' => $repairForm,
+
             'form' => $form->createView(),
         );
     }

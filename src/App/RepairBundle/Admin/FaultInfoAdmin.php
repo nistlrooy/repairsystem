@@ -16,38 +16,38 @@ class FaultInfoAdmin extends Admin
 
         $formMapper
             ->add('title','text',array(
-                'label' => 'form.title',
+                'label' => '标题',
 
                 'translation_domain' => 'RepairBundle'
             ))
             ->add('faultType','entity',array(
-                'label' => 'form.faultType',
+                'label' => '故障类型',
                 'class' => 'App\RepairBundle\Entity\FaultType',
                 'translation_domain' => 'RepairBundle'
             ))
             ->add('group','entity',array(
-                'label' => 'form.location',
+                'label' => '故障地点',
                 'class' => 'App\UserBundle\Entity\Group',
                 'translation_domain' => 'RepairBundle'
             ))
             ->add('faultPriority','entity',array(
-                'label' => 'form.priority',
+                'label' => '优先级',
                 'class' => 'App\RepairBundle\Entity\FaultPriority',
                 'translation_domain' => 'RepairBundle'
             ))
 
             ->add('reporterDescription','text',array(
-                'label' => 'form.reporterDescription',
+                'label' => '报修人描述',
 
                 'translation_domain' => 'RepairBundle'
             ))
             ->add('workerDescription','textarea',array(
-                'label' => 'form.workerDescription',
+                'label' => '维修人描述',
 
                 'translation_domain' => 'RepairBundle'
             ))
             ->add('maintenanceSchedule','textarea',array(
-                'label' => 'form.maintenanceSchedule',
+                'label' => '维修方案',
 
                 'translation_domain' => 'RepairBundle'
             ))

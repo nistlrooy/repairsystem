@@ -20,9 +20,11 @@
                         'btn_add'    => false,
                     )
                 )
-                ->add('cost','number')
+                ->add('cost','number',array(
+                    'label' => '花费'
+                ))
                 ->add('formCondition', 'entity', array(
-                    'label' => 'form.condition',
+                    'label' => '工单状态',
                     'class' => 'App\RepairBundle\Entity\FormCondition',
                     'translation_domain' => 'RepairBundle'
                 ))
@@ -38,6 +40,8 @@
                 ->add('faultInfo.group')
                 ->add('faultInfo.faultType')
                 ->add('faultInfo.faultPriority')
+                ->add('faultInfo.title')
+                ->add('faultInfo.reporterDescription')
 
             ;
         }
@@ -48,12 +52,8 @@
             $listMapper
                 ->addIdentifier('faultInfo.title')
                 ->add('faultInfo.group')
-                ->add('faultInfo', null, array(
-                    'lable'=> 'form.faultType',
-                    'translation_domain' => 'RepairBundle',
-                    'associated_tostring' => 'getFaultType')
-                )
-
+                ->add('faultInfo.faultType')
+                ->add('faultInfo.faultPriority')
 
             ;
         }
