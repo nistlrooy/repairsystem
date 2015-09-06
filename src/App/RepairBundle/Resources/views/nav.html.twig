@@ -32,7 +32,9 @@
                             <li><a href="{{ path('repaired_history') }}">维修记录</a></li>
                         {% endif %}
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
+                        {%  if is_granted('ROLE_LEADER') %}
+                            <li><a href="{{ path('leader_order') }}">等待批示</a></li>
+                        {% endif %}
                     </ul>
                 </li>
 
@@ -47,6 +49,7 @@
                     </ul>
                 </li>
                 <li>
+                    {% trans_default_domain 'RepairBundle' %}
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <a href="{{ path('fos_user_security_logout') }}">{{ 'nav.logout'|trans }}</a>
                     {% else %}

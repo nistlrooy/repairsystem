@@ -98,6 +98,7 @@ class RepairFormRepository extends EntityRepository
             JOIN r.receive u
             JOIN r.repairTask t
             JOIN r.faultInfo i
+            JOIN i.group g
             JOIN  i.faultPriority p
             WHERE u.id = :receiverId AND c.id = :conditionId
             ORDER BY '.$sort.' '.$direction
@@ -136,6 +137,7 @@ class RepairFormRepository extends EntityRepository
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
             JOIN r.repairTask t
+            JOIN i.group g
             WHERE r.receive is NULL
            ORDER BY '.$sort.' '.$direction
             );
@@ -179,6 +181,7 @@ class RepairFormRepository extends EntityRepository
             JOIN r.formCondition c
             JOIN t.user u
             JOIN r.faultInfo i
+            JOIN i.group g
             JOIN  i.faultPriority p
             WHERE u.id = :createrId AND (c.id >=4 AND c.id<=6)
             ORDER BY '.$sort.' '.$direction
@@ -223,6 +226,7 @@ class RepairFormRepository extends EntityRepository
             JOIN r.formCondition c
             JOIN r.receive u
             JOIN r.faultInfo i
+            JOIN i.group g
             JOIN  i.faultPriority p
             WHERE u.id = :receiverId AND (c.id >=4 AND c.id<=6)
             ORDER BY '.$sort.' '.$direction
@@ -235,5 +239,49 @@ class RepairFormRepository extends EntityRepository
             return null;
         }
     }
+
+
+    /**
+     * 获取需要领导批示的工单
+     * @param $sort 排序字段
+     * @param $direction 升序或降序
+     * @return array|null
+     */
+    public function getRepairFormByNeedToOrder($sort=null,$direction=null)
+    {
+        if(($sort == null)||($direction == null))
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r From RepairBundle:RepairForm r
+                JOIN r.repairTask t
+                JOIN r.faultInfo i
+                JOIN  i.faultOrder o
+                JOIN  i.faultPriority p
+                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL
+                ORDER BY p.id DESC,
+                 t.createTime DESC');
+        }
+        else{
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r From RepairBundle:RepairForm r
+                JOIN r.repairTask t
+                JOIN r.faultInfo i
+                JOIN  i.faultOrder o
+                JOIN  i.faultPriority p
+                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL
+                ORDER BY '.$sort.' '.$direction
+            );
+        }
+
+        try{
+            return $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
+    }
+
+
+
+
 
 }

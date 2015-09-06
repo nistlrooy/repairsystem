@@ -14,7 +14,7 @@ class DefaultController extends Controller
 {
 
 
-    const PAGE = 8;
+    const PAGE = 8;/*limit per page*/
 
     /**
      * 首页
@@ -24,13 +24,19 @@ class DefaultController extends Controller
     public function indexAction()
     {
 
-        if($this->get('security.authorization_checker')->isGranted('ROLE_REPAIR'))
+        if($this->get('security.authorization_checker')->isGranted('ROLE_LEADER'))
         {
-            return $this->redirectToRoute('repair_homepage');
+            return $this->redirectToRoute('leader_order');
         }
-        else
-        {
-            return $this->redirectToRoute('default_homepage');
+        else{
+            if($this->get('security.authorization_checker')->isGranted('ROLE_REPAIR'))
+            {
+                return $this->redirectToRoute('repair_homepage');
+            }
+            else
+            {
+                return $this->redirectToRoute('default_homepage');
+            }
         }
 
     }
@@ -73,7 +79,7 @@ class DefaultController extends Controller
     public function repairIndexAction()
     {
         $received = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByReceiver($this->get('security.token_storage')->getToken()->getUser()->getId(),2,$this->get('request')->get('sort'),$this->get('request')->get('direction'));
-        $notReceived =$this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByNotReceived($this->get('request')->get('sort'),$this->get('request')->get('direction'));
+        $notReceived =$this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByNotReceived($this->get('request')->get('sort2'),$this->get('request')->get('direction2'));
 
         $paginator  = $this->get('knp_paginator');
 
@@ -92,12 +98,12 @@ class DefaultController extends Controller
             $notReceived,
             $page2,
             self::PAGE,
-            array('pageParameterName' => $pagename2)
+            array('pageParameterName' => $pagename2,'sortFieldParameterName'=> 'sort2','sortDirectionParameterName' => 'direction2')
 )       ;
 
         return array(
-            'pagination1' => $pagination1,
-            'pagination2' => $pagination2
+            'received' => $pagination1,
+            'notReceived' => $pagination2
         );
     }
 
@@ -126,12 +132,31 @@ class DefaultController extends Controller
      * @Template()
      *
      */
-    public function MyRepairedHistoryAction()
+    public function myRepairedHistoryAction()
     {
         $history = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByReceiverHistory($this->get('security.token_storage')->getToken()->getUser()->getId(),$this->get('request')->get('sort'),$this->get('request')->get('direction'));
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $history,
+            $this->get('request')->query->get('page', 1)/*page number*/,
+            self::PAGE/*limit per page*/
+        );
+        return array(
+            'pagination' => $pagination,
+        );
+    }
+
+
+    /**
+     * @Route("/leader/order",name="leader_order")
+     * @Template()
+     */
+    public function orderIndexAction()
+    {
+        $order = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByNeedToOrder($this->get('request')->get('sort'),$this->get('request')->get('direction'));
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $order,
             $this->get('request')->query->get('page', 1)/*page number*/,
             self::PAGE/*limit per page*/
         );

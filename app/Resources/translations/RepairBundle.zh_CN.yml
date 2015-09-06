@@ -4,10 +4,10 @@ form:
     faultInfo: 报修单
     faultType: 报修类型
     group: 故障地点
-    faultPriority: 故障优先级
+    faultPriority: 优先级
     MyRepairRecord: 我的报修记录
     title: 标题
-    reporterDescription: 报修人描述
+    reporterDescription: 故障描述
     post: 上报
     location: 故障地点
     date: 日期
@@ -30,11 +30,13 @@ form:
     reject: 驳回
     confirm: 确定
     comment: 评价
-    reporterToLeader: 上报领导
+    reportToLeader: 上报领导
     receive: 接收
 
 
 table:
     receiveByMe: 已接收
     waitingForReceived: 待接收
-    
+nav:
+    login: 登录账号
+    logout: 退出账号

@@ -34,6 +34,8 @@ security:
         - { path: ^/fault, role: ROLE_USER }
         - { path: ^/default, role: ROLE_USER }
         - { path: ^/repair, role: ROLE_REPAIR }
+        - { path: ^/leader, role: ROLE_LEADER }
+
 
 
 

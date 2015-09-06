@@ -34,22 +34,42 @@
         padding: 25%;
     }
 
-
+    .count {
+        padding-top:20px;
+        text-align: end;
+    }
 
 </style>
 {% endblock %}
 
 {% block body %}
-
+<div id="content">
+    <div class="row">
 
     {% trans_default_domain 'RepairBundle' %}
     <div class="blank"></div>
     <div class="formTable">
-        <h2>{{ 'table.receiveByMe'|trans }}</h2>
+        <div class="col-md-6">
+            <h3>{{ 'table.receiveByMe'|trans }}</h3>
+        </div>
+        <div class="col-md-5 col-md-offset-1 count">
+            <h5>共{{ received.getTotalItemCount }}条记录分{{ (received.getTotalItemCount/8)|round(0, 'ceil') }}页</h5>
+        </div>
     <table id="received" class="table table-striped">
         <thead>
         <tr>
-            <td>{{ 'form.title'|trans }}</td><td class="visible-lg visible-md visible-sm">{{ 'form.location'|trans }}</td><td class="visible-lg visible-md">{{ 'form.date'|trans }}</td><td class="visible-lg visible-md visible-sm visible-xs">{{ 'form.priority'|trans }}</td>
+            <td>
+                {{ 'form.title'|trans }}
+            </td>
+            <td class="visible-lg visible-md visible-sm">
+                {{ knp_pagination_sortable(received, 'form.location'|trans, 'g.id') }}
+            </td>
+            <td class="visible-lg visible-md">
+                {{ knp_pagination_sortable(received, 'form.date'|trans, 't.createTime') }}
+            </td>
+            <td class="visible-lg visible-md visible-sm visible-xs">
+                {{ knp_pagination_sortable(received, 'form.priority'|trans, 'p.id') }}
+            </td>
         </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
@@ -64,17 +84,35 @@
         {% endfor %}
         </tbody>
     </table>
+        <div class="navigation">
+            {{ knp_pagination_render(received) }}
+        </div>
     </div>
     <div id="middleImg">
         <div class="topBlank"></div>
         <img src="{{ asset('bundles/repair/images/middle.png') }}" alt="middleImg"/>
     </div>
     <div class="formTable">
-        <h2>{{ 'table.waitingForReceived'|trans }}</h2>
+        <div class="col-md-6">
+            <h3>{{ 'table.waitingForReceived'|trans }}</h3>
+        </div>
+        <div class="col-md-5 col-md-offset-1 count">
+            <h5>共{{ notReceived.getTotalItemCount }}条记录分{{ (notReceived.getTotalItemCount/8)|round(0, 'ceil') }}页</h5>
+        </div>
+
     <table id="notReceived" class="table table-striped">
         <thead>
         <tr>
-            <td>{{ 'form.title'|trans }}</td><td class="visible-lg visible-md visible-sm">{{ 'form.location'|trans }}</td><td class="visible-lg visible-md">{{ 'form.date'|trans }}</td><td class="visible-lg visible-md visible-sm visible-xs">{{ 'form.priority'|trans }}</td>
+            <td>{{ 'form.title'|trans }}</td>
+            <td class="visible-lg visible-md visible-sm">
+                {{ knp_pagination_sortable(notReceived, 'form.location'|trans, 'g.id') }}
+            </td>
+            <td class="visible-lg visible-md">
+                {{ knp_pagination_sortable(notReceived, 'form.date'|trans, 't.createTime') }}
+            </td>
+            <td class="visible-lg visible-md visible-sm visible-xs">
+                {{ knp_pagination_sortable(notReceived, 'form.priority'|trans, 'p.id') }}
+            </td>
         </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
@@ -89,8 +127,14 @@
         {% endfor %}
         </tbody>
     </table>
+        <div class="navigation">
+            {{ knp_pagination_render(notReceived) }}
+        </div>
     </div>
     <div class="blank"></div>
+
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

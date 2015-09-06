@@ -20,12 +20,13 @@
         }
         .bottom {
             clear: both;
-            height: 30%;
+            height: 40%;
             bottom: 0;
             position: absolute;
             width: 100%;
             text-align: center;
             z-index: -99;
+            overflow:hidden
         }
         .bottom img{
             margin-left: 10%;
@@ -34,8 +35,15 @@
             max-width: 1500px;
 
         }
+        #_submit{
+            width: 80px;
+            background-color:#227ABF ;
+            color: #ffffff;
+        }
 
-
+        .checkbox{
+            min-width: 50px;
+        }
 
         div p{
             font-size: 60px;
@@ -106,7 +114,7 @@
                     <input type="password" class="form-control" id="password"  name="_password" required="required" placeholder="{{ 'security.login.password'|trans }}">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm-7">
                 <div class="col-sm-12">
                     <div class="checkbox">
                         <label>
@@ -115,9 +123,9 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group col-sm-5">
                 <div class="col-sm-12">
-                    <input type="submit" id="_submit" name="_submit" class="btn btn-default" value="{{ 'security.login.submit'|trans }}" />
+                    <input type="submit" id="_submit" name="_submit" class="btn" value="{{ 'security.login.submit'|trans }}" />
                 </div>
             </div>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
