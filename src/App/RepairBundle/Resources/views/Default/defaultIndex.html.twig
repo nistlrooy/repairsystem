@@ -70,7 +70,7 @@
 
 
         <div class="col-md-5 col-md-offset-1 count">
-            <h5>共{{ pagination.getTotalItemCount }}条记录分{{ (pagination.getTotalItemCount/9)|round(0, 'ceil') }}页</h5>
+            <h5>共{{ pagination.getTotalItemCount }}条记录分{{ (pagination.getTotalItemCount/8)|round(0, 'ceil') }}页</h5>
         </div>
         {#
         <table>
@@ -101,7 +101,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <td>{{ 'form.title'|trans }}</td><td>{{ knp_pagination_sortable(pagination, 'form.location'|trans, 'u.') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.date'|trans, 't.createTime') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.priority'|trans, 'p.id') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.condition'|trans, 'c.id') }}</td>
+                <td>{{ 'form.title'|trans }}</td><td>{{ knp_pagination_sortable(pagination, 'form.location'|trans, 'g.id') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.date'|trans, 't.createTime') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.priority'|trans, 'p.id') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.condition'|trans, 'c.id') }}</td>
             </tr>
         </thead>
         <tbody data-link="row" class="rowlink">

@@ -14,6 +14,8 @@ class DefaultController extends Controller
 {
 
 
+    const PAGE = 8;
+
     /**
      * 首页
      * @Route("/",name="homepage")
@@ -52,7 +54,7 @@ class DefaultController extends Controller
         $pagination = $paginator->paginate(
             $repairForm,
             $this->get('request')->query->get('page', 1)/*page number*/,
-            8/*limit per page*/
+            self::PAGE/*limit per page*/
         );
         return array(
 
@@ -70,11 +72,32 @@ class DefaultController extends Controller
      */
     public function repairIndexAction()
     {
-        $received = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByReceiver($this->get('security.token_storage')->getToken()->getUser()->getId(),2);
-        $notReceived =$this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByNotReceived();
+        $received = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByReceiver($this->get('security.token_storage')->getToken()->getUser()->getId(),2,$this->get('request')->get('sort'),$this->get('request')->get('direction'));
+        $notReceived =$this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByNotReceived($this->get('request')->get('sort'),$this->get('request')->get('direction'));
+
+        $paginator  = $this->get('knp_paginator');
+
+        $pagename1 = 'page1'; // Set custom page variable name
+        $page1 = $this->get('request')->query->get($pagename1, 1); // Get custom page variable
+        $pagination1 = $paginator->paginate(
+            $received,
+            $page1,
+            self::PAGE,
+            array('pageParameterName' => $pagename1)
+)       ;
+
+        $pagename2 = 'page2'; // Set another custom page variable name
+        $page2 = $this->get('request')->query->get($pagename2, 1); // Get another custom page variable
+        $pagination2 = $paginator->paginate(
+            $notReceived,
+            $page2,
+            self::PAGE,
+            array('pageParameterName' => $pagename2)
+)       ;
+
         return array(
-            'received' => $received,
-            'notReceived' => $notReceived
+            'pagination1' => $pagination1,
+            'pagination2' => $pagination2
         );
     }
 
@@ -84,11 +107,17 @@ class DefaultController extends Controller
      * @Template()
      *
      */
-    public function MyReportedHistoryAction()
+    public function myReportedHistoryAction()
     {
-        $history = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreaterHistory($this->get('security.token_storage')->getToken()->getUser()->getId());
+        $history = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreaterHistory($this->get('security.token_storage')->getToken()->getUser()->getId(),$this->get('request')->get('sort'),$this->get('request')->get('direction'));
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $history,
+            $this->get('request')->query->get('page', 1)/*page number*/,
+            self::PAGE/*limit per page*/
+        );
         return array(
-            'history'=>$history
+            'pagination' => $pagination,
         );
     }
 
@@ -99,9 +128,15 @@ class DefaultController extends Controller
      */
     public function MyRepairedHistoryAction()
     {
-        $history = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByReceiverHistory($this->get('security.token_storage')->getToken()->getUser()->getId());
+        $history = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByReceiverHistory($this->get('security.token_storage')->getToken()->getUser()->getId(),$this->get('request')->get('sort'),$this->get('request')->get('direction'));
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $history,
+            $this->get('request')->query->get('page', 1)/*page number*/,
+            self::PAGE/*limit per page*/
+        );
         return array(
-            'history'=>$history
+            'pagination' => $pagination,
         );
     }
 

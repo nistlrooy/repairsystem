@@ -18,7 +18,9 @@ class RepairFormRepository extends EntityRepository
      * 获取由$createrId用户创建且状态为为lower和upper之间的维修工单
      * @param $createrId 创建者Id
      * @param $conditionLower 状态下限
-     * * @param $conditionUpper 状态上限
+     * @param $conditionUpper 状态上限
+     * @param $sort 排序字段
+     * @param $direction 升序或降序
      * @return array|null
      *
      */
@@ -34,7 +36,8 @@ class RepairFormRepository extends EntityRepository
                 JOIN r.faultInfo i
                 JOIN  i.faultPriority p
                 WHERE u.id = :createrId AND (c.id > :conditionLower and c.id < :conditionUpper)
-                ORDER BY p.id DESC,
+                ORDER BY
+                p.id DESC,
                 c.id DESC,
                 t.createTime DESC'
             )->setParameters(array('createrId'=>$createrId,'conditionLower'=>$conditionLower,'conditionUpper'=>$conditionUpper));
@@ -47,14 +50,11 @@ class RepairFormRepository extends EntityRepository
                 JOIN r.formCondition c
                 JOIN t.user u
                 JOIN r.faultInfo i
+                JOIN i.group g
                 JOIN  i.faultPriority p
                 WHERE u.id = :createrId AND (c.id > :conditionLower and c.id < :conditionUpper)
-                ORDER BY
-                p.id DESC,
-                c.id DESC,
-                t.createTime DESC,
-                :sort  :direction'
-            )->setParameters(array('createrId'=>$createrId,'conditionLower'=>$conditionLower,'conditionUpper'=>$conditionUpper,'sort'=>$sort,'direction'=>$direction));
+                ORDER BY '.$sort.' '.$direction
+            )->setParameters(array('createrId'=>$createrId,'conditionLower'=>$conditionLower,'conditionUpper'=>$conditionUpper));
         }
 
 
@@ -72,21 +72,38 @@ class RepairFormRepository extends EntityRepository
      * 获取由$receiverId用户接收的且状态为$conditionId的维修工单
      * @param $receiverId 接收工单者Id
      * @param $conditionId 状态Id
+     * @param $sort 排序字段
+     * @param $direction 升序或降序
      * @return array|null
      */
-    public function getRepairFormByReceiver($receiverId,$conditionId)
+    public function getRepairFormByReceiver($receiverId,$conditionId,$sort=null,$direction=null)
     {
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT r From RepairBundle:RepairForm r
+        if(($sort == null)||($direction == null))
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r From RepairBundle:RepairForm r
+                JOIN r.formCondition c
+                JOIN r.receive u
+                JOIN r.repairTask t
+                JOIN r.faultInfo i
+                JOIN  i.faultPriority p
+                WHERE u.id = :receiverId AND c.id = :conditionId
+                ORDER BY p.id DESC,
+                 t.createTime DESC'
+            )->setParameters(array('receiverId'=>$receiverId,'conditionId'=>$conditionId));
+        }else{
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r From RepairBundle:RepairForm r
             JOIN r.formCondition c
             JOIN r.receive u
             JOIN r.repairTask t
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
             WHERE u.id = :receiverId AND c.id = :conditionId
-            ORDER BY p.id DESC,
-             t.createTime DESC'
-        )->setParameters(array('receiverId'=>$receiverId,'conditionId'=>$conditionId));
+            ORDER BY '.$sort.' '.$direction
+            )->setParameters(array('receiverId'=>$receiverId,'conditionId'=>$conditionId));
+        }
+
         try{
             return $query->getResult();
         }catch (\Doctrine\ORM\NoResultException $e){
@@ -96,20 +113,34 @@ class RepairFormRepository extends EntityRepository
 
     /**
      * 获取没有被接收的维修工单
+     * @param $sort 排序字段
+     * @param $direction 升序或降序
      * @return array|null
      */
-    public function getRepairFormByNotReceived()
+    public function getRepairFormByNotReceived($sort=null,$direction=null)
     {
-
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT r FROM RepairBundle:RepairForm r
+        if(($sort == null)||($direction == null))
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r FROM RepairBundle:RepairForm r
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
             JOIN r.repairTask t
             WHERE r.receive is NULL
             ORDER BY p.id DESC,
              t.createTime DESC'
-        );
+            );
+        }else{
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r FROM RepairBundle:RepairForm r
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            JOIN r.repairTask t
+            WHERE r.receive is NULL
+           ORDER BY '.$sort.' '.$direction
+            );
+        }
+
         try{
             return $query->getResult();
         }catch (\Doctrine\ORM\NoResultException $e){
@@ -120,13 +151,17 @@ class RepairFormRepository extends EntityRepository
     /**
      * 获取已确认或取消的维修工单记录
      * @param $createrId
+     * @param $sort 排序字段
+     * @param $direction 升序或降序
      * @return array|null
      *
      */
-    public function getRepairFormByCreaterHistory($createrId)
+    public function getRepairFormByCreaterHistory($createrId,$sort=null,$direction=null)
     {
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT r FROM RepairBundle:RepairForm r
+        if(($sort == null)||($direction == null))
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r FROM RepairBundle:RepairForm r
             JOIN r.repairTask t
             JOIN r.formCondition c
             JOIN t.user u
@@ -135,7 +170,21 @@ class RepairFormRepository extends EntityRepository
             WHERE u.id = :createrId AND (c.id >=4 AND c.id<=6)
              ORDER BY p.id DESC,
              t.createTime DESC'
-        )->setParameters(array('createrId'=>$createrId));
+            )->setParameters(array('createrId'=>$createrId));
+        }else
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r FROM RepairBundle:RepairForm r
+            JOIN r.repairTask t
+            JOIN r.formCondition c
+            JOIN t.user u
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            WHERE u.id = :createrId AND (c.id >=4 AND c.id<=6)
+            ORDER BY '.$sort.' '.$direction
+            )->setParameters(array('createrId'=>$createrId));
+        }
+
         try
         {
             return $query->getResult();
@@ -147,13 +196,16 @@ class RepairFormRepository extends EntityRepository
     /**
      * 获取由$receiverId用户接收的维修工单历史记录
      * @param $receiverId 接收工单者Id
-     *
+     * @param $sort 排序字段
+     * @param $direction 升序或降序
      * @return array|null
      */
-    public function getRepairFormByReceiverHistory($receiverId)
+    public function getRepairFormByReceiverHistory($receiverId,$sort=null,$direction=null)
     {
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT r From RepairBundle:RepairForm r
+        if(($sort == null)||($direction == null))
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r From RepairBundle:RepairForm r
             JOIN r.repairTask t
             JOIN r.formCondition c
             JOIN r.receive u
@@ -162,7 +214,21 @@ class RepairFormRepository extends EntityRepository
             WHERE u.id = :receiverId AND (c.id >=4 AND c.id<=6)
              ORDER BY p.id DESC,
              t.createTime DESC'
-        )->setParameters(array('receiverId'=>$receiverId));
+            )->setParameters(array('receiverId'=>$receiverId));
+        }
+        else{
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r From RepairBundle:RepairForm r
+            JOIN r.repairTask t
+            JOIN r.formCondition c
+            JOIN r.receive u
+            JOIN r.faultInfo i
+            JOIN  i.faultPriority p
+            WHERE u.id = :receiverId AND (c.id >=4 AND c.id<=6)
+            ORDER BY '.$sort.' '.$direction
+            )->setParameters(array('receiverId'=>$receiverId));
+        }
+
         try{
             return $query->getResult();
         }catch (\Doctrine\ORM\NoResultException $e){
