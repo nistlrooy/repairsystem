@@ -101,7 +101,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <td>{{ 'form.title'|trans }}</td><td>{{ knp_pagination_sortable(pagination, 'form.location'|trans, 'a.faultInfo.group.name') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.date'|trans, 'a.repairTask.createTime') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.priority'|trans, 'a.faultInfo.faultPriority.name') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.condition'|trans, 'a.formCondition.name') }}</td>
+                <td>{{ 'form.title'|trans }}</td><td>{{ knp_pagination_sortable(pagination, 'form.location'|trans, 'u.') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.date'|trans, 't.createTime') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.priority'|trans, 'p.id') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.condition'|trans, 'c.id') }}</td>
             </tr>
         </thead>
         <tbody data-link="row" class="rowlink">

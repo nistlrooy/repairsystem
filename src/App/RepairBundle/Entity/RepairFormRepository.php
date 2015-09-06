@@ -22,20 +22,43 @@ class RepairFormRepository extends EntityRepository
      * @return array|null
      *
      */
-    public function getRepairFormByCreater($createrId,$conditionLower,$conditionUpper)
+    public function getRepairFormByCreater($createrId,$conditionLower,$conditionUpper,$sort=null,$direction=null)
     {
-        $query = $this->getEntityManager()->createQuery(
-            'SELECT r FROM RepairBundle:RepairForm r
-            JOIN r.repairTask t
-            JOIN r.formCondition c
-            JOIN t.user u
-            JOIN r.faultInfo i
-            JOIN  i.faultPriority p
-            WHERE u.id = :createrId AND (c.id > :conditionLower and c.id < :conditionUpper)
-            ORDER BY p.id DESC,
-             c.id DESC,
-             t.createTime DESC'
-        )->setParameters(array('createrId'=>$createrId,'conditionLower'=>$conditionLower,'conditionUpper'=>$conditionUpper));
+        if(($sort == null)||($direction == null))
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r FROM RepairBundle:RepairForm r
+                JOIN r.repairTask t
+                JOIN r.formCondition c
+                JOIN t.user u
+                JOIN r.faultInfo i
+                JOIN  i.faultPriority p
+                WHERE u.id = :createrId AND (c.id > :conditionLower and c.id < :conditionUpper)
+                ORDER BY p.id DESC,
+                c.id DESC,
+                t.createTime DESC'
+            )->setParameters(array('createrId'=>$createrId,'conditionLower'=>$conditionLower,'conditionUpper'=>$conditionUpper));
+        }
+        else
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT r FROM RepairBundle:RepairForm r
+                JOIN r.repairTask t
+                JOIN r.formCondition c
+                JOIN t.user u
+                JOIN r.faultInfo i
+                JOIN  i.faultPriority p
+                WHERE u.id = :createrId AND (c.id > :conditionLower and c.id < :conditionUpper)
+                ORDER BY
+                p.id DESC,
+                c.id DESC,
+                t.createTime DESC,
+                :sort  :direction'
+            )->setParameters(array('createrId'=>$createrId,'conditionLower'=>$conditionLower,'conditionUpper'=>$conditionUpper,'sort'=>$sort,'direction'=>$direction));
+        }
+
+
+
         try
         {
             return $query->getResult();

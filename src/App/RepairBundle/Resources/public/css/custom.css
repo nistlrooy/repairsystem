@@ -25,6 +25,7 @@ html {
 body {
     margin-bottom: 60px;
 }
+/*
 .footer {
     clear: both;
     background-color: #f5f5f5;
@@ -33,17 +34,13 @@ body {
     position: absolute;
     width: 100%;
 }
-.container {
-    max-width: 680px;
-    padding-bottom: 0;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 0;
+*/
+.navbar-fixed-bottom {
+    background-color: #f8f8f8;
     width: auto;
 }
 .container .text-muted {
-    margin-bottom: 20px;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 20px;
+
+    padding: 20px;
+
 }

@@ -12,6 +12,8 @@ use Symfony\Component\BrowserKit\Request;
 
 class DefaultController extends Controller
 {
+
+
     /**
      * 首页
      * @Route("/",name="homepage")
@@ -39,9 +41,13 @@ class DefaultController extends Controller
     public function defaultIndexAction()
     {
 
+
+
         $form = $this->createForm(new FaultInfoType(),new FaultInfo());
 
-        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4);
+        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4,$this->get('request')->get('sort'),$this->get('request')->get('direction'));
+
+
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $repairForm,
