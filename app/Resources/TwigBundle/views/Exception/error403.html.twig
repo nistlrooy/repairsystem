@@ -1,0 +1,23 @@
+{% extends "RepairBundle::layout.html.twig" %}
+{% block title %}拒绝访问{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block body %}
+    <div id="content">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+                <h3>错误403：授权失败 拒绝访问</h3>
+                <h5>Error403 Forbidden:  Access Denied</h5>
+            </div>
+            <div class="col-md-8 col-md-offset-4">
+                <img id="img403" src="{{ asset('bundles/repair/images/403.png') }}" alt="403 ERROR"/>
+            </div>
+            <div class="col-md-8 col-md-offset-4">
+                <h3>授权失败 拒绝访问，<a href="{{ path('homepage') }}">点击这里回到首页</a></h3>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

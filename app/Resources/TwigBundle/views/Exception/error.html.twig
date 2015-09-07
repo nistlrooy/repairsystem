@@ -1,0 +1,21 @@
+{% extends "RepairBundle::layout.html.twig" %}
+{% block title %}未知出错{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block body %}
+    <div id="content">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+                <h3>错误：很抱歉告诉您，系统出现未知错误</h3>
+                <h5>Error: Unexpected Error</h5>
+            </div>
+
+            <div class="col-md-8 col-md-offset-4">
+                <h3>发生未知错误，<a href="{{ path('homepage') }}">点击这里回到首页</a></h3>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

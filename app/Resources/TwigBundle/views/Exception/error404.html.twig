@@ -1,11 +1,29 @@
 {% extends "RepairBundle::layout.html.twig" %}
 {% block title %}查无此页{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        #img404 {
+            margin-top:20px;
+            margin-bottom: 20px;
+        }
 
+
+    </style>
+{% endblock %}
 {% block body %}
 <div id="content">
     <div class="row">
-
-        
+        <div class="col-md-8 col-md-offset-4">
+            <h3>错误404：没有找到此页面</h3>
+            <h5>Error404: Page Not Found</h5>
+        </div>
+        <div class="col-md-8 col-md-offset-4">
+            <img id="img404" src="{{ asset('bundles/repair/images/404.jpg') }}" alt="404 ERROR"/>
+        </div>
+        <div class="col-md-8 col-md-offset-4">
+            <h3>没有找到此页面，<a href="{{ path('homepage') }}">点击这里回到首页</a></h3>
+        </div>
 
     </div>
 </div>
