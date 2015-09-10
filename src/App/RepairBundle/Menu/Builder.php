@@ -17,26 +17,38 @@
             $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');//ul
             if($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED'))
             {
-                $menu->addChild('用户',array());
+                $menu->addChild('userInfo',array());
             }
             if($this->container->get('request')->get('_route')=='default_homepage')
             {
-                $menu->addChild('首页', array('route' => 'default_homepage'))
+                $menu->addChild('homePage', array('route' => 'default_homepage','label' => '首页'))
                     ->setAttribute('class','active')
                     ->setLabelAttribute('class', 'sr-only');
             }
             else{
-                $menu->addChild('首页', array('route' => 'default_homepage'));
+                $menu->addChild('homePage', array('route' => 'default_homepage','label' => '首页'));
 
             }
-            $menu->addChild('上报故障',array('route' => 'default_homepage'));
-            $menu->addChild('我的工单',array())
-                ->setAttribute('class','dropdown-toggle')
-                ->setAttribute('data-toggle','dropdown')
-                ->setAttribute('role','button')
-                ->setAttribute('aria-haspopup','true')
-                ->setAttribute('aria-expanded','false')
-                ->setLabelAttribute('class','caret');
+            $menu->addChild('report',array('route' => 'default_homepage','label' => '上报故障'));
+            $menu->addChild('RepairForm',array('route' => 'default_homepage','label' => '我的工单'))
+                ->setAttribute('class','dropdown')
+                ->setLinkAttribute('class','dropdown-toggle')//a
+                ->setLinkAttribute('data-toggle','dropdown')
+                ->setLinkAttribute('role','button')
+                ->setLinkAttribute('aria-haspopup','true')
+                ->setLinkAttribute('aria-expanded','false')
+                ->setLabelAttribute('class','caret')
+                ->setChildrenAttribute('class', 'dropdown-menu');//ul
+            $menu['RepairForm']->addChild('myRepairForm',array('route' => 'default_homepage','label' => '我的工单'));
+            $menu['RepairForm']->addChild('reportHistory',array('route' => 'reported_history','label' => '历史记录'));
+
+
+
+
+
+
+
+
 
 
             // access services from the container!
