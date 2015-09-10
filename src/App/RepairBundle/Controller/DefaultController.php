@@ -165,10 +165,14 @@ class DefaultController extends Controller
     }
 
 
-
+    /**
+     * @Route("/default/message",name="personal_message")
+     * @Template()
+     *
+     */
     public function messageIndexAction()
     {
-
+        return array();
     }
 
 

@@ -256,8 +256,9 @@ class RepairFormRepository extends EntityRepository
                 JOIN r.repairTask t
                 JOIN r.faultInfo i
                 JOIN  i.faultOrder o
+                JOIN r.formCondition c
                 JOIN  i.faultPriority p
-                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL
+                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL AND c.id < 4
                 ORDER BY p.id DESC,
                  t.createTime DESC');
         }
@@ -267,8 +268,9 @@ class RepairFormRepository extends EntityRepository
                 JOIN r.repairTask t
                 JOIN r.faultInfo i
                 JOIN  i.faultOrder o
+                JOIN r.formCondition c
                 JOIN  i.faultPriority p
-                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL
+                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL AND c.id < 4
                 ORDER BY '.$sort.' '.$direction
             );
         }

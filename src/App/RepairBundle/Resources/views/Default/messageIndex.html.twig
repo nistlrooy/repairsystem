@@ -5,10 +5,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <style type="text/css">
-        .count {
-            padding-top:20px;
-            text-align: end;
-        }
+
 
 
     </style>
@@ -18,38 +15,7 @@
     <div id="content">
         <div class="row">
 
-            {% trans_default_domain 'RepairBundle' %}
-
-            <div class="col-md-6 col-md-offset-3">
-                <div class="col-md-6">
-                    <h3>{{ 'form.MyReportedHistory'|trans }}</h3>
-                </div>
-                <div class="col-md-5 col-md-offset-1 count">
-                    <h5>共{{ pagination.getTotalItemCount }}条记录分{{ (pagination.getTotalItemCount/8)|round(0, 'ceil') }}页</h5>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <td>{{ 'form.title'|trans }}</td><td>{{ knp_pagination_sortable(pagination, 'form.location'|trans, 'g.id') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.date'|trans, 't.createTime') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.priority'|trans, 'p.id') }}</td><td>{{ knp_pagination_sortable(pagination, 'form.condition'|trans, 'c.id') }}</td>
-                    </tr>
-                    </thead>
-                    <tbody data-link="row" class="rowlink">
-                    {% for h in pagination %}
-                        <tr>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.title| truncate(8) }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.group.name }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.repairTask.createTime|date('Y-m-d') }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.faultPriority.name }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.formCondition.name }}</a></td>
-                        </tr>
-
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <div class="navigation">
-                    {{ knp_pagination_render(pagination) }}
-                </div>
-            </div>
+            {{ knp_menu_render('RepairBundle:Builder:mainMenu') }}
 
         </div>
     </div>
