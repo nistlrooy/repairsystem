@@ -37,6 +37,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        count_unread: "@app.repair.count_unread_message"
 
 # Assetic Configuration
 assetic:

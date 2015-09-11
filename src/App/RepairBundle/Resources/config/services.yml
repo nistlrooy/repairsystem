@@ -1,11 +1,16 @@
 parameters:
-    app.repair.pre_content_view.class: App\RepairBundle\EventListener\PreContentViewListener
-
+    app.repair.count_unread_message: App\RepairBundle\Service\CountUnReadMessage
 services:
-    app.repair.pre_content_view:
-        class: %app.repair.pre_content_view.class%
-        tags:
-            -{ name: kernel.event_listener, event: kernel.view, method: onPreContentView }
+    app.repair.count_unread_message:
+        class: %app.repair.count_unread_message%
+        arguments:
+            - @service_container
+            - @
+
+    message_repository:
+        class: App\RepairBundle\Entity\RepairMessageRepository
+        arguments:
+            - RepairBundle:RepairMessage
 #    app.repair.example:
 #        class: %app.repair.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
