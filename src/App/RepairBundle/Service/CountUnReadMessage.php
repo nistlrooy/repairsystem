@@ -7,25 +7,26 @@
  */
 
 namespace App\RepairBundle\Service;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use App\RepairBundle\Entity\RepairMessageRepository;
 
 
 class CountUnReadMessage
 {
 
-    protected $container;
+    protected $tokenStorage;
     protected $messageRepository;
 
-    public function __construct(ContainerInterface $container,RepairMessageRepository $messageRepository)
+    public function __construct(TokenStorageInterface  $tokenStorage,RepairMessageRepository $messageRepository)
     {
-        $this->container = $container;
+        $this->tokenStorage =  $tokenStorage;
         $this->messageRepository = $messageRepository;
     }
 
     public function countUnRead()
     {
-        $number = $this->messageRepository->countByUnread($this->container->get('security.token_storage')->getToken()->getUser()->getId());
+        $number = $this->messageRepository->countByUnread($this->tokenStorage->getToken()->getUser()->getId());
+
         return $number;
     }
 

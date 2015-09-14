@@ -62,7 +62,8 @@ class RepairMessage
 
     public function __construct()
     {
-        $this->createTime = new DateTime();
+        $this->createTime = new \DateTime('now');
+        $this->isRead = false;
     }
 
     public function __toString()

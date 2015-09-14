@@ -279,6 +279,7 @@ class RepairController extends Controller
                 throw $this->createAccessDeniedException('Unauthorized access!');
             }
             $order = new FaultOrder();
+            $order->setLeaderOrder('none');
             $faultInfo = $repairForm->getFaultInfo();
             $faultInfo->setFaultOrder($order);
             $repairForm->setFaultInfo($faultInfo);

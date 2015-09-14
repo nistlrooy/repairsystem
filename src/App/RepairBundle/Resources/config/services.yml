@@ -1,16 +1,17 @@
 parameters:
     app.repair.count_unread_message: App\RepairBundle\Service\CountUnReadMessage
 services:
+    app.message_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments:
+            - App\RepairBundle\Entity\RepairMessage
     app.repair.count_unread_message:
         class: %app.repair.count_unread_message%
         arguments:
-            - @service_container
-            - @
+            - @security.token_storage
+            - @app.message_repository
 
-    message_repository:
-        class: App\RepairBundle\Entity\RepairMessageRepository
-        arguments:
-            - RepairBundle:RepairMessage
 #    app.repair.example:
 #        class: %app.repair.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

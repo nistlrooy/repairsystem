@@ -12,3 +12,8 @@ services:
         arguments: ["@service_container"]
         tags:
            - { name: security.voter }
+    security.access.message_voter:
+        class: App\RepairBundle\Security\Authorization\Voter\MessageVoter
+        arguments: ["@service_container"]
+        tags:
+           - { name: security.voter }

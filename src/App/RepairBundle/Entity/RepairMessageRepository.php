@@ -15,16 +15,32 @@ class RepairMessageRepository extends EntityRepository
 
     /**获取userId的消息
      * @param $userId
+     * @param $sort 排序字段
+     * @param $direction 升序或降序
      * @return array|null
      */
-    public function getMyMessage($userId)
+    public function getMyMessage($userId,$sort=null,$direction=null)
     {
-        $query = $this->getEntityManager()->createQueryBuilder('m')
-            ->innerJoin('m.user','u')
-            ->where('u.id = :userId')
-            ->setParameters(array('userId'=>$userId))
-            ->getQuery();
-
+        if(($sort == null)||($direction == null)) {
+            $query = $this->getEntityManager()->createQuery('
+              select m from RepairBundle:RepairMessage m
+                JOIN m.user u
+                WHERE u.id = :userId
+                ORDER BY m.isRead ASC,
+                m.createTime DESC '
+            )
+                ->setParameters(array('userId' => $userId));
+        }
+        else
+        {
+            $query = $this->getEntityManager()->createQuery('
+              select m from RepairBundle:RepairMessage m
+                JOIN m.user u
+                WHERE u.id = :userId
+                ORDER BY '.$sort.' '.$direction
+            )
+                ->setParameters(array('userId' => $userId));
+        }
         try
         {
             return $query->getResult();
@@ -39,14 +55,16 @@ class RepairMessageRepository extends EntityRepository
      */
     public function countByUnread($userId)
     {
-        $query = $this->getEntityManager()->createQueryBuilder('m')
-            ->innerJoin('m.user','u')
-            ->where('u.id = :userId and m.isRead = false')
-            ->setParameters(array('userId'=>$userId))
-            ->getQuery();
+        $query = $this->getEntityManager()->createQuery(
+            'select count(m) from RepairBundle:RepairMessage m
+            JOIN m.user u
+            WHERE u.id = :userId and m.isRead != 1'
+        )->setParameters(array('userId'=>$userId));
+
 
         try
         {
+
             return $query->getSingleScalarResult();
         }catch (\Doctrine\ORM\NoResultException $e){
             return null;
