@@ -40,10 +40,10 @@
                     {% for h in pagination %}
                         <tr>
                             <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.title| truncate(8) }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.group.name }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.repairTask.createTime|date('Y-m-d') }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.faultInfo.faultPriority.name }}</a></td>
-                            <td><a href="{{ path('fault_info',{'id':h.id})  }}">{{ h.formCondition.name }}</a></td>
+                            <td>{{ h.faultInfo.group.name }}</td>
+                            <td>{{ h.repairTask.createTime|date('Y-m-d') }}</td>
+                            <td>{{ h.faultInfo.faultPriority.name }}</td>
+                            <td>{{ h.formCondition.name }}</td>
                         </tr>
 
                     {% endfor %}
