@@ -79,10 +79,10 @@
         {% for repair in pagination %}
             <tr>
                     <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.title| truncate(8) }}</a></td>
-                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.group.name }}</a></td>
-                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.repairTask.createTime|date('Y-m-d') }}</a></td>
-                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.faultInfo.faultPriority.name }}</a></td>
-                    <td><a href="{{ path('fault_info',{'id':repair.id})  }}">{{ repair.formCondition.name }}</a></td>
+                    <td>{{ repair.faultInfo.group.name }}</td>
+                    <td>{{ repair.repairTask.createTime|date('Y-m-d') }}</td>
+                    <td>{{ repair.faultInfo.faultPriority.name }}</td>
+                    <td>{{ repair.formCondition.name }}</td>
             </tr>
 
         {% endfor %}

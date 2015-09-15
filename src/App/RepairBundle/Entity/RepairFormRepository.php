@@ -125,9 +125,10 @@ class RepairFormRepository extends EntityRepository
             $query = $this->getEntityManager()->createQuery(
                 'SELECT r FROM RepairBundle:RepairForm r
             JOIN r.faultInfo i
+            JOIN r.formCondition c
             JOIN  i.faultPriority p
             JOIN r.repairTask t
-            WHERE r.receive is NULL
+            WHERE r.receive is NULL AND c.id = 1
             ORDER BY p.id DESC,
              t.createTime DESC'
             );
@@ -135,10 +136,11 @@ class RepairFormRepository extends EntityRepository
             $query = $this->getEntityManager()->createQuery(
                 'SELECT r FROM RepairBundle:RepairForm r
             JOIN r.faultInfo i
+            JOIN r.formCondition c
             JOIN  i.faultPriority p
             JOIN r.repairTask t
             JOIN i.group g
-            WHERE r.receive is NULL
+            WHERE r.receive is NULL AND c.id = 1
            ORDER BY '.$sort.' '.$direction
             );
         }
