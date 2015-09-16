@@ -4,6 +4,7 @@ namespace App\RepairBundle\Controller;
 
 
 use App\RepairBundle\Entity\FormComment;
+use App\RepairBundle\Entity\RepairMessage;
 use App\RepairBundle\Form\Type\FaultOrderType;
 use App\RepairBundle\Form\Type\FaultReportFormType;
 use App\RepairBundle\Form\Type\FormCommentType;
@@ -63,12 +64,24 @@ class RepairController extends Controller
             $repairForm->setRepairTask($repairTask);
             $repairForm->setRepairFormGroup($repairFormGroup);
             $repairForm->setFaultInfo($data);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($repairTask);
             $em->persist($repairFormGroup);
             $em->persist($repairForm);
             $em->persist($data);
             $em->flush();
+
+
+            $id = intval($repairForm->getId());
+            $url = $this->generateUrl(
+                'fault_info',
+                array('id' => $id)
+            );
+            $title = "您的故障上报成功";
+            $message ="您的故障上报成功，已经生成维修工单，等待维修人员接单中。点击下方链接查看详细信息";
+            $this->sendMessage($this->get('security.token_storage')->getToken()->getUser()->getId(),$title,$message,$url);
+
             return $this->redirectToRoute('default_homepage');
         }
         $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4);
@@ -96,11 +109,6 @@ class RepairController extends Controller
         );
     }
 
-    public function createByMeAction()
-    {
-        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreaterHistory($this->get('security.token_storage')->getToken()->getUser()->getId());
-
-    }
 
     /**
      *
@@ -228,6 +236,15 @@ class RepairController extends Controller
             $em->persist($repairForm);
             $em->persist($comment);
             $em->flush();
+
+            $id = intval($repairForm->getId());
+            $url = $this->generateUrl(
+                'fault_info',
+                array('id' => $id)
+            );
+            $title = "您的维修已被评价";
+            $message ="您的维修工单已获报修人——".$repairForm->getRepairTask()->getUser()->getName()." 的评价——“".$comment->getComment()."” 点击下方链接查看更多详细信息";
+            $this->sendMessage($repairForm->getReceive()->getId(),$title,$message,$url);
             return $this->redirectToRoute('fault_info',array('id' => $id));
         }
 
@@ -266,6 +283,29 @@ class RepairController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($order);
                 $em->flush();
+
+                $id = intval($repairForm->getId());
+                $url = $this->generateUrl(
+                    'fault_info',
+                    array('id' => $id)
+                );
+                $title = "领导已对您报修的故障作出批示";
+                $message ="您所报修的故障已获领导——".$user->getName()." 的批示——“".$order->getLeaderOrder()."” 点击下方链接查看更多详细信息";
+                $this->sendMessage($repairForm->getRepairTask()->getUser()->getId(),$title,$message,$url);
+
+                if($repairForm->getReceive())
+                {
+                    $id = intval($repairForm->getId());
+                    $url = $this->generateUrl(
+                        'fault_info',
+                        array('id' => $id)
+                    );
+                    $title = "领导已对您维修的工单作出批示";
+                    $message ="您维修的工单已获领导——".$user->getName()." 的批示——“".$order->getLeaderOrder()."” 点击下方链接查看更多详细信息";
+                    $this->sendMessage($repairForm->getReceive()->getId(),$title,$message,$url);
+                }
+
+
                 return $this->redirectToRoute('fault_info',array('id' => $id));
             }
             return $this->render('',array( 'form' => $form->createView()));
@@ -332,6 +372,16 @@ class RepairController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($repairForm);
                 $em->flush();
+
+                $id = intval($repairForm->getId());
+                $url = $this->generateUrl(
+                    'fault_info',
+                    array('id' => $id)
+                );
+                $title = "维修工单已被维修人员接收";
+                $message ="您报修的故障——“".$repairForm->getFaultInfo()->getTitle()."”已自动生成维修工单，且已经被维修人员——".$user->getName()." 接收，点击下方链接查看更多详细信息";
+                $this->sendMessage($repairForm->getRepairTask()->getUser()->getId(),$title,$message,$url);
+
                 return $this->redirectToRoute('repair_homepage');
                 break;
             case 'confirm':
@@ -344,9 +394,19 @@ class RepairController extends Controller
                 $em->persist($repairForm);
                 $em->flush();
 
+                $id = intval($repairForm->getId());
+                $url = $this->generateUrl(
+                    'fault_info',
+                    array('id' => $id)
+                );
+                $title = "维修工单已被报修人确认完成";
+                $message ="您的维修工单——“".$repairForm->getFaultInfo()->getTitle()."”已被报修人——".$repairForm->getRepairTask()->getUser()->getName()."确认维修完成，点击下方链接查看更多详细信息";
+                $this->sendMessage($repairForm->getReceive()->getId(),$title,$message,$url);
+
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
             case 'reject':
+                $preCondition = $repairForm->getFormCondition()->getId();
                 $repairForm->setReceive(null);
                 $repairForm->setRejectTimes($repairForm->getRejectTimes()+1);
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
@@ -356,6 +416,25 @@ class RepairController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($repairForm);
                 $em->flush();
+
+                $id = intval($repairForm->getId());
+                $url = $this->generateUrl(
+                    'fault_info',
+                    array('id' => $id)
+                );
+                if($preCondition == 3)
+                {
+                    $title = "维修工单已被报修人驳回";
+                    $message ="您的维修工单——“".$repairForm->getFaultInfo()->getTitle()."”已被报修人——".$user->getName()." 驳回，点击下方链接前往查看详细信息";
+                    $this->sendMessage($repairForm->getReceive()->getId(),$title,$message,$url);
+                }
+                if($preCondition == 2)
+                {
+                    $title = "维修人撤销维修";
+                    $message ="您的维修工单——“".$repairForm->getFaultInfo()->getTitle()."”已被维修人——".$user->getName()." 退回，维修工单将变为待接单状态，等待其他维修人员接单维修。点击下方链接前往查看详细信息";
+                    $this->sendMessage($repairForm->getRepairTask()->getUser()->getId(),$title,$message,$url);
+                }
+
 
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
@@ -368,6 +447,16 @@ class RepairController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($repairForm);
                 $em->flush();
+
+                $id = intval($repairForm->getId());
+                $url = $this->generateUrl(
+                    'fault_info',
+                    array('id' => $id)
+                );
+                $title = "您已成功取消维修工单";
+                $message ="您报修的故障——“".$repairForm->getFaultInfo()->getTitle()."”已成功取消，点击下方链接查看更多详细信息";
+                $this->sendMessage($repairForm->getRepairTask()->getUser()->getId(),$title,$message,$url);
+
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
             default:
@@ -376,7 +465,6 @@ class RepairController extends Controller
 
         if($form->isValid())
         {
-
             if($form->get('save')->isClicked())
             {
                 $faultInfo = $repairForm->getFaultInfo();
@@ -414,6 +502,8 @@ class RepairController extends Controller
                 $em->persist($repairForm);
                 $em->flush();
 
+
+
                 return $this->redirectToRoute('fault_info',array('id' => $id));
             }
             else
@@ -438,9 +528,35 @@ class RepairController extends Controller
                 $em->persist($repairForm);
                 $em->flush();
 
+                $id = intval($repairForm->getId());
+                $url = $this->generateUrl(
+                    'fault_info',
+                    array('id' => $id)
+                );
+                $title = "维修工单需要您的确认";
+                $message ="维修人员——".$repairForm->getReceive()->getName()."请您确认故障——“".$repairForm->getFaultInfo()->getTitle()."”是否已维修完成，点击下方链接前往确认页面";
+                $this->sendMessage($repairForm->getRepairTask()->getUser()->getId(),$title,$message,$url);
+
                 return $this->redirectToRoute('fault_info',array('id' => $id));
             }
         }
         return $this->redirectToRoute('fault_info',array('id' => $id));
     }
+
+
+    public function sendMessage($uid,$title,$msg,$url)
+    {
+        $message = new RepairMessage();
+        $user = $this->getDoctrine()->getRepository("UserBundle:User")->find($uid);
+        $message->setUser($user);
+        $message->setTitle($title);
+        $message->setMessage($msg);
+        $message->setUrl($url);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($message);
+        $em->flush();
+
+
+    }
+
 }

@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\RepairBundle\Entity\RepairFormRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class RepairForm
 {
@@ -334,7 +335,7 @@ class RepairForm
         $this->formComment = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /*
+    /**
      * @ORM\PrePersist()
      */
     public function PrePersist()
@@ -350,7 +351,7 @@ class RepairForm
         $this->setLastUpdateTime(new \DateTime('now'));
     }
 
-    /*
+    /**
      * @ORM\PreUpdate()
      */
     public function PreUpdate()

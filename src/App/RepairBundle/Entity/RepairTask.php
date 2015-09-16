@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\RepairBundle\Entity\RepairTaskRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class RepairTask
 {

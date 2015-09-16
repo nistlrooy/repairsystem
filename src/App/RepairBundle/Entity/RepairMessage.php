@@ -46,6 +46,13 @@ class RepairMessage
     /**
      * @var string
      *
+     * @ORM\Column(name="url", type="string", length=100)
+     */
+    private $url;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="message", type="text")
      */
     private $message;
@@ -125,6 +132,29 @@ class RepairMessage
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return RepairMessage
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**

@@ -9,6 +9,9 @@
             padding-top:20px;
             text-align: end;
         }
+        .messageLink{
+            margin-top: 15px;
+        }
 
 
     </style>
@@ -60,8 +63,11 @@
                                     <div class="modal-body">
                                             <div class="form-group">
                                                 <label for="message-text" class="control-label">消息内容</label>
-                                                <textarea id="" class="form-control"  required="required">{{ p.message }}</textarea>
+                                                <textarea id="message-text" class="form-control"  required="required" rows="5">{{ p.message }}</textarea>
+
+
                                             </div>
+                                        <a class="messageLink" href="{{ p.url }}">点此链接查看详细信息</a>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                                 <button type="button" id="{{ p.id }}" class="btn btn-primary">删除本条消息</button>
