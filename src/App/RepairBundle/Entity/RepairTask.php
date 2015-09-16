@@ -36,6 +36,11 @@ class RepairTask
      */
     private $createTime;
 
+    public function __construct()
+    {
+        $this->createTime = new \DateTime('now');
+    }
+
     /**
      * Get id
      *
@@ -92,4 +97,17 @@ class RepairTask
     {
         return $this->user;
     }
+
+    /*
+     * @ORM\PrePersist()
+     */
+    public function PrePersist()
+    {
+        if($this->getCreateTime() == null)
+        {
+            $this->setCreateTime(new \DateTime('now'));
+        }
+    }
+
+
 }

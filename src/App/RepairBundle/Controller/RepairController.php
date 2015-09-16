@@ -48,8 +48,7 @@ class RepairController extends Controller
             if(!$data->getMaintenanceSchedule())
                 $data->setMaintenanceSchedule('none');
             //set datetime to now
-            $repairForm->setLastUpdateTime(new \DateTime());
-            $repairTask->setCreateTime(new \Datetime());
+
             $repairForm->setCost(0);
             //find id = 1 ,get the obj and update
             //设置状态为待接单
@@ -329,14 +328,14 @@ class RepairController extends Controller
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
                 $repairForm->setReceive($user);
-                $repairForm->setLastUpdateTime(new \DateTime());
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($repairForm);
                 $em->flush();
                 return $this->redirectToRoute('repair_homepage');
                 break;
             case 'confirm':
-                $repairForm->setLastUpdateTime(new \DateTime());
+
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
                 $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(4);
@@ -349,7 +348,7 @@ class RepairController extends Controller
                 break;
             case 'reject':
                 $repairForm->setReceive(null);
-                $repairForm->setLastUpdateTime(new \DateTime());
+                $repairForm->setRejectTimes($repairForm->getRejectTimes()+1);
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
                 $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(1);
@@ -361,7 +360,7 @@ class RepairController extends Controller
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
             case 'cancel':
-                $repairForm->setLastUpdateTime(new \DateTime());
+
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
                 $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(6);
@@ -406,7 +405,7 @@ class RepairController extends Controller
                 }
 
                 $repairForm->setFaultInfo($faultInfo);
-                $repairForm->setLastUpdateTime(new \DateTime());
+
                 $repairForm->setCost($data->getCost());
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
@@ -429,7 +428,7 @@ class RepairController extends Controller
                 if($data->getFaultInfo()->getMaintenanceSchedule())
                     $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
                 $repairForm->setFaultInfo($faultInfo);
-                $repairForm->setLastUpdateTime(new \DateTime());
+
                 $repairForm->setCost($data->getCost());
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);

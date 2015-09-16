@@ -7,6 +7,7 @@ use App\RepairBundle\Form\Type\RepairMessageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MessageController extends Controller
 {
@@ -44,14 +45,13 @@ class MessageController extends Controller
 
 
     /**
+     * @Route("/message/{id}",requirements={"id":"\d+"},name="message_view")
      *
-     * @Route("/message/info/{id}",requirements={"id":"\d+"},name="message_info")
-     * @Template()
-     * @return array
-     *
-     *
+     * @param $id
+     * @return JsonResponse
+     * @throws \Exception
      */
-    public function infoAction($id)
+    public function viewAction($id)
     {
         $message = $this->getDoctrine()->getManager()->getRepository('RepairBundle:RepairMessage')->find($id);
         if (!$message) {
@@ -59,12 +59,27 @@ class MessageController extends Controller
                 'No Message found for this id: '.$id
             );
         }
+        $authChecker = $this->get('security.authorization_checker');
 
+        if(false === $authChecker->isGranted('view',$message))
+        {
+            throw $this->createAccessDeniedException('Unauthorized access!');
+        }
 
-        return array(
-            'message' => $message
-        );
+        $message->setIsRead(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($message);
+        $em->flush();
+
+        $response = new JsonResponse();
+        $response->setData(array(
+            'status' => 200
+        ));
+
+        return $response;
     }
+
+
 
     /**
      * @Route("/message/delete/{id}",requirements={"id":"\d+"},name="message_delete")
@@ -89,7 +104,12 @@ class MessageController extends Controller
         $em->remove($message);
         $em->flush();
 
-        return $this->redirectToRoute('personal_message');
+        $response = new JsonResponse();
+        $response->setData(array(
+            'status' => 200
+        ));
+
+        return $response;
     }
 
 

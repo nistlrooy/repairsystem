@@ -40,14 +40,14 @@ class MessageVoter extends AbstractVoter
 
         switch ($attribute) {
             case self::VIEW:
-
+                //只有自己才能看
                 if($user->getId() == $message->getUser()->getId())
                 {
                     return true;
                 }
                 break;
             case self::DELETE:
-
+                //只有自己才能删
                 if($user->getId() == $message->getUser()->getId())
                 {
                     return true;

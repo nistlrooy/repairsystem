@@ -103,6 +103,12 @@ class EditVoter extends AbstractVoter
                     if($repairForm->getFormCondition()->getId() == 3)
                         return true;
                 }
+                //只有报修单状态为待维修，接收人才能取消自己接收的报修单
+                if($user->getId() == $repairForm->getReceive()->getId())
+                {
+                    if($repairForm->getFormCondition()->getId() == 2)
+                        return true;
+                }
                 break;
             case self::COMMENT:
                 //只有报修单状态为待评价，报修人才能评价自己的报修单

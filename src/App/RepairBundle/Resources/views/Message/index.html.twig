@@ -30,14 +30,14 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <td class="col-xs-2">{{ 'table.status'|trans }}</td>
+                        <td class="col-xs-2 rowlink-skip">{{ 'table.status'|trans }}</td>
                         <td class="col-xs-8">{{ 'table.title'|trans }}</td>
-                        <td class="col-xs-2">{{ knp_pagination_sortable(pagination, 'table.createTime'|trans, 'm.createTime') }}</td>
+                        <td class="col-xs-2 rowlink-skip">{{ knp_pagination_sortable(pagination, 'table.createTime'|trans, 'm.createTime') }}</td>
                     </tr>
                     </thead>
                     <tbody data-link="row" class="rowlink">
                     {% for p in pagination %}
-                        <tr>
+                        <tr id="{{ p.id }}">
                             <td>
                                 {% if p.isRead %}
                                     {{ 'table.read'|trans }}
@@ -45,12 +45,12 @@
                                     {{ 'table.unread'|trans }}
                                 {% endif %}
                             </td>
-                            <td><a href="#" data-toggle="modal" data-target="#message{{ p.id }}">{{ p.title| truncate(30) }}</a></td>
+                            <td><a href="#" data-toggle="modal" data-target="#m{{ p.id }}">{{ p.title| truncate(30) }}</a></td>
                             <td>{{ p.createTime|date('Y-m-d') }}</td>
                         </tr>
 
                         {# 批示消息框 #}
-                        <div class="modal fade" id="message{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                        <div class="modal fade" id="m{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -60,11 +60,11 @@
                                     <div class="modal-body">
                                             <div class="form-group">
                                                 <label for="message-text" class="control-label">消息内容</label>
-                                                <textarea id="" class="form-control" required="required">{{ p.message }}</textarea>
+                                                <textarea id="" class="form-control"  required="required">{{ p.message }}</textarea>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                <button type="button" id="button{{ p.id }}" class="btn btn-primary">删除本条消息</button>
+                                                <button type="button" id="{{ p.id }}" class="btn btn-primary">删除本条消息</button>
                                             </div>
                                         </form>
                                     </div>
@@ -82,4 +82,19 @@
 
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+
+            $('tr').click(function () {
+                var url = "{{ url('homepage') }}"
+                $.post(url+'message'+'/'+this.id)
+
+            });
+        })
+    </script>
+
 {% endblock %}

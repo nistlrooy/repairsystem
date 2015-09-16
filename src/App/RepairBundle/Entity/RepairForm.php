@@ -87,6 +87,13 @@ class RepairForm
      */
     private $cost;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="rejectTime",type="integer")
+     *
+     */
+    private $rejectTimes;
 
 
 
@@ -327,4 +334,51 @@ class RepairForm
         $this->formComment = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /*
+     * @ORM\PrePersist()
+     */
+    public function PrePersist()
+    {
+        if($this->getCost() == null)
+        {
+            $this->setCost(0);
+        }
+        if($this->getRejectTimes() == null)
+        {
+            $this->setRejectTimes(0);
+        }
+        $this->setLastUpdateTime(new \DateTime('now'));
+    }
+
+    /*
+     * @ORM\PreUpdate()
+     */
+    public function PreUpdate()
+    {
+        $this->setLastUpdateTime(new \DateTime('now'));
+    }
+
+
+    /**
+     * Set rejectTimes
+     *
+     * @param integer $rejectTimes
+     * @return RepairForm
+     */
+    public function setRejectTimes($rejectTimes)
+    {
+        $this->rejectTimes = $rejectTimes;
+
+        return $this;
+    }
+
+    /**
+     * Get rejectTimes
+     *
+     * @return integer 
+     */
+    public function getRejectTimes()
+    {
+        return $this->rejectTimes;
+    }
 }

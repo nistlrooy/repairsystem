@@ -1,6 +1,6 @@
 {% extends "RepairBundle::layout.html.twig" %}
 
-{% block title %}RepairBundle:Repair:show{% endblock %}
+{% block title %}详细信息{% endblock %}
 
 {% block body %}
 <div class="row">
@@ -387,8 +387,11 @@
                     <div class="col-sm-3 form-group">
                         {{ repairForm.receive.phone }}
                     </div>
-                    <div class="col-sm-4 col-sm-offset-8">
+                    <div class="col-sm-6 col-sm-offset-6">
+                        <button  id="reject" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="退回" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否退回">{{ 'form.sendBack'|trans }}</button>
+
                         {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
+
                         <button id="submit" type="submit" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">提交</button>
                     </div>
                     <div class="col-sm-12">
@@ -527,6 +530,8 @@
                         {{ repairForm.receive.phone }}
                     </div>
                     <div class="col-sm-4 col-sm-offset-8">
+                        <button  id="reject" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="退回" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否退回">{{ 'form.sendBack'|trans }}</button>
+
                         {{ form_widget(form.save, {'attr': {'class': 'btn btn-default'}}) }}
                         <button id="submit" type="submit" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">提交</button>
                     </div>

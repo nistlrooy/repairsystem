@@ -18,7 +18,7 @@ form:
     type: 报修类型
     workerDescription: 维修人描述
     maintenanceSchedule: 维修计划
-    order: 领导批示
+    order: 批示
     money: 费用
     reporter: 报修人
     receiver: 维修人
@@ -32,7 +32,7 @@ form:
     comment: 评价
     reportToLeader: 上报领导
     receive: 接收
-
+    sendBack: 退回
 
 table:
     receiveByMe: 已接收
