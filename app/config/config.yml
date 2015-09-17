@@ -97,10 +97,35 @@ sonata_block:
         # Enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts:   [admin]
+        sonata.block.service.text:
+        sonata.block.service.rss:
         # Your other blocks
+
 sonata_admin:
-    title:      Sonata Admin Bundle
+    title:      后台管理
     title_logo: bundles/sonataadmin/logo_title.png
+    templates:
+        layout:  RepairBundle::standard_layout_override.html.twig
+    dashboard:
+        blocks:
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+            -
+                position: right
+                type: sonata.block.service.text
+                settings:
+                    content: >
+                        <h2>欢迎使用后台管理</h2>
+                        <p>在这里,您可以更加自由方便得对数据进行添加修改操作!</p>
+                        <ul>
+                        <li>如果需要添加用户,请点击左侧用户管理旁的<code>添加</code>按钮</li>
+                        <li>如果需要修改用户信息,请点击左侧用户管理旁的<code>列表</code>按钮,再点击需要修改的用户</li>
+                        <li>如果需要修改工单信息,请点击左侧工单信息旁的<code>列表</code>按钮,再点击需要修改的工单</li>
+                        <li>进入<code>列表</code>界面后,可以使用窗口右侧过滤功能快速查找需要的信息</li>
+                        <li>为保护数据完整性,不推荐删除任何数据</li>
+                        <li>如果需要停用某用户账号,则进入该用户页面,把启用账号的√去掉</li>
+                        </ul><br /> 本后台的所有操作皆为不经验证的强制执行,随意修改可能对数据完整性和正确性造成损坏,请谨慎操作!
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
     default_options:

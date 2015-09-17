@@ -70,7 +70,7 @@
                                         <a class="messageLink" href="{{ p.url }}">点此链接查看详细信息</a>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                <button type="button" id="{{ p.id }}" class="btn btn-primary">删除本条消息</button>
+                                                <button type="button" id="button{{ p.id }}" class="btn btn-primary" data-dismiss="modal">删除本条消息</button>
                                             </div>
                                         </form>
                                     </div>
@@ -100,6 +100,12 @@
                 $.post(url+'message'+'/'+this.id)
 
             });
+
+            $('.modal-footer .btn-primary').click(function(){
+                var url = "{{ url('homepage') }}"
+                $.post(url+'message'+'/delete/'+this.id.substr(6))
+                $('#'+this.id.substr(6)).fadeOut(1200);
+            })
         })
     </script>
 
