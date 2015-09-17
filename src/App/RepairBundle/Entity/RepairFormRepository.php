@@ -260,7 +260,7 @@ class RepairFormRepository extends EntityRepository
                 JOIN  i.faultOrder o
                 JOIN r.formCondition c
                 JOIN  i.faultPriority p
-                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL AND c.id < 4
+                WHERE i.faultOrder IS NOT NULL AND o.user IS NULL AND c.id = 2
                 ORDER BY p.id DESC,
                  t.createTime DESC');
         }
@@ -272,7 +272,7 @@ class RepairFormRepository extends EntityRepository
                 JOIN  i.faultOrder o
                 JOIN r.formCondition c
                 JOIN  i.faultPriority p
-                WHERE i.faultOrder IS NOT NULL AND o.leaderOrder IS NULL AND c.id < 4
+                WHERE i.faultOrder IS NOT NULL AND o.user IS NULL AND c.id = 2
                 ORDER BY '.$sort.' '.$direction
             );
         }
