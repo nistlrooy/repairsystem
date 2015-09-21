@@ -285,7 +285,42 @@ class RepairFormRepository extends EntityRepository
     }
 
 
+    /**
+     * 获取每个类型工单数量
+     * @param int $day 获取$day天前到今天的工单
+     * @return array|null
+     */
+     public function getRepairFormNumberOfAllType($day = 1000)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'select t from RepairBundle:FaultType t'
+        );
+        try{
+            $typeResult = $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
 
+        $today = new \DateTime('now');
+        $limit = date_format(date_modify($today,'-'.$day.' day'), 'Y-m-d');
+
+        $type = array();
+        for($i=0;$i<count($typeResult);$i++)
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'select count(r) from RepairBundle:RepairForm r
+                JOIN r.repairTask task
+                JOIN r.faultInfo i
+                JOIN i.faultType t
+                WHERE t.name = :name AND task.createTime > :limit
+                ')->setParameters(array('name'=>$typeResult[$i]->getname(),'limit'=>$limit));
+
+            $type[$typeResult[$i]->getname()] = $query->getResult();
+        }
+
+        return $type;
+
+    }
 
 
 }

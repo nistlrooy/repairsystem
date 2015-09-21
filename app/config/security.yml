@@ -8,7 +8,7 @@ security:
         ROLE_REPAIR: ROLE_USER
         ROLE_LEADER: ROLE_USER
         ROLE_REPAIR_ADMIN: ROLE_REPAIR
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN,ROLE_REPAIR_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN,ROLE_REPAIR_ADMIN,ROLE_LEADER]
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username

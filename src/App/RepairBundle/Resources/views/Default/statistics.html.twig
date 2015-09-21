@@ -1,0 +1,52 @@
+{% extends "RepairBundle::layout.html.twig" %}
+
+{% block title %}统计分析{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/repair/css/morris.css') }}" rel="stylesheet">
+    <style type="text/css">
+    </style>
+{% endblock %}
+
+{% block body %}
+
+
+    <div id="content">
+        <div class="row">
+
+            {% trans_default_domain 'RepairBundle' %}
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
+                </div>
+                <div class="panel-body">
+                    <div id="RepairFormNumberOfAllType"></div>
+                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/repair/js/raphael-min.js') }}"></script>
+    <script src="{{ asset('bundles/repair/js/morris-min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            Morris.Donut({
+                element: 'RepairFormNumberOfAllType',
+                data: [
+                    {% for key,value in RepairFormNumberOfAllType %}
+                    {label: "{{ key }}", value: {{ value[0][1] }}},
+                    {% endfor %}
+                ]
+            });
+        })
+    </script>
+
+{% endblock %}

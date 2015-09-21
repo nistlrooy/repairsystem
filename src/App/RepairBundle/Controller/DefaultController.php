@@ -165,6 +165,24 @@ class DefaultController extends Controller
     }
 
 
+    /**
+     * @Route("/statistics",name="statistics")
+     * @Template()
+     */
+    public function statisticsAction()
+    {
+        if(!$this->isGranted('ROLE_REPAIR_ADMIN'))
+        {
+            throw $this->createAccessDeniedException('Unauthorized access!');
+        }
+
+        $type = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormNumberOfAllType();
+
+
+        return array(
+            'RepairFormNumberOfAllType'=>$type
+        );
+    }
 
 
 
