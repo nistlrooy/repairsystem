@@ -178,8 +178,14 @@ class DefaultController extends Controller
 
         $type = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormNumberOfAllType();
 
+        $numberOfType = 0;
+        foreach($type as $arr)
+        {
+            $numberOfType = $arr[0][1]+$numberOfType;
+        }
 
         return array(
+            'numberOfType'=>$numberOfType,
             'RepairFormNumberOfAllType'=>$type
         );
     }

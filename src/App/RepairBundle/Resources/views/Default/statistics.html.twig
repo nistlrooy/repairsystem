@@ -6,6 +6,10 @@
     {{ parent() }}
     <link href="{{ asset('bundles/repair/css/morris.css') }}" rel="stylesheet">
     <style type="text/css">
+        .col-lg-4{
+            padding-left:15px ;
+            padding-right: 15px;
+        }
     </style>
 {% endblock %}
 
@@ -16,7 +20,7 @@
         <div class="row">
 
             {% trans_default_domain 'RepairBundle' %}
-
+        <div class="col-lg-4 col-lg-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
@@ -27,7 +31,23 @@
                 </div>
                 <!-- /.panel-body -->
             </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                            <div id="bar-example"></div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
 
+        </div>
         </div>
     </div>
 {% endblock %}
@@ -35,17 +55,36 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/repair/js/raphael-min.js') }}"></script>
-    <script src="{{ asset('bundles/repair/js/morris-min.js') }}"></script>
+    <script src="{{ asset('bundles/repair/js/morris.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             Morris.Donut({
                 element: 'RepairFormNumberOfAllType',
+                formatter: function (value, data) { return (value/{{ numberOfType }} *100) + '%'; },
                 data: [
                     {% for key,value in RepairFormNumberOfAllType %}
                     {label: "{{ key }}", value: {{ value[0][1] }}},
                     {% endfor %}
                 ]
             });
+
+            Morris.Bar({
+                element: 'bar-example',
+                data: [
+                    { y: '2006', a: 100, b: 90 ,c:10},
+                    { y: '2007', a: 75,  b: 65 },
+                    { y: '2008', a: 50,  b: 40 },
+                    { y: '2009', a: 75,  b: 65 },
+                    { y: '2010', a: 50,  b: 40 },
+                    { y: '2011', a: 75,  b: 65 },
+                    { y: '2012', a: 100, b: 90 }
+                ],
+                xkey: 'y',
+                ykeys: ['a', 'b','c'],
+                labels: ['Series A', 'Series B','c'],
+                resize: true
+            });
+
         })
     </script>
 
