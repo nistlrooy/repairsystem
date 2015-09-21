@@ -30,8 +30,9 @@
                             <li><a href="{{ path('repair_homepage') }}">维修列表</a></li>
                             <li><a href="{{ path('repaired_history') }}">维修记录</a></li>
                         {% endif %}
-                        <li role="separator" class="divider"></li>
+
                         {%  if is_granted('ROLE_LEADER') %}
+                            <li role="separator" class="divider"></li>
                             <li><a href="{{ path('leader_order') }}">等待批示</a></li>
                         {% endif %}
                     </ul>

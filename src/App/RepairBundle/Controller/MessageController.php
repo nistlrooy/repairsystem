@@ -24,10 +24,12 @@ class MessageController extends Controller
         $message = $this->getDoctrine()->getRepository('RepairBundle:RepairMessage')->getMyMessage($this->get('security.token_storage')->getToken()->getUser()->getId());
 
         $authChecker = $this->get('security.authorization_checker');
-
-        if(false === $authChecker->isGranted('view',$message[0]))
+        if(count($message))
         {
-            throw $this->createAccessDeniedException('Unauthorized access!');
+            if(false === $authChecker->isGranted('view',$message[0]))
+            {
+                throw $this->createAccessDeniedException('Unauthorized access!');
+            }
         }
 
         $paginator  = $this->get('knp_paginator');
@@ -36,6 +38,8 @@ class MessageController extends Controller
             $this->get('request')->query->get('page', 1)/*page number*/,
             self::PAGE/*limit per page*/
         );
+
+
         $msgForm = $this->createForm(new RepairMessageType(),new RepairMessage());
         return array(
             'message' => $msgForm->createView(),
