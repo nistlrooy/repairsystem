@@ -60,7 +60,7 @@
         $(document).ready(function() {
             Morris.Donut({
                 element: 'RepairFormNumberOfAllType',
-                formatter: function (value, data) { return (value/{{ numberOfType }} *100) + '%'; },
+                formatter: function (value, data) { return (value/{{ numberOfType }} *100).toFixed(2) + '%'; },
                 data: [
                     {% for key,value in RepairFormNumberOfAllType %}
                     {label: "{{ key }}", value: {{ value[0][1] }}},
