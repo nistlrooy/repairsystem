@@ -40,7 +40,7 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="row">
-                            <div id="bar-example"></div>
+                            <div id="RepairFormNumberOfAllStatus"></div>
                     </div>
                     <!-- /.row -->
                 </div>
@@ -68,20 +68,16 @@
                 ]
             });
 
-            Morris.Bar({
-                element: 'bar-example',
+            Morris.Area({
+                element: 'RepairFormNumberOfAllStatus',
                 data: [
-                    { y: '2006', a: 100, b: 90 ,c:10},
-                    { y: '2007', a: 75,  b: 65 },
-                    { y: '2008', a: 50,  b: 40 },
-                    { y: '2009', a: 75,  b: 65 },
-                    { y: '2010', a: 50,  b: 40 },
-                    { y: '2011', a: 75,  b: 65 },
-                    { y: '2012', a: 100, b: 90 }
+                    {% for key,value in RepairFormNumberOfAllStatus %}
+                    { y: '{{ key }}', a:{{ value['done'] }} , b: {{ value['repair']-value['done'] }} ,c:{{ value['all']-value['repair'] }}},
+                    {% endfor %}
                 ],
                 xkey: 'y',
                 ykeys: ['a', 'b','c'],
-                labels: ['Series A', 'Series B','c'],
+                labels: ['已解决', '维修中','未处理'],
                 resize: true
             });
 

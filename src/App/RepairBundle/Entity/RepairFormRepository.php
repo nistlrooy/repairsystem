@@ -331,8 +331,10 @@ class RepairFormRepository extends EntityRepository
         for($i=1;$i<=$month;$i++)
         {
             $upperFormat = $upper->format('Y-m-d H:i:s');
+            $m = $upper->format('Y-m');
             $upper->modify('-1 month');
             $lowerFormat = $upper->format('Y-m-d H:i:s');
+
             //获取上报故障数
             $query = $this->getEntityManager()->createQuery(
             'select count(r) from RepairBundle:RepairForm r
@@ -361,7 +363,7 @@ class RepairFormRepository extends EntityRepository
             $number['done'] = $query->getSingleScalarResult();
 
 
-            $repairForm[] = $number;
+            $repairForm[$m] = $number;
             
 
         }

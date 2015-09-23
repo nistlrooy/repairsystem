@@ -175,21 +175,22 @@ class DefaultController extends Controller
         {
             throw $this->createAccessDeniedException('Unauthorized access!');
         }
-
+        //获取各个类型数量
         $type = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormNumberOfAllType();
         $numberOfType = 0;
         foreach($type as $arr)
         {
             $numberOfType = $arr[0][1]+$numberOfType;
         }
-
+        //获取各状态数量
         $numberOfStatus = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormNumberOfAllStatus();
-        var_dump($numberOfStatus);
-        die;
+        
 
         return array(
-            'numberOfType'=>$numberOfType,
-            'RepairFormNumberOfAllType'=>$type
+            'numberOfType' => $numberOfType,
+            'RepairFormNumberOfAllStatus' => $numberOfStatus,
+            'RepairFormNumberOfAllType' => $type
+
         );
     }
 
