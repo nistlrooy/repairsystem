@@ -193,14 +193,26 @@ class DefaultController extends Controller
         }
 
         $cost = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormCost();
-        var_dump($cost);
+
+        $repair =$this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairTop();
+
+        $guess = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->guess();
+        $numberOfGuess = 0;
+        foreach($guess as $key=>$value)
+        {
+            $numberOfGuess = $numberOfGuess + $value['number'];
+        }
 
         return array(
             'numberOfType' => $numberOfType,
             'numberOfGroup' => $numberOfGroup,
-            'RepairFormNumberOfAllGroup' =>$group,
-            'RepairFormNumberOfAllStatus' => $status,
-            'RepairFormNumberOfAllType' => $type
+            'numberOfGuess' => $numberOfGuess,
+            'repairFormNumberOfAllGroup' =>$group,
+            'repairFormNumberOfAllStatus' => $status,
+            'repairFormNumberOfAllType' => $type,
+            'repairFormCost' => $cost,
+            'repairPerson' => $repair,
+            'guess'=>$guess
 
         );
     }

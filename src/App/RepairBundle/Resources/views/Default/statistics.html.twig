@@ -26,7 +26,7 @@
                     <i class="fa fa-bar-chart-o fa-fw"></i>近100天故障类型比例统计
                 </div>
                 <div class="panel-body">
-                    <div id="RepairFormNumberOfAllType"></div>
+                    <div id="repairFormNumberOfAllType"></div>
                     <a href="#" class="btn btn-default btn-block">View Details</a>
                 </div>
                 <!-- /.panel-body -->
@@ -36,7 +36,21 @@
                     <i class="fa fa-bar-chart-o fa-fw"></i>近100天故障所在地统计
                 </div>
                 <div class="panel-body">
-                    <div id="RepairFormNumberOfAllGroup"></div>
+                    <div id="repairFormNumberOfAllGroup"></div>
+                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i>未来故障发生概率预测
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div id="guess"></div>
+                    </div>
+                    <!-- /.row -->
                     <a href="#" class="btn btn-default btn-block">View Details</a>
                 </div>
                 <!-- /.panel-body -->
@@ -51,14 +65,41 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="row">
-                            <div id="RepairFormNumberOfAllStatus"></div>
+                            <div id="repairFormNumberOfAllStatus"></div>
                     </div>
                     <!-- /.row -->
                     <a href="#" class="btn btn-default btn-block">View Details</a>
                 </div>
                 <!-- /.panel-body -->
             </div>
-
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i>近半年故障维修金额统计
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div id="repairFormCost"></div>
+                    </div>
+                    <!-- /.row -->
+                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i>勤劳维修员排行榜
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div id="repairPerson"></div>
+                    </div>
+                    <!-- /.row -->
+                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                </div>
+                <!-- /.panel-body -->
+            </div>
         </div>
         </div>
     </div>
@@ -71,29 +112,43 @@
     <script>
         $(document).ready(function() {
             Morris.Donut({
-                element: 'RepairFormNumberOfAllType',
+                element: 'repairFormNumberOfAllType',
                 formatter: function (value, data) { return (value/{{ numberOfType }} *100).toFixed(2) + '%'; },
                 data: [
-                    {% for key,value in RepairFormNumberOfAllType %}
+                    {% for key,value in repairFormNumberOfAllType %}
                     {label: "{{ key }}", value: {{ value[0][1] }}},
                     {% endfor %}
-                ]
+                ],
+                resize: true
             });
 
             Morris.Donut({
-                element: 'RepairFormNumberOfAllGroup',
+                element: 'repairFormNumberOfAllGroup',
                 formatter: function (value, data) { return (value/{{ numberOfGroup }} *100).toFixed(2) + '%'; },
                 data: [
-                    {% for key,value in RepairFormNumberOfAllGroup %}
+                    {% for key,value in repairFormNumberOfAllGroup %}
                     {label: "{{ key }}", value: {{ value }}},
                     {% endfor %}
-                ]
+                ],
+                resize: true
+            });
+
+
+            Morris.Donut({
+                element: 'guess',
+                formatter: function (value, data) { return (value/{{ numberOfGuess }} *100).toFixed(2) + '%'; },
+                data: [
+                    {% for key,value in guess %}
+                    {label: "{{ value['groupname'] }}的{{ value['typename'] }}故障", value: {{ value['number'] }}},
+                    {% endfor %}
+                ],
+                resize: true
             });
 
             Morris.Area({
-                element: 'RepairFormNumberOfAllStatus',
+                element: 'repairFormNumberOfAllStatus',
                 data: [
-                    {% for key,value in RepairFormNumberOfAllStatus %}
+                    {% for key,value in repairFormNumberOfAllStatus %}
                     { y: '{{ key }}', a:{{ value['done'] }} , b: {{ value['repair']-value['done'] }} ,c:{{ value['all']-value['repair'] }}},
                     {% endfor %}
                 ],
@@ -102,6 +157,41 @@
                 labels: ['已解决', '维修中','未处理'],
                 resize: true
             });
+
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'repairFormCost',
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: [
+                    {% for key,value in repairFormCost %}
+                    { month: '{{ key }}', value: {{ value }} },
+                    {% endfor %}
+
+                ],
+                // The name of the data record attribute that contains x-values.
+                xkey: 'month',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['value'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['维修费'],
+                resize: true
+            });
+
+            Morris.Bar({
+                element: 'repairPerson',
+                data: [
+                    {% for key,value in repairPerson%}
+                    { y: '{{ value['name'] }}', a:{{ value[1] }} },
+                    {% endfor %}
+                ],
+                xkey: 'y',
+                ykeys: ['a'],
+                labels: ['处理故障数'],
+                resize: true
+            });
+
 
         })
     </script>

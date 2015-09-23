@@ -370,20 +370,25 @@ class RepairFormRepository extends EntityRepository
         for($int=0;$int<$month;$int++)
         {
             $upperFormat = $upper->format('Y-m-d H:i:s');
-            $m = $upper->format('Y-m');
+
 
             if($int==0)
             {
                 $days = $upper->format('d')-1;
-                $upper->modify('-'.$days.' days');
-
+                $hours = $upper->format('H');
+                $minis = $upper->format('i');
+                $seconds = $upper->format('s');
+                $upper->modify('-'.$days.' day');
+                $upper->modify('-'.$hours.' hour');
+                $upper->modify('-'.$minis.' minutes');
+                $upper->modify('-'.$seconds.' seconds');
             }
             else
             {
                 $upper->modify('-1 month');
             }
             $lowerFormat = $upper->format('Y-m-d H:i:s');
-
+            $m = $upper->format('Y-m');
             //获取上报故障数
             $query = $this->getEntityManager()->createQuery(
                 'select r from RepairBundle:RepairForm r
@@ -399,7 +404,7 @@ class RepairFormRepository extends EntityRepository
                 $cost = $cost + $arr->getCost();
             }
 
-            $costInAll[$m] = $upper;
+            $costInAll[$m] = $cost;
         }
         return $costInAll;
     }
@@ -417,16 +422,25 @@ class RepairFormRepository extends EntityRepository
         for($i=1;$i<=$month;$i++)
         {
             $upperFormat = $upper->format('Y-m-d H:i:s');
-            $m = $upper->format('Y-m');
-            if($i == 1)
+
+
+            if($i==1)
             {
-                $days = $upper->format('d');
-                $upper->modify('-'.$days.'day');
-            }else{
+                $days = $upper->format('d')-1;
+                $hours = $upper->format('H');
+                $minis = $upper->format('i');
+                $seconds = $upper->format('s');
+                $upper->modify('-'.$days.' day');
+                $upper->modify('-'.$hours.' hour');
+                $upper->modify('-'.$minis.' minutes');
+                $upper->modify('-'.$seconds.' seconds');
+            }
+            else
+            {
                 $upper->modify('-1 month');
             }
-
             $lowerFormat = $upper->format('Y-m-d H:i:s');
+            $m = $upper->format('Y-m');
 
             //获取上报故障数
             $query = $this->getEntityManager()->createQuery(
@@ -462,5 +476,44 @@ class RepairFormRepository extends EntityRepository
         }
         return $repairForm;
     }
+
+
+
+    public function getRepairTop($num = 5)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'select count(r),u.name from RepairBundle:RepairForm r
+          JOIN r.receive u
+          GROUP BY r.receive');
+        $repair =  $query->getResult();
+
+        if(count($repair)>$num)
+        {
+            $repair = array_slice($repair,0,$num);
+        }
+        return $repair;
+    }
+
+    public function guess()
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'select count(r) AS number,g.name AS groupname,t.name AS typename from RepairBundle:RepairForm r
+          JOIN r.faultInfo i
+          JOIN i.group g
+          JOIN i.faultType t
+          GROUP BY g.id,t.id
+          ');
+        $guess =  $query->getResult();
+        //排序
+        foreach ($guess as $key => $row) {
+            $number[$key]  = $row['number'];
+            $groupname[$key] = $row['groupname'];
+        }
+        array_multisort($number, SORT_DESC, $groupname, SORT_ASC, $guess);
+        //取前5
+        $guess = array_slice($guess,0,5);
+        return $guess;
+    }
+
 
 }
