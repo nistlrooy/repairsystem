@@ -153,7 +153,7 @@ class RepairFormRepository extends EntityRepository
     }
 
     /**
-     * 获取已确认或取消的维修工单记录
+     * 获取维修工单记录
      * @param $createrId
      * @param $sort 排序字段
      * @param $direction 升序或降序
@@ -171,7 +171,7 @@ class RepairFormRepository extends EntityRepository
             JOIN t.user u
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
-            WHERE u.id = :createrId AND (c.id >=4 AND c.id<=6)
+            WHERE u.id = :createrId
              ORDER BY p.id DESC,
              t.createTime DESC'
             )->setParameters(array('createrId'=>$createrId));
@@ -185,7 +185,7 @@ class RepairFormRepository extends EntityRepository
             JOIN r.faultInfo i
             JOIN i.group g
             JOIN  i.faultPriority p
-            WHERE u.id = :createrId AND (c.id >=4 AND c.id<=6)
+            WHERE u.id = :createrId
             ORDER BY '.$sort.' '.$direction
             )->setParameters(array('createrId'=>$createrId));
         }
@@ -216,7 +216,7 @@ class RepairFormRepository extends EntityRepository
             JOIN r.receive u
             JOIN r.faultInfo i
             JOIN  i.faultPriority p
-            WHERE u.id = :receiverId AND (c.id >=4 AND c.id<=6)
+            WHERE u.id = :receiverId
              ORDER BY p.id DESC,
              t.createTime DESC'
             )->setParameters(array('receiverId'=>$receiverId));
@@ -230,7 +230,7 @@ class RepairFormRepository extends EntityRepository
             JOIN r.faultInfo i
             JOIN i.group g
             JOIN  i.faultPriority p
-            WHERE u.id = :receiverId AND (c.id >=4 AND c.id<=6)
+            WHERE u.id = :receiverId
             ORDER BY '.$sort.' '.$direction
             )->setParameters(array('receiverId'=>$receiverId));
         }
@@ -322,5 +322,50 @@ class RepairFormRepository extends EntityRepository
 
     }
 
+
+    public function getRepairFormNumberOfAllStatus($month = 6)
+    {
+        $upper = new \DateTime('now');
+        $repairForm = array();
+
+        for($i=1;$i<=$month;$i++)
+        {
+            $upperFormat = $upper->format('Y-m-d H:i:s');
+            $upper->modify('-1 month');
+            $lowerFormat = $upper->format('Y-m-d H:i:s');
+            //获取上报故障数
+            $query = $this->getEntityManager()->createQuery(
+            'select count(r) from RepairBundle:RepairForm r
+                JOIN r.repairTask task
+                WHERE task.createTime > :lower AND task.createTime< :upper
+                ')->setParameters(array('lower'=>$lowerFormat,'upper'=>$upperFormat));
+            $number = array();
+            $number['all'] = $query->getSingleScalarResult();
+            //获取已维修数
+            $query = $this->getEntityManager()->createQuery(
+                'select count(r) from RepairBundle:RepairForm r
+                JOIN r.repairTask task
+                JOIN r.formCondition c
+                WHERE task.createTime > :lower AND task.createTime< :upper AND c.id > 1
+                ')->setParameters(array('lower'=>$lowerFormat,'upper'=>$upperFormat));
+
+            $number['repair'] = $query->getSingleScalarResult();
+            //获取已维修数
+            $query = $this->getEntityManager()->createQuery(
+                'select count(r) from RepairBundle:RepairForm r
+                JOIN r.repairTask task
+                JOIN r.formCondition c
+                WHERE task.createTime > :lower AND task.createTime< :upper AND c.id > 3
+                ')->setParameters(array('lower'=>$lowerFormat,'upper'=>$upperFormat));
+
+            $number['done'] = $query->getSingleScalarResult();
+
+
+            $repairForm[] = $number;
+            
+
+        }
+        return $repairForm;
+    }
 
 }

@@ -24,6 +24,7 @@ form:
     receiver: 维修人
     reporterPhone: 报修人电话
     MyReportedHistory: 我的历史记录
+    MyRepairedHistory: 我的维修记录
     cancel: 取消
     receiveIt: 接收此单
     none: 暂无
