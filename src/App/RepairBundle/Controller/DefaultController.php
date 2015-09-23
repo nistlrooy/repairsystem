@@ -182,13 +182,24 @@ class DefaultController extends Controller
         {
             $numberOfType = $arr[0][1]+$numberOfType;
         }
-        //获取各状态数量
-        $numberOfStatus = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormNumberOfAllStatus();
-        
+        //获取各状态统计
+        $status = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormNumberOfAllStatus();
+        //获取所在地统计
+        $group = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormNumberOfAllGroup();
+        $numberOfGroup = 0;
+        foreach($group as $arr)
+        {
+            $numberOfGroup = $numberOfGroup + $arr;
+        }
+
+        $cost = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormCost();
+        var_dump($cost);
 
         return array(
             'numberOfType' => $numberOfType,
-            'RepairFormNumberOfAllStatus' => $numberOfStatus,
+            'numberOfGroup' => $numberOfGroup,
+            'RepairFormNumberOfAllGroup' =>$group,
+            'RepairFormNumberOfAllStatus' => $status,
             'RepairFormNumberOfAllType' => $type
 
         );

@@ -23,7 +23,7 @@
         <div class="col-lg-4 col-lg-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
+                    <i class="fa fa-bar-chart-o fa-fw"></i>近100天故障类型比例统计
                 </div>
                 <div class="panel-body">
                     <div id="RepairFormNumberOfAllType"></div>
@@ -31,11 +31,22 @@
                 </div>
                 <!-- /.panel-body -->
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i>近100天故障所在地统计
+                </div>
+                <div class="panel-body">
+                    <div id="RepairFormNumberOfAllGroup"></div>
+                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+
         </div>
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
+                    <i class="fa fa-bar-chart-o fa-fw"></i>近半年故障解决情况统计
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -43,6 +54,7 @@
                             <div id="RepairFormNumberOfAllStatus"></div>
                     </div>
                     <!-- /.row -->
+                    <a href="#" class="btn btn-default btn-block">View Details</a>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -64,6 +76,16 @@
                 data: [
                     {% for key,value in RepairFormNumberOfAllType %}
                     {label: "{{ key }}", value: {{ value[0][1] }}},
+                    {% endfor %}
+                ]
+            });
+
+            Morris.Donut({
+                element: 'RepairFormNumberOfAllGroup',
+                formatter: function (value, data) { return (value/{{ numberOfGroup }} *100).toFixed(2) + '%'; },
+                data: [
+                    {% for key,value in RepairFormNumberOfAllGroup %}
+                    {label: "{{ key }}", value: {{ value }}},
                     {% endfor %}
                 ]
             });

@@ -286,7 +286,7 @@ class RepairFormRepository extends EntityRepository
 
 
     /**
-     * 获取每个类型工单数量
+     * 获取每个类型工单数量统计
      * @param int $day 获取$day天前到今天的工单
      * @return array|null
      */
@@ -322,7 +322,93 @@ class RepairFormRepository extends EntityRepository
 
     }
 
+    /**
+     * 获取工单所在地统计数据
+     * @param int $day 获取$day天前到今天的工单
+     * @return array|null
+     */
+    public function getRepairFormNumberOfAllGroup($day = 1000)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'select g from UserBundle:Group g'
+        );
+        try{
+            $Result = $query->getResult();
+        }catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
 
+        $date = new \DateTime('now');
+        $limit = date_format(date_modify($date,'-'.$day.' day'), 'Y-m-d');
+
+        $group = array();
+        for($i=0;$i<count($Result);$i++)
+        {
+            $query = $this->getEntityManager()->createQuery(
+                'select count(r) from RepairBundle:RepairForm r
+                JOIN r.repairTask task
+                JOIN r.faultInfo i
+                JOIN i.group g
+                WHERE g.name = :name AND task.createTime > :limit
+                ')->setParameters(array('name'=>$Result[$i]->getname(),'limit'=>$limit));
+
+            $group[$Result[$i]->getname()] = $query->getSingleScalarResult();
+        }
+
+        return $group;
+
+    }
+
+    /**获取近$month个月维修金额情况
+     * @param int $month
+     * @return array
+     */
+    public function getRepairFormCost($month = 6)
+    {
+        $upper = new \DateTime('now');
+        $costInAll = array();
+        for($int=0;$int<$month;$int++)
+        {
+            $upperFormat = $upper->format('Y-m-d H:i:s');
+            $m = $upper->format('Y-m');
+
+            if($int==0)
+            {
+                $days = $upper->format('d')-1;
+                $upper->modify('-'.$days.' days');
+
+            }
+            else
+            {
+                $upper->modify('-1 month');
+            }
+            $lowerFormat = $upper->format('Y-m-d H:i:s');
+
+            //获取上报故障数
+            $query = $this->getEntityManager()->createQuery(
+                'select r from RepairBundle:RepairForm r
+                JOIN r.repairTask task
+                WHERE task.createTime > :lower AND task.createTime< :upper
+                ')->setParameters(array('lower'=>$lowerFormat,'upper'=>$upperFormat));
+
+            $cost = 0;
+            $result = $query->getResult();
+
+            foreach($result as $arr)
+            {
+                $cost = $cost + $arr->getCost();
+            }
+
+            $costInAll[$m] = $upper;
+        }
+        return $costInAll;
+    }
+
+
+    /**获取近$month个月维修工单各状态情况
+     * @param int $month
+     * @return array
+     */
     public function getRepairFormNumberOfAllStatus($month = 6)
     {
         $upper = new \DateTime('now');
@@ -332,7 +418,14 @@ class RepairFormRepository extends EntityRepository
         {
             $upperFormat = $upper->format('Y-m-d H:i:s');
             $m = $upper->format('Y-m');
-            $upper->modify('-1 month');
+            if($i == 1)
+            {
+                $days = $upper->format('d');
+                $upper->modify('-'.$days.'day');
+            }else{
+                $upper->modify('-1 month');
+            }
+
             $lowerFormat = $upper->format('Y-m-d H:i:s');
 
             //获取上报故障数

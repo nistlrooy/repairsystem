@@ -14,9 +14,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
             <ul class="nav navbar-nav navbar-right">
-                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <li><a href="#">用户：{{ app.user.name }}</a></li>
-                {% endif %}
+
 
                 <li class="active"><a href="{{ path('homepage') }}">首页<span class="sr-only">(current)</span></a></li>
                 <li><a href="{{ path('default_homepage') }}">上报故障</a></li>

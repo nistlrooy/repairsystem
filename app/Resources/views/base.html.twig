@@ -18,7 +18,10 @@
             <footer class="nav navbar-fixed-bottom">
                 <div class="container">
                         <div class="text-muted">
-                            <p>&copy;Copyright 2015 - Nistlrooy. All rights reserved. </p>
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                <a href="#">用户：{{ app.user.name }}</a>
+                            {% endif %}
+                            &copy;Copyright 2015 - Nistlrooy. All rights reserved.
                         </div>
                 </div>
             </footer>
