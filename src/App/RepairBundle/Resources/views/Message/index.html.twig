@@ -12,7 +12,10 @@
         .messageLink{
             margin-top: 15px;
         }
-
+        .read{
+            color: #000000;
+            font-weight:bold;
+        }
 
     </style>
 {% endblock %}
@@ -49,7 +52,10 @@
                                     {{ 'table.unread'|trans }}
                                 {% endif %}
                             </td>
-                            <td><a href="#" data-toggle="modal" data-target="#m{{ p.id }}">{{ p.title| truncate(30) }}</a></td>
+                            <td><a href="#" data-toggle="modal" data-target="#m{{ p.id }}"
+                                    {% if not  p.isRead %}
+                                        class="read"
+                                    {% endif %}>{{ p.title| truncate(30) }}</a></td>
                             <td>{{ p.createTime|date('Y-m-d') }}</td>
                         </tr>
 

@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             // Then add SonataAdminBundle
             new Sonata\AdminBundle\SonataAdminBundle(),
             new FOS\RestBundle\FOSRestBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
 
 
             new App\UserBundle\UserBundle(),
