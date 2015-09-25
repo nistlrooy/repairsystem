@@ -35,21 +35,22 @@
                         {% endif %}
                     </ul>
                 </li>
-
+                {%  if is_granted('ROLE_REPAIR_ADMIN') %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
 
 
-                        {%  if is_granted('ROLE_REPAIR_ADMIN') %}
-                            <li><a href="{{ path('statistics') }}">维修统计报表</a></li>
-                        {% endif %}
+
+                            <li><a href="{{ path('statistics') }}">统计报表</a></li>
+
                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                             <li><a href="{{ path('homepage') }}admin">后台管理</a></li>
                         {% endif %}
 
                     </ul>
                 </li>
+                {% endif %}
                 <li><a href="{{ path('personal_message') }}">消息
                         {% if count_unread.countUnRead() %}
                             <span class="badge progress-bar-danger">

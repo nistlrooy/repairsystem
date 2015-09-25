@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class SupplierRepository extends EntityRepository
 {
+    public function getSuppliers()
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT r FROM RepairBundle:RepairForm r');
+        return $query->getResult();
+    }
 }
