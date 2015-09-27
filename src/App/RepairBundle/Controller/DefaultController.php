@@ -218,9 +218,17 @@ class DefaultController extends Controller
     }
 
 
-    public function supplierIndex()
+    /**
+     * @Route("/supplier",name="supplier")
+     * @Template()
+     * @return array
+     */
+    public function supplierIndexAction()
     {
-
+        $supplier = $this->getDoctrine()->getRepository('RepairBundle:Supplier')->getSuppliers();
+        return array(
+            'supplier'=>$supplier
+        );
     }
 
 
