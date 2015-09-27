@@ -19,3 +19,13 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [RepairBundle]]
+    sonata.admin.supplier:
+        class: App\RepairBundle\Admin\SupplierAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "赞助商", label: "赞助商信息" }
+        arguments:
+            - ~
+            - App\RepairBundle\Entity\Supplier
+            - ~
+        calls:
+            - [ setTranslationDomain, [RepairBundle]]
