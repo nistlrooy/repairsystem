@@ -125,7 +125,7 @@ sonata_admin:
                         <li>进入<code>列表</code>界面后,可以使用窗口右侧过滤功能快速查找需要的信息</li>
                         <li>为保护数据完整性,不推荐删除任何数据</li>
                         <li>如果需要停用某用户账号,则进入该用户页面,把启用账号的√去掉</li>
-                        </ul><br /> 本后台的所有操作皆为不经验证的强制执行,随意修改可能对数据完整性和正确性造成损坏,请谨慎操作!
+                        </ul><br /> 本后台的所有操作皆为强制执行,随意修改可能对数据完整性和正确性造成损坏,请谨慎操作!
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
     default_options:

@@ -22,7 +22,7 @@ services:
     sonata.admin.supplier:
         class: App\RepairBundle\Admin\SupplierAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "赞助商", label: "赞助商信息" }
+            - { name: sonata.admin, manager_type: orm, group: "供货商", label: "供货商信息" }
         arguments:
             - ~
             - App\RepairBundle\Entity\Supplier

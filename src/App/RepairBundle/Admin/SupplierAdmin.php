@@ -16,11 +16,11 @@ class SupplierAdmin extends Admin
 
         $formMapper
             ->add('name',null,array(
-                'label' => '赞助商名'
+                'label' => '供货商名'
             ))
 
             ->add('description',null,array(
-                'label' => '赞助商简介'
+                'label' => '供货商简介'
             ))
             ->add('phone',null,array(
                 'label' => '联系电话'
@@ -28,7 +28,7 @@ class SupplierAdmin extends Admin
             ->add('location',null,array(
                 'label' => '地址'
             ))
-            ->add('website',null,array(
+            ->add('website','url',array(
                 'label' => '网站'
             ))
 

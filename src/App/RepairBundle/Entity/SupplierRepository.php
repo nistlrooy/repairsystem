@@ -15,7 +15,7 @@ class SupplierRepository extends EntityRepository
     public function getSuppliers()
     {
         $query = $this->getEntityManager()->createQuery(
-            'SELECT r FROM RepairBundle:RepairForm r');
+            'SELECT s FROM RepairBundle:Supplier s');
         return $query->getResult();
     }
 }

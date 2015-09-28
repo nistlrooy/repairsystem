@@ -18,14 +18,24 @@
 
             {% trans_default_domain 'RepairBundle' %}
     {% for s in supplier %}
-            <div class="col-sm-6 col-sm-offset-3">
+        {% if loop.index%2 == 1 %}
+            <div class="col-sm-4 col-sm-offset-2">
+        {% else %}
+            <div class="col-sm-4">
+        {% endif %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-bar-chart-o fa-fw"></i>{{ s.name }}
                     </div>
                     <div class="panel-body">
-                        <div id="repairFormNumberOfAllType"></div>
-                        <a href="#" class="btn btn-default btn-block">View Details</a>
+                        <div >
+                            <p>{{ s.description }}</p>
+                            <p>{{ s.phone }}</p>
+                            <p>{{ s.location }}</p>
+                        </div>
+                        <a href="
+                        {{ s.website }}
+                        " class="btn btn-default btn-block" target="_blank">网址</a>
                     </div>
                     <!-- /.panel-body -->
                 </div>
