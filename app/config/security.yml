@@ -4,7 +4,6 @@ security:
             algorithm: bcrypt
             cost: 12
     role_hierarchy:
-        ROLE_ADMIN: ROLE_USER
         ROLE_REPAIR: ROLE_USER
         ROLE_LEADER: ROLE_USER
         ROLE_REPAIR_ADMIN: ROLE_REPAIR
@@ -31,10 +30,10 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_SUPER_ADMIN }
-        - { path: ^/fault, role: ROLE_USER }
-        - { path: ^/default, role: ROLE_USER }
-        - { path: ^/repair, role: ROLE_REPAIR }
-        - { path: ^/leader, role: ROLE_LEADER }
+        - { path: ^/fault/, role: ROLE_USER }
+        - { path: ^/default/, role: ROLE_USER }
+        - { path: ^/repair/, role: ROLE_REPAIR }
+        - { path: ^/leader/, role: ROLE_LEADER }
 
 
 

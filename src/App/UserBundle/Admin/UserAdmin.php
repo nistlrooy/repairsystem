@@ -28,6 +28,11 @@
                         'required'    => false,
                     )
                 )
+                ->add('group','sonata_type_admin',array(
+                        'btn_delete'    => false,
+                        'btn_add'    => false,
+                    )
+                )
                 ->add('phone','text',array(
                     'label' => '电话号码',
                     'translation_domain' => 'FOSUserBundle'

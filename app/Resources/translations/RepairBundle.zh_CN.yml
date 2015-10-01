@@ -2,12 +2,12 @@ Previous: 上页
 Next: 下页
 form:
     faultInfo: 报修单
-    faultType: 报修类型
+    faultType: 故障类型
     group: 故障地点
     faultPriority: 优先级
-    MyRepairRecord: 我的报修记录
-    title: 标题
-    reporterDescription: 故障描述
+    MyRepairRecord: 维修中的记录
+    title: 故障标题
+    reporterDescription: 报修人的故障描述
     post: 上报
     location: 故障地点
     date: 日期
@@ -16,15 +16,15 @@ form:
     repairFormInfo: 维修单
     reportTime: 报修时间
     type: 报修类型
-    workerDescription: 维修人描述
+    workerDescription: 维修人的故障描述
     maintenanceSchedule: 维修计划
     order: 批示
-    money: 费用
+    money: 维修金额
     reporter: 报修人
     receiver: 维修人
     reporterPhone: 报修人电话
-    MyReportedHistory: 我的历史记录
-    MyRepairedHistory: 我的维修记录
+    MyReportedHistory: 我的报修历史记录
+    MyRepairedHistory: 我的维修历史记录
     cancel: 取消
     receiveIt: 接收此单
     none: 暂无
@@ -34,13 +34,14 @@ form:
     reportToLeader: 上报领导
     receive: 接收
     sendBack: 退回
+    endTime: 结束时间
 
 table:
-    receiveByMe: 已接收
-    waitingForReceived: 待接收
+    receiveByMe: 我已接收的工单
+    waitingForReceived: 待接收的工单
     myMessage: 我的消息
     createTime: 创建时间
-    title: 标题
+    title: 故障标题
     status: 状态
     read: 已读
     unread: 未读

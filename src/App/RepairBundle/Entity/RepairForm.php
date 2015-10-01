@@ -82,7 +82,11 @@ class RepairForm
 
     /**
      * @var decimal
-     *
+     * @Assert\NotBlank()
+     *@Assert\Range(
+     *      min = 0,
+     *      minMessage = "金额必须是正数"
+     * )
      * @ORM\Column(name="cost",type="decimal",precision=12,scale=2)
      *
      */

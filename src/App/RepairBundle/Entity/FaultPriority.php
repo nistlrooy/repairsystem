@@ -3,7 +3,7 @@
 namespace App\RepairBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * FaultPriority
  *
@@ -23,14 +23,18 @@ class FaultPriority
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2)
+     * @Assert\Length(max=30)
      * @ORM\Column(name="name", type="string", length=30)
      */
     private $name;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2)
+     * @Assert\Length(max=255)
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;

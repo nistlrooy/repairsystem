@@ -3,7 +3,7 @@
 namespace App\RepairBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Supplier
  *
@@ -23,35 +23,45 @@ class Supplier
 
     /**
      * @var string
-     *
+    @Assert\NotBlank()
+     * @Assert\Length(min=2)
+     * @Assert\Length(max=30)
      * @ORM\Column(name="name", type="string", length=30)
      */
     private $name;
 
     /**
      * @var string
-     *
+    @Assert\NotBlank()
+     * @Assert\Length(min=2)
+     * @Assert\Length(max=255)
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=4)
+     * @Assert\Length(max=20)
      * @ORM\Column(name="phone", type="string", length=20)
      */
     private $phone;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2)
+     * @Assert\Length(max=100)
      * @ORM\Column(name="location", type="string", length=100)
      */
     private $location;
 
     /**
      * @var string
-     *
+     * @Assert\Url(
+     *    message = "此地址 '{{ value }}' 不是一个有效的URL",
+     * )
      * @ORM\Column(name="website", type="string", length=100)
      */
     private $website;

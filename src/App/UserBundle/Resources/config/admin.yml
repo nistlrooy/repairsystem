@@ -9,3 +9,13 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [UserBundle]]
+    sonata.admin.group:
+        class: App\UserBundle\Admin\GroupAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "用户", label: "部门管理" }
+        arguments:
+            - ~
+            - App\UserBundle\Entity\Group
+            - ~
+        calls:
+            - [ setTranslationDomain, [UserBundle]]

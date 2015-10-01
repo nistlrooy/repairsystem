@@ -10,6 +10,9 @@
             padding-left:15px ;
             padding-right: 15px;
         }
+        .modal-title{
+            color: #227ABF;
+        }
     </style>
 {% endblock %}
 
@@ -27,7 +30,7 @@
                 </div>
                 <div class="panel-body">
                     <div id="repairFormNumberOfAllType"></div>
-                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                    <a href="#" class="btn btn-default btn-block" data-toggle="modal" data-target="#typeModal">导出数据至Excel</a>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -37,7 +40,7 @@
                 </div>
                 <div class="panel-body">
                     <div id="repairFormNumberOfAllGroup"></div>
-                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                    <a href="#" class="btn btn-default btn-block" data-toggle="modal" data-target="#locationModal">导出数据至Excel</a>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -51,7 +54,7 @@
                         <div id="guess"></div>
                     </div>
                     <!-- /.row -->
-                    <a href="#" class="btn btn-default btn-block">View Details</a>
+
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -68,7 +71,7 @@
                             <div id="repairFormNumberOfAllStatus"></div>
                     </div>
                     <!-- /.row -->
-                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                    <a href="#" class="btn btn-default btn-block" data-toggle="modal" data-target="#statusModal">导出数据至Excel</a>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -82,7 +85,8 @@
                         <div id="repairFormCost"></div>
                     </div>
                     <!-- /.row -->
-                    <a href="#" class="btn btn-default btn-block">View Details</a>
+                    <a href="#" class="btn btn-default btn-block" data-toggle="modal" data-target="#costModal">导出数据至Excel</a>
+
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -96,13 +100,103 @@
                         <div id="repairPerson"></div>
                     </div>
                     <!-- /.row -->
-                    <a href="#" class="btn btn-default btn-block">View Details</a>
+
                 </div>
                 <!-- /.panel-body -->
             </div>
         </div>
         </div>
     </div>
+
+
+
+    <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">导出数据到Excel</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p>请选择需要的Excel格式类型和天数</p>
+                        获取近<input type="text" name="typeDay" id="typeDay" value="0"/>天数据（填写0则显示近100天数据）
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="ByTypeExcel5" class="btn btn-default" data-dismiss="modal">xls格式（兼容Excel2003及之前版本）</button>
+                        <button type="button" id="ByTypeExcel2007" class="btn btn-default" data-dismiss="modal">xlsx格式（兼容Excel2007及之后版本）</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">导出数据到Excel</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p>请选择需要的Excel格式类型和天数</p>
+                        获取近<input type="text" name="locationDay" id="locationDay" value="0"/>天数据（填写0则显示近100天数据）
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="ByLocationExcel5" class="btn btn-default" data-dismiss="modal">xls格式（兼容Excel2003及之前版本）</button>
+                        <button type="button" id="ByLocationExcel2007" class="btn btn-default" data-dismiss="modal">xlsx格式（兼容Excel2007及之后版本）</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">导出数据到Excel</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p>请选择需要的Excel格式类型和月份数</p>
+                        获取近<input type="text" name="statusMonth" id="statusMonth" value="0"/>个月数据（填写0则显示近6个月数据）
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="ByStatusExcel5" class="btn btn-default" data-dismiss="modal">xls格式（兼容Excel2003及之前版本）</button>
+                        <button type="button" id="ByStatusExcel2007" class="btn btn-default" data-dismiss="modal">xlsx格式（兼容Excel2007及之后版本）</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="costModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">导出数据到Excel</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p>请选择需要的Excel格式类型和月份数</p>
+                        获取近<input type="text" name="costMonth" id="costMonth" value="0"/>个月数据（填写0则显示近6个月数据）
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="ByCostExcel5" class="btn btn-default" data-dismiss="modal">xls格式（兼容Excel2003及之前版本）</button>
+                        <button type="button" id="ByCostExcel2007" class="btn btn-default" data-dismiss="modal">xlsx格式（兼容Excel2007及之后版本）</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block javascripts %}
@@ -111,6 +205,71 @@
     <script src="{{ asset('bundles/repair/js/morris.min.js') }}"></script>
     <script>
         $(document).ready(function() {
+
+            $('#ByTypeExcel5').click(function(){
+                if($('#typeDay').val()<1||!isNaN($('#typeDay').val()))
+                    var typeDay = 100
+                else
+                    var typeDay = parseInt($('#typeDay').val())
+                window.location = "{{ path('numbytype2excel') }}"+"/"+typeDay+"/Excel5";
+            })
+
+            $('#ByTypeExcel2007').click(function(){
+                if($('#typeDay').val()<1||!isNaN($('#typeDay').val()))
+                    var typeDay = 100
+                else
+                    var typeDay = parseInt($('#typeDay').val())
+                window.location = "{{ path('numbytype2excel') }}"+"/"+typeDay+"/Excel2007";
+            })
+            $('#ByLocationExcel5').click(function(){
+                if($('#locationDay').val()<1||!isNaN($('#typeDay').val()))
+                    var locationDay = 100
+                else
+                    var locationDay = parseInt($('#locationDay').val())
+                window.location = "{{ path('numbylocation2excel') }}"+"/"+locationDay+"/Excel5";
+            })
+
+            $('#ByLocationExcel2007').click(function(){
+                if($('#locationDay').val()<1||!isNaN($('#typeDay').val()))
+                    var locationDay = 100
+                else
+                    var locationDay = parseInt($('#locationDay').val())
+                window.location = "{{ path('numbylocation2excel') }}"+"/"+locationDay+"/Excel2007";
+            })
+
+            $('#ByStatusExcel5').click(function(){
+                if($('#statusMonth').val()<1||!isNaN($('#typeDay').val()))
+                    var statusMonth = 6
+                else
+                    var statusMonth = parseInt($('#statusMonth').val())
+                window.location = "{{ path('numbystatus2excel') }}"+"/"+statusMonth+"/Excel5";
+            })
+
+            $('#ByStatusExcel2007').click(function(){
+                if($('#statusMonth').val()<1||!isNaN($('#typeDay').val()))
+                    var statusMonth = 6
+                else
+                    var statusMonth = parseInt($('#statusMonth').val())
+                window.location = "{{ path('numbystatus2excel') }}"+"/"+statusMonth+"/Excel2007";
+            })
+
+            $('#ByCostExcel5').click(function(){
+                if($('#costMonth').val()<1||!isNaN($('#typeDay').val()))
+                    var costMonth = 6
+                else
+                    var costMonth = parseInt($('#costMonth').val())
+                window.location = "{{ path('costbymonth2excel') }}"+"/"+costMonth+"/Excel5";
+            })
+
+            $('#ByCostExcel2007').click(function(){
+                if($('#costMonth').val()<1||!isNaN($('#typeDay').val()))
+                    var costMonth = 6
+                else
+                    var costMonth = parseInt($('#costMonth').val())
+                window.location = "{{ path('costbymonth2excel') }}"+"/"+costMonth+"/Excel2007";
+            })
+
+
             Morris.Donut({
                 element: 'repairFormNumberOfAllType',
                 formatter: function (value, data) { return (value/{{ numberOfType }} *100).toFixed(2) + '%'; },

@@ -3,7 +3,7 @@
 namespace App\RepairBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * FaultOrder
  *
@@ -29,7 +29,8 @@ class FaultOrder
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2)
      * @ORM\Column(name="leader_order", type="string", length=255)
      */
     private $leaderOrder;

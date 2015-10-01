@@ -3,7 +3,7 @@
 namespace App\RepairBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * FormComment
  *
@@ -23,7 +23,9 @@ class FormComment
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2)
+     * @Assert\Length(max=255)
      * @ORM\Column(name="comment", type="string", length=255)
      */
     private $comment;

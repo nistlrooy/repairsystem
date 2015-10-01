@@ -6,7 +6,9 @@
     {{ parent() }}
 
     <style type="text/css">
-
+        .panel-body{
+           padding:40px;
+        }
     </style>
 {% endblock %}
 
@@ -28,10 +30,10 @@
                         <i class="fa fa-bar-chart-o fa-fw"></i>{{ s.name }}
                     </div>
                     <div class="panel-body">
-                        <div >
-                            <p>{{ s.description }}</p>
-                            <p>{{ s.phone }}</p>
-                            <p>{{ s.location }}</p>
+                        <div>
+                            简介：<p>{{ s.description }}</p>
+                            电话：<p>{{ s.phone }}</p>
+                            地址：<p>{{ s.location }}</p>
                         </div>
                         <a href="
                         {{ s.website }}

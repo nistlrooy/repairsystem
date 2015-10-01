@@ -2,9 +2,50 @@
 
 {% block title %}详细信息{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        #exportDiv{
+            float: right;
+            margin-right: 10%;
+            margin-top:30px;
+        }
+        .modal-title{
+            font-weight:700;
+            color: #227ABF;
+        }
+
+    </style>
+{% endblock %}
+
 {% block body %}
 <div id="content">
 <div class="row">
+    <div id="exportDiv">
+        <button type="button" id="export" class="btn btn-default" data-toggle="modal" data-target="#exportModal">导出数据到Excel</button>
+    </div>
+    <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">导出工单数据到Excel</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            请选择需要的Excel格式类型
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="excel5" class="btn btn-default" data-dismiss="modal">xls格式（兼容Excel2003及之前版本）</button>
+                            <button type="button" id="excel2007" class="btn btn-default" data-dismiss="modal">xlsx格式（兼容Excel2007及之后版本）</button>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-md-6 col-md-offset-3">
     {% trans_default_domain 'RepairBundle' %}
 
@@ -1247,8 +1288,13 @@ $(document).ready(function() {
     $('#reject').click(function(){
         window.location = "{{ path('fault_action',{'action':'reject','id':repairForm.id}) }}"
     })
+    $('#excel5').click(function(){
+        window.location = "{{ path('repairform2excel',{'format':'Excel5','id':repairForm.id}) }}"
+    })
 
-
+    $('#excel2007').click(function(){
+        window.location = "{{ path('repairform2excel',{'format':'Excel2007','id':repairForm.id}) }}"
+    })
     $('#reportToLeader').click(function () {
         window.location = "{{ path('fault_order',{'action':'create','id':repairForm.id}) }}"
     });

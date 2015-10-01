@@ -22,21 +22,21 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">维修工单<span class="caret"></span></a>
                     <ul class="dropdown-menu">
 
-                        <li><a href="{{ path('reported_history') }}">我的记录</a></li>
-                        {%  if is_granted('ROLE_REPAIR') %}
+                        <li><a href="{{ path('reported_history') }}">报修记录</a></li>
+                        {%  if app.user and is_granted('ROLE_REPAIR') %}
                             <li role="separator" class="divider"></li>
-                            <li><a href="{{ path('repair_homepage') }}">维修列表</a></li>
+                            <li><a href="{{ path('repair_homepage') }}"> 工单列表</a></li>
                             <li><a href="{{ path('repaired_history') }}">维修记录</a></li>
                             <li><a href="{{ path('supplier') }}">供货商信息</a></li>
                         {% endif %}
 
-                        {%  if is_granted('ROLE_LEADER') %}
+                        {%  if app.user and is_granted('ROLE_LEADER') %}
                             <li role="separator" class="divider"></li>
-                            <li><a href="{{ path('leader_order') }}">等待批示</a></li>
+                            <li><a href="{{ path('leader_order') }}">待批示工单</a></li>
                         {% endif %}
                     </ul>
                 </li>
-                {%  if is_granted('ROLE_REPAIR_ADMIN') %}
+                {% if app.user and is_granted('ROLE_REPAIR_ADMIN') %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -45,7 +45,7 @@
 
                             <li><a href="{{ path('statistics') }}">统计报表</a></li>
 
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        {% if app.user and is_granted('ROLE_SUPER_ADMIN') %}
                             <li><a href="{{ path('homepage') }}admin">后台管理</a></li>
                         {% endif %}
 
@@ -62,7 +62,7 @@
                     </a></li>
                 <li>
                     {% trans_default_domain 'RepairBundle' %}
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    {% if app.user and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <a href="{{ path('fos_user_security_logout') }}">{{ 'nav.logout'|trans }}</a>
                     {% else %}
                         <a href="{{ path('fos_user_security_login') }}">{{ 'nav.login'|trans }}</a>
