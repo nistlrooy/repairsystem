@@ -15,6 +15,9 @@
             color: #227ABF;
         }
 
+        .danger{
+            color: red;
+        }
     </style>
 {% endblock %}
 
@@ -50,7 +53,7 @@
     {% trans_default_domain 'RepairBundle' %}
 
         <div class="col-sm-12">
-            <h3 class="danger">{{ errorMsg }}</h3>
+            <div class="danger">{{ errorMsg }}</div>
         </div>
     {# 状态为待接单 #}
     {% if repairForm.formCondition.id == 1 %}
@@ -58,7 +61,7 @@
         {% if isCreater %}
             {# 判断是否有维修人员权限 #}
             {%  if is_granted('ROLE_REPAIR') %}
-                <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                <form id="infoForm" action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <div class="col-sm-8 form-group">
                         <h3>{{ 'form.repairFormInfo'|trans }}</h3>
                     </div>
@@ -93,13 +96,13 @@
                         {{ 'form.title'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.title, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.title, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.reporterDescription'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.reporter'|trans }}
@@ -120,7 +123,7 @@
                         <button  id="receive" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.receive'|trans }}</button>
                         <button  id="cancel" type="button" class="btn btn-default" data-toggle="confirmation" data-singleton="true" data-btn-ok-label="确定" data-btn-ok-icon="glyphicon glyphicon-share-alt" data-btn-ok-class="btn-success" data-btn-cancel-label="取消" data-btn-cancel-icon="glyphicon glyphicon-ban-circle" data-btn-cancel-class="btn-danger" data-popout="true" title="是否确定">{{ 'form.cancel'|trans }}</button>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 ">
                         {{ form_errors(form) }}
                     </div>
                     {{ form_widget(form._token) }}
@@ -128,7 +131,7 @@
             {# 无维修人权限 #}
             {% else %}
              <div class="row">
-                <form action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                <form id="infoForm" action="{{ path('fault_action',{'action':'edit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
 
                     <div class="col-sm-8 form-group">
                         <h3>{{ 'form.repairFormInfo'|trans }}</h3>
@@ -164,13 +167,13 @@
                         {{ 'form.title'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.title, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.title, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.reporterDescription'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.reporterDescription, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.reporter'|trans }}
@@ -323,7 +326,7 @@
         {% if isReceiver %}
             {# 判断是否有领导权限 #}
             {% if is_granted('ROLE_LEADER') %}
-                <form id="info_form" action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                <form id="infoForm" action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <div class="col-sm-8 form-group">
                         <h3>{{ 'form.repairFormInfo'|trans }}</h3>
                     </div>
@@ -370,13 +373,13 @@
                         {{ 'form.workerDescription'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.workerDescription, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.workerDescription, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.maintenanceSchedule'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.maintenanceSchedule, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.maintenanceSchedule, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.order'|trans }}
@@ -402,7 +405,7 @@
                         </div>
                     {% endif %}
 
-                    <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ form_widget(form.cost, {'attr': {'class': 'form-control'}}) }}</div>
+                    <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ form_widget(form.cost, {'attr': {'class': 'form-control','number':true,'min':0}}) }}</div>
 
                     <div class="col-sm-3 form-group">
                         {{ 'form.reporter'|trans }}
@@ -469,7 +472,7 @@
 {% endif %}
             {# 无领导权限 #}
             {% else %}
-                <form action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
+                <form id="infoForm" action="{{ path('fault_action',{'action':'submit','id':repairForm.id}) }}" {{ form_enctype(form) }} method="post">
                     <div class="col-sm-8 form-group">
                         <h3>{{ 'form.repairFormInfo'|trans }}</h3>
                     </div>
@@ -516,13 +519,13 @@
                         {{ 'form.workerDescription'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.workerDescription, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.workerDescription, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.maintenanceSchedule'|trans }}
                     </div>
                     <div class="col-sm-9 form-group">
-                        {{ form_widget(form.faultInfo.maintenanceSchedule, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.faultInfo.maintenanceSchedule, {'attr': {'class': 'form-control','minlength':2}}) }}
                     </div>
                     <div class="col-sm-3 form-group">
                         {{ 'form.order'|trans }}
@@ -544,7 +547,7 @@
                         </div>
                     {% endif %}
 
-                    <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ form_widget(form.cost, {'attr': {'class': 'form-control'}}) }}</div>
+                    <div class="col-sm-3 form-group">{{ 'form.money'|trans }}</div><div class="col-sm-9 form-group">{{ form_widget(form.cost, {'attr': {'class': 'form-control','number':true,'min':0}}) }}</div>
 
                     <div class="col-sm-3 form-group">
                         {{ 'form.reporter'|trans }}
@@ -1273,8 +1276,11 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
+    <script src="{{ asset('bundles/repair/js/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/repair/js/localization/messages_zh.min.js') }}" charset="UTF-8" ></script>
 <script>
 $(document).ready(function() {
+    $('#infoForm').validate();
     $('[data-toggle=confirmation]').confirmation();
     $('#cancel').click(function () {
         window.location = "{{ path('fault_action',{'action':'cancel','id':repairForm.id}) }}"

@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RepairController extends Controller
 {
+    const PAGE = 8;/*limit per page*/
     /**
      * @Route("/fault/post",name="fault_report")
      * @Template()
@@ -45,9 +46,9 @@ class RepairController extends Controller
             //var_dump($data->getFaultType()->getId());
             //默认设置为none
             if(!$data->getWorkerDescription())
-                $data->setWorkerDescription('none');
+                $data->setWorkerDescription('暂无描述');
             if(!$data->getMaintenanceSchedule())
-                $data->setMaintenanceSchedule('none');
+                $data->setMaintenanceSchedule('暂无方案');
             //set datetime to now
 
             $repairForm->setCost(0);
@@ -63,6 +64,16 @@ class RepairController extends Controller
             //绑定设置外键id
             $repairForm->setRepairTask($repairTask);
             $repairForm->setRepairFormGroup($repairFormGroup);
+            
+            if($data->getTitle())
+                $data->setTitle($data->getTitle());
+            else
+                $data->setTitle('暂无标题');
+            if($data->getReporterDescription())
+                $data->setReporterDescription($data->getReporterDescription());
+            else
+                $data->setReporterDescription('暂无描述');
+            
             $repairForm->setFaultInfo($data);
 
             $em = $this->getDoctrine()->getManager();
@@ -84,11 +95,20 @@ class RepairController extends Controller
 
             return $this->redirectToRoute('default_homepage');
         }
-        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4);
+
+        $repairForm = $this->getDoctrine()->getRepository('RepairBundle:RepairForm')->getRepairFormByCreater($this->get('security.token_storage')->getToken()->getUser()->getId(),0,4,$this->get('request')->get('sort'),$this->get('request')->get('direction'));
+
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $repairForm,
+            $this->get('request')->query->get('page', 1)/*page number*/,
+            self::PAGE/*limit per page*/
+        );
 
         return $this->render('@Repair/Default/defaultIndex.html.twig',array(
             'form' => $form->createView(),
-            'repairForm' =>$repairForm
+            'pagination' => $pagination
         ));
 
     }
@@ -406,6 +426,7 @@ class RepairController extends Controller
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
             case 'reject':
+            	$receiveId = $repairForm->getReceive()->getId();
                 $preCondition = $repairForm->getFormCondition()->getId();
                 $repairForm->setReceive(null);
                 $repairForm->setRejectTimes($repairForm->getRejectTimes()+1);
@@ -426,7 +447,7 @@ class RepairController extends Controller
                 {
                     $title = "维修工单已被报修人驳回";
                     $message ="您的维修工单——“".$repairForm->getFaultInfo()->getTitle()."”已被报修人——".$user->getName()." 驳回，点击下方链接前往查看详细信息";
-                    $this->sendMessage($repairForm->getReceive()->getId(),$title,$message,$url);
+                    $this->sendMessage($receiveId,$title,$message,$url);
                 }
                 if($preCondition == 2)
                 {
@@ -439,7 +460,7 @@ class RepairController extends Controller
                 return $this->redirectToRoute('fault_info',array('id' => $id));
                 break;
             case 'cancel':
-
+		$id = intval($repairForm->getId());
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
                 $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(6);
@@ -448,7 +469,7 @@ class RepairController extends Controller
                 $em->persist($repairForm);
                 $em->flush();
 
-                $id = intval($repairForm->getId());
+                
                 $url = $this->generateUrl(
                     'fault_info',
                     array('id' => $id)
@@ -468,14 +489,30 @@ class RepairController extends Controller
             if($form->get('save')->isClicked())
             {
                 $faultInfo = $repairForm->getFaultInfo();
+                
+                if($repairForm->getFormCondition()->getId() == 1)
+                {
                 if($data->getFaultInfo()->getTitle())
                     $faultInfo->setTitle($data->getFaultInfo()->getTitle());
+                else
+                    $faultInfo->setTitle('暂无标题');
                 if($data->getFaultInfo()->getReporterDescription())
                     $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
+                else
+                    $faultInfo->setReporterDescription('暂无描述');
+                }
+                if($repairForm->getFormCondition()->getId() == 2)
+                {
                 if($data->getFaultInfo()->getWorkerDescription())
                     $faultInfo->setWorkerDescription($data->getFaultInfo()->getWorkerDescription());
+                else
+                    $faultInfo->setWorkerDescription('暂无描述');
                 if($data->getFaultInfo()->getMaintenanceSchedule())
                     $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
+                else
+                    $faultInfo->setMaintenanceSchedule('暂无方案');
+                }
+                
                 if($data->getFaultInfo()->getGroup())
                 {
                     $group = $this->getDoctrine()->getManager()->getRepository('UserBundle:Group')->find($data->getFaultInfo()->getGroup()->getId());
@@ -493,8 +530,21 @@ class RepairController extends Controller
                 }
 
                 $repairForm->setFaultInfo($faultInfo);
+                if($repairForm->getFormCondition()->getId() == 2)
+                {
+                    if(is_numeric($data->getCost()))
+                    {
+                        if($data->getCost()>=0)
+                            $repairForm->setCost($data->getCost());
+                    }
+                    else
+                        return $this->redirectToRoute('fault_info',array('id' => $id,'errorMsg'=> '维修金额必须为大于等于0的数字'));
+                }
+                else
+                {
+                    $repairForm->setCost($data->getCost());
+                }
 
-                $repairForm->setCost($data->getCost());
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
 
@@ -509,17 +559,33 @@ class RepairController extends Controller
             else
             {
                 $faultInfo = $repairForm->getFaultInfo();
-                if($data->getFaultInfo()->getTitle())
-                    $faultInfo->setTitle($data->getFaultInfo()->getTitle());
-                if($data->getFaultInfo()->getReporterDescription())
-                    $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
+                //if($data->getFaultInfo()->getTitle())
+                //    $faultInfo->setTitle($data->getFaultInfo()->getTitle());
+                //else 
+                //    $faultInfo->setTitle('暂无标题');
+                // if($data->getFaultInfo()->getReporterDescription())
+                //    $faultInfo->setReporterDescription($data->getFaultInfo()->getReporterDescription());
+                //else
+                //    $faultInfo->setReporterDescription('暂无描述');
                 if($data->getFaultInfo()->getWorkerDescription())
                     $faultInfo->setWorkerDescription($data->getFaultInfo()->getWorkerDescription());
+                else
+                    $faultInfo->setWorkerDescription('暂无描述');
                 if($data->getFaultInfo()->getMaintenanceSchedule())
                     $faultInfo->setMaintenanceSchedule($data->getFaultInfo()->getMaintenanceSchedule());
+                else
+                    $faultInfo->setMaintenanceSchedule('暂无方案');
                 $repairForm->setFaultInfo($faultInfo);
 
-                $repairForm->setCost($data->getCost());
+                if(is_numeric($data->getCost()))
+                {
+                    if($data->getCost()>=0)
+                        $repairForm->setCost($data->getCost());
+                    else
+                        return $this->redirectToRoute('fault_info',array('id' => $id,'errorMsg'=> '维修金额不可为负数'));
+                }
+                else
+                    return $this->redirectToRoute('fault_info',array('id' => $id,'errorMsg'=> '维修金额必须为数字'));
                 $user = $this->getDoctrine()->getManager()->getRepository('UserBundle:User')->find($this->get('security.token_storage')->getToken()->getUser()->getId());
                 $repairForm->setUser($user);
                 $condition = $this->getDoctrine()->getManager()->getRepository('RepairBundle:FormCondition')->find(3);
@@ -540,7 +606,77 @@ class RepairController extends Controller
                 return $this->redirectToRoute('fault_info',array('id' => $id));
             }
         }
-        return $this->redirectToRoute('fault_info',array('id' => $id));
+        $errorMsg='';
+        $orderIsNull = is_null($repairForm->getfaultInfo()->getFaultOrder());
+        $receiveIsNull = is_null($repairForm->getReceive());
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $isReceiver = false;
+        if(!$receiveIsNull)
+        {
+            if($repairForm->getReceive()->getId() == $userId)
+                $isReceiver = true;
+        }
+
+        $orderSet = false;
+        if(!$orderIsNull)
+        {
+            if($repairForm->getFaultInfo()->getFaultOrder()->getUser())
+            {
+                $orderSet = true;
+            }
+        }
+        $createrId = $repairForm->getRepairTask()->getUser()->getId();
+        if($createrId == $userId)
+        {
+            $isCreater = true;
+        }
+        else
+        {
+            $isCreater = false;
+        }
+        $form = $this->createForm(new FaultReportFormType(),$repairForm);
+        if((!$orderIsNull)&&(!$orderSet))
+        {
+
+            $order = $this->createForm(new FaultOrderType(),new FaultOrder());
+            return $this->render('@Repair/Repair/info.html.twig',array(
+                'repairForm' => $repairForm,
+                'orderIsNull' => $orderIsNull,
+                'receiveIsNull' => $receiveIsNull,
+                'isCreater' => $isCreater,
+                'isReceiver' => $isReceiver,
+                'orderSet' => $orderSet,
+                'errorMsg' => $errorMsg,
+                'form' => $form->createView(),
+                'order' => $order->createView()
+            ));
+        }
+
+        if($repairForm->getFormCondition()->getId() == 4)
+        {
+            $comment = $this->createForm(new FormCommentType(),new FormComment());
+            return $this->render('@Repair/Repair/info.html.twig',array(
+                'repairForm' => $repairForm,
+                'orderIsNull' => $orderIsNull,
+                'receiveIsNull' => $receiveIsNull,
+                'isCreater' => $isCreater,
+                'isReceiver' => $isReceiver,
+                'orderSet' => $orderSet,
+                'errorMsg' => $errorMsg,
+                'form' => $form->createView(),
+                'comment' => $comment->createView()
+            ));
+        }
+        return $this->render('@Repair/Repair/info.html.twig',array(
+            'repairForm' => $repairForm,
+            'orderIsNull' => $orderIsNull,
+            'receiveIsNull' => $receiveIsNull,
+            'isCreater' => $isCreater,
+            'isReceiver' => $isReceiver,
+            'orderSet' => $orderSet,
+            'errorMsg' => $errorMsg,
+            'form' => $form->createView()
+        ));
     }
 
 

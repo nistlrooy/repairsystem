@@ -28,11 +28,12 @@
                         'required'    => false,
                     )
                 )
-                ->add('group','sonata_type_admin',array(
-                        'btn_delete'    => false,
-                        'btn_add'    => false,
-                    )
-                )
+                ->add('group','entity',array(
+                    'label' => '所属部门',
+                    'class' => 'App\UserBundle\Entity\Group',
+                    'translation_domain' => 'RepairBundle'
+                ))
+
                 ->add('phone','text',array(
                     'label' => '电话号码',
                     'translation_domain' => 'FOSUserBundle'
@@ -43,7 +44,8 @@
                     'required'  => false,
                 ))
                 ->add('roles','choice',array('choices'=>$rolesChoices,
-                    'multiple'=>true ));
+                    'multiple'=>true
+                    ));
             ;
         }
 

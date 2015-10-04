@@ -38,36 +38,26 @@ class FaultInfo
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
-     * @Assert\Length(max=255)
      * @ORM\Column(name="reporter_description", type="text")
      */
     private $reporterDescription;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
-     * @Assert\Length(max=100)
      * @ORM\Column(name="fault_title", type="text")
      */
     private $title;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
-     * @Assert\Length(max=255)
+     *
      * @ORM\Column(name="worker_description", type="text")
      */
     private $workerDescription;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Length(min=2)
-     * @Assert\Length(max=255)
+     *
      * @ORM\Column(name="maintenance_schedule", type="text")
      */
     private $maintenanceSchedule;

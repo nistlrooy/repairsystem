@@ -21,7 +21,7 @@ class MessageController extends Controller
      */
     public function indexAction()
     {
-        $message = $this->getDoctrine()->getRepository('RepairBundle:RepairMessage')->getMyMessage($this->get('security.token_storage')->getToken()->getUser()->getId());
+        $message = $this->getDoctrine()->getRepository('RepairBundle:RepairMessage')->getMyMessage($this->get('security.token_storage')->getToken()->getUser()->getId(),$this->get('request')->get('sort'),$this->get('request')->get('direction'));
 
         $authChecker = $this->get('security.authorization_checker');
         if(count($message))
